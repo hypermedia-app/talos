@@ -3,7 +3,7 @@ import { expect } from 'chai'
 import { parsers } from '@rdfjs/formats-common'
 import toStream from 'into-stream'
 import getStream from 'get-stream'
-import { optionsFromPrefixes } from '../../lib/prefixHandler'
+import { optionsFromPrefixes } from '../../lib/prefixHandler.js'
 
 describe('@hydrofoil/talos/lib/prefixHandler', () => {
   function parse(str: string): Stream {

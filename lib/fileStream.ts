@@ -5,7 +5,7 @@ import * as mime from 'mime-types'
 import replaceStream from 'replacestream'
 import { parsers } from '@rdfjs/formats-common'
 import isAbsoluteUrl from 'is-absolute-url'
-import { log } from './log'
+import { log } from './log.js'
 
 function replacer(basePath: string, resourceUrl: string, s: string, e = s) {
   return (_: unknown, match: string) => {

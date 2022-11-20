@@ -5,8 +5,8 @@ import { vocabularies as hydrofoilVocabularies } from '@hydrofoil/vocabularies'
 import { INSERT } from '@tpluscode/sparql-builder'
 import { sparql } from '@tpluscode/rdf-string'
 import $rdf from 'rdf-ext'
-import DatasetExt from 'rdf-ext/lib/Dataset'
-import { log } from './log'
+import type DatasetExt from 'rdf-ext/lib/Dataset'
+import { log } from './log.js'
 
 export interface ExtraVocab {
   package: string
@@ -14,7 +14,7 @@ export interface ExtraVocab {
 }
 
 function toTriple({ subject, predicate, object }: Quad) {
-  return $rdf.triple(subject, predicate, object)
+  return $rdf.quad(subject, predicate, object)
 }
 
 function loadExtraVocabs(vocabs: ExtraVocab[]): Promise<Record<string, DatasetExt>> {

@@ -1,10 +1,10 @@
 import { NamedNode } from 'rdf-js'
-import ParsingClient from 'sparql-http-client/ParsingClient'
+import ParsingClient from 'sparql-http-client/ParsingClient.js'
 import { ASK, DELETE, SELECT } from '@tpluscode/sparql-builder'
 import { acl, as, hydra, rdfs } from '@tpluscode/rdf-ns-builders'
 import { expect } from 'chai'
 import * as wikibusVocabs from '@wikibus/vocabularies/builders/strict'
-import { putVocabs, PutVocabs } from '../../../lib/command/put-vocabs'
+import { putVocabs, PutVocabs } from '../../../lib/command/put-vocabs.js'
 
 describe('@hydrofoil/talos/lib/command/put-vocabs', () => {
   const params: PutVocabs = {

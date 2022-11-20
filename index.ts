@@ -1,7 +1,7 @@
 import { program } from 'commander'
-import { put, putVocabs } from './lib/command'
-import { parseExtraVocabs } from './lib/command/extraVocabs'
-import { log } from './lib/log'
+import { put, putVocabs } from './lib/command/index.js'
+import { parseExtraVocabs } from './lib/command/extraVocabs.js'
+import { log } from './lib/log.js'
 
 program.command('put [dirs...]')
   .description('Initializes the database from local resource files')
