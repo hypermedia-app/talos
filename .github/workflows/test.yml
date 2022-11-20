@@ -22,7 +22,7 @@ jobs:
           timeout: 30000
       - run: yarn test
       - name: Codecov
-        uses: codecov/codecov-action@v1.0.5
+        uses: codecov/codecov-action@v3
 
   build:
     runs-on: ubuntu-latest
