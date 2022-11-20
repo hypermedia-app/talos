@@ -17,22 +17,7 @@
     "strictNullChecks": true,
     "allowSyntheticDefaultImports": true,
     "declaration": true,
-    "skipLibCheck": true,
-    "typeRoots": [
-      "node_modules/@types",
-      "types"
-    ],
-    "baseUrl": ".",
-    "paths": {
-      "knossos/*": ["packages/knossos/*"],
-      "labyrinth/*": ["packages/labyrinth/*"],
-      "talos/*": ["packages/talos/*"]
-    }
+    "skipLibCheck": true
   },
-  "include": [
-    "apps",
-    "types",
-    "packages"
-  ],
-  "exclude": ["packages/*/bin/*.ts"]
+  "exclude": ["bin/*.ts"]
 }

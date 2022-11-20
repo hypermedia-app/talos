@@ -1,5 +1,4 @@
 import * as path from 'path'
-import { put, Put } from 'talos/lib/command/put'
 import { ASK, CONSTRUCT, DELETE, SELECT } from '@tpluscode/sparql-builder'
 import ParsingClient from 'sparql-http-client/ParsingClient'
 import { expect } from 'chai'
@@ -8,7 +7,8 @@ import namespace from '@rdfjs/namespace'
 import * as NodeFetch from 'node-fetch'
 import sinon from 'sinon'
 import $rdf from 'rdf-ext'
-import { testData } from '@labyrinth/testing/client'
+import { testData } from '../../client'
+import { put, Put } from '../../../lib/command/put'
 
 const apis = [
   'http://example.com',
@@ -22,14 +22,14 @@ for (const api of apis) {
   describe('@hydrofoil/talos/lib/command/put', () => {
     const params: Put = {
       api,
-      endpoint: 'http://db.labyrinth.lndo.site/repositories/tests',
+      endpoint: 'http://db.talos.lndo.site/repositories/tests',
       user: 'minos',
       password: 'password',
     }
 
     const client = new ParsingClient({
-      endpointUrl: 'http://db.labyrinth.lndo.site/repositories/tests',
-      updateUrl: 'http://db.labyrinth.lndo.site/repositories/tests',
+      endpointUrl: 'http://db.talos.lndo.site/repositories/tests',
+      updateUrl: 'http://db.talos.lndo.site/repositories/tests',
       user: 'minos',
       password: 'password',
     })
@@ -344,7 +344,7 @@ describe('@hydrofoil/talos/lib/command/put --resources --token', () => {
 
   const params: Put = {
     api: 'http://example.com',
-    endpoint: 'http://db.labyrinth.lndo.site/repositories/tests',
+    endpoint: 'http://db.talos.lndo.site/repositories/tests',
     user: 'minos',
     password: 'password',
   }

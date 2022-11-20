@@ -1,5 +1,2 @@
 ignore:
   - mocha-setup.js
-  - "packages/testing/**/*"
-  - "packages/testing/*"
-  - "apps/**/*"

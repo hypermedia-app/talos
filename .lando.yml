@@ -1,31 +1,12 @@
-name: labyrinth
+name: talos
 services:
-  conduit:
-    type: node:custom
-    build:
-      - npm i -g nodemon
-    command: nodemon -w packages -w apps --ignore **/*.ttl --ignore **/*.env.json --ext ts,js --exec npm --node-options --inspect=0.0.0.0:47671 --inspect start
-    ssl: true
-    overrides:
-      image: node:14
-      ports:
-        - '47671:47671'
-      environment:
-        TS_NODE_TRANSPILE_ONLY: "true"
-        DEBUG: conduit*,hydra*,hydra-box*,labyrinth*,SPARQL,-labyrinth:request:headers
-        AUTH_JWKS_URI: http://auth/keys
-        AUTH_ISSUER: https://auth.labyrinth.lndo.site
-        AUTH_AUDIENCE: conduit
-    moreHttpPorts:
-      - 47671
-    scanner: false
   store:
     type: compose
     volumes:
       agdata:
       agconfig:
     run:
-      - agtool repos create http://minos:password@127.0.0.1:10035/repositories/labyrinth
+      - agtool repos create http://minos:password@127.0.0.1:10035/repositories/talos
       - agtool repos create http://minos:password@127.0.0.1:10035/repositories/tests
     services:
       image: franzinc/agraph:v7.2.0
@@ -41,21 +22,6 @@ services:
       volumes:
         - agdata:/agraph/data
         - agconfig:/agraph/etc
-  auth:
-    type: compose
-    scanner: false
-    ssl: true
-    services:
-      image: ghcr.io/dexidp/dex
-      command: dex serve /app/apps/auth/dex.yaml
-  ldap:
-    type: compose
-    scanner: false
-    services:
-      image: osixia/openldap
-      command: /container/tool/run --copy-service
-      volumes:
-        - ./apps/auth/ldap.ldif:/container/service/slapd/assets/config/bootstrap/ldif/custom/config-ldap.ldif
 
 tooling:
   agtool:
@@ -64,9 +30,4 @@ tooling:
 
 proxy:
   store:
-    - db.labyrinth.lndo.site:10035
-  conduit:
-    - conduit.knossos.lndo.site:8888
-    - test.conduit.knossos.lndo.site:8888
-  auth:
-    - auth.labyrinth.lndo.site
+    - db.talos.lndo.site:10035

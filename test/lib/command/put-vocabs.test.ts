@@ -1,21 +1,21 @@
 import { NamedNode } from 'rdf-js'
-import { putVocabs, PutVocabs } from 'talos/lib/command/put-vocabs'
 import ParsingClient from 'sparql-http-client/ParsingClient'
 import { ASK, DELETE, SELECT } from '@tpluscode/sparql-builder'
 import { acl, as, hydra, rdfs } from '@tpluscode/rdf-ns-builders'
 import { expect } from 'chai'
 import * as wikibusVocabs from '@wikibus/vocabularies/builders/strict'
+import { putVocabs, PutVocabs } from '../../../lib/command/put-vocabs'
 
 describe('@hydrofoil/talos/lib/command/put-vocabs', () => {
   const params: PutVocabs = {
-    endpoint: 'http://db.labyrinth.lndo.site/repositories/tests',
+    endpoint: 'http://db.talos.lndo.site/repositories/tests',
     user: 'minos',
     password: 'password',
   }
 
   const client = new ParsingClient({
-    endpointUrl: 'http://db.labyrinth.lndo.site/repositories/tests',
-    updateUrl: 'http://db.labyrinth.lndo.site/repositories/tests',
+    endpointUrl: 'http://db.talos.lndo.site/repositories/tests',
+    updateUrl: 'http://db.talos.lndo.site/repositories/tests',
     user: 'minos',
     password: 'password',
   })

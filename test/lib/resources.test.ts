@@ -3,11 +3,8 @@ import path from 'path'
 import { expect } from 'chai'
 import namespace from '@rdfjs/namespace'
 import toCanonical from 'rdf-dataset-ext/toCanonical'
-import { talosNs } from 'talos/lib/ns'
+import { talosNs } from '../../lib/ns'
 import { fromDirectories } from '../../lib/resources'
-import { debug } from '../../lib/log'
-
-debug.enabled = true
 
 const ns = namespace('https://example.com')
 
