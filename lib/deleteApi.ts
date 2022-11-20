@@ -1,13 +1,14 @@
 import { NamedNode } from 'rdf-js'
-import fetch from 'node-fetch'
-import { log } from './log'
+import nodeFetch from 'node-fetch'
+import { log } from './log.js'
 
 interface DeleteApi {
   token?: string
   apiUri: NamedNode
+  fetch?: typeof nodeFetch
 }
 
-export async function deleteApi({ apiUri, token } : DeleteApi) {
+export async function deleteApi({ apiUri, token, fetch = nodeFetch } : DeleteApi) {
   if (token) {
     const res = await fetch(apiUri.value, {
       method: 'DELETE',

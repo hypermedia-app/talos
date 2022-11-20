@@ -1,11 +1,13 @@
 import { DatasetCore } from 'rdf-js'
 import path from 'path'
+import url from 'url'
 import { expect } from 'chai'
 import namespace from '@rdfjs/namespace'
-import toCanonical from 'rdf-dataset-ext/toCanonical'
-import { talosNs } from '../../lib/ns'
-import { fromDirectories } from '../../lib/resources'
+import toCanonical from 'rdf-dataset-ext/toCanonical.js'
+import { talosNs } from '../../lib/ns.js'
+import { fromDirectories } from '../../lib/resources.js'
 
+const __dirname = url.fileURLToPath(new URL('.', import.meta.url))
 const ns = namespace('https://example.com')
 
 describe('@hydrofoil/talos/lib/resources', () => {

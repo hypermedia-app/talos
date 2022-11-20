@@ -1,7 +1,7 @@
-import StreamClient from 'sparql-http-client/StreamClient'
+import StreamClient from 'sparql-http-client/StreamClient.js'
 import { sparql } from '@tpluscode/rdf-string'
 import { DELETE, INSERT } from '@tpluscode/sparql-builder'
-import { SparqlValue } from '@tpluscode/rdf-string/lib/sparql'
+import type { SparqlValue } from '@tpluscode/rdf-string/lib/sparql'
 
 export const client = new StreamClient({
   endpointUrl: 'http://db.talos.lndo.site/repositories/tests?infer=true',

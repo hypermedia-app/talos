@@ -1,7 +1,7 @@
 import $rdf from 'rdf-ext'
-import { ExtraVocab, insertVocabs } from '../insertVocabs'
-import { deleteApi } from '../deleteApi'
-import { log } from '../log'
+import { ExtraVocab, insertVocabs } from '../insertVocabs.js'
+import { deleteApi } from '../deleteApi.js'
+import { log } from '../log.js'
 import type { Command } from '.'
 
 export interface PutVocabs extends Command {

@@ -1,5 +1,5 @@
 import { expect } from 'chai'
-import { parseExtraVocabs } from '../../../lib/command/extraVocabs'
+import { parseExtraVocabs } from '../../../lib/command/extraVocabs.js'
 
 describe('@hydrofoil/talos/lib/command/extraVocabs', () => {
   describe('parseExtraVocabs', () => {

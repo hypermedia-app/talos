@@ -1,14 +1,16 @@
 import * as path from 'path'
+import * as url from 'url'
 import { ASK, CONSTRUCT, DELETE, SELECT } from '@tpluscode/sparql-builder'
-import ParsingClient from 'sparql-http-client/ParsingClient'
+import ParsingClient from 'sparql-http-client/ParsingClient.js'
 import { expect } from 'chai'
 import { dash, doap, hydra, schema, vcard, sh, foaf } from '@tpluscode/rdf-ns-builders/loose'
 import namespace from '@rdfjs/namespace'
-import * as NodeFetch from 'node-fetch'
 import sinon from 'sinon'
 import $rdf from 'rdf-ext'
-import { testData } from '../../client'
-import { put, Put } from '../../../lib/command/put'
+import { testData } from '../../client.js'
+import { put, Put } from '../../../lib/command/put.js'
+
+const __dirname = url.fileURLToPath(new URL('.', import.meta.url))
 
 const apis = [
   'http://example.com',
@@ -275,7 +277,7 @@ template
             `
             .execute(client.query)
 
-          expect(results).to.deep.contain.members([{
+          expect(results).to.deep.equalInAnyOrder([{
             resource: ns('trig/users'),
             graph: ns('trig/users'),
             type: hydra.Collection,
@@ -350,11 +352,12 @@ describe('@hydrofoil/talos/lib/command/put --resources --token', () => {
   }
 
   before(async () => {
-    fetch = sinon.stub(NodeFetch, 'default').resolves({
+    fetch = sinon.stub().resolves({
       ok: true,
     } as any)
     await put([dir], {
       ...params,
+      fetch,
       token: 'foo-bar',
     })
   })

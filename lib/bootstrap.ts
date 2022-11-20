@@ -1,12 +1,12 @@
 import { NamedNode } from 'rdf-js'
 import type DatasetExt from 'rdf-ext/lib/Dataset'
 import clownface from 'clownface'
-import type { ResourceStore } from '@hydrofoil/knossos/lib/store'
+import type { ResourceStore } from '@hydrofoil/knossos/lib/store.js'
 import { hydra } from '@tpluscode/rdf-ns-builders'
 import { isNamedNode } from 'is-graph-pointer'
 import $rdf from 'rdf-ext'
-import { log } from './log'
-import { talosNs } from './ns'
+import { log } from './log.js'
+import { talosNs } from './ns.js'
 
 type Bootstrap = {
   store: ResourceStore
