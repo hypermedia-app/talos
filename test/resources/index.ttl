@@ -3,6 +3,8 @@ PREFIX schema: <http://schema.org/>
 <>
   a schema:Thing ;
   schema:hasPart <#part> ;
+  schema:hasPart [ schema:name "totally anonymous" ] ;
+  schema:hasPart _:namedPart ;
 .
 
 <#part> schema:minValue 10 .

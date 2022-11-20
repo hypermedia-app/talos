@@ -3,3 +3,5 @@ PREFIX schema: <http://schema.org/>
 <>
   schema:name "Bar environment" ;
 .
+
+_:namedPart schema:name "Bar part" .

@@ -1,3 +1,7 @@
 PREFIX schema: <http://schema.org/>
 
+<> schema:hasPart [ schema:name "totally anonymous" ] .
+
 <#part> schema:maxValue 100 .
+
+_:namedPart schema:name "Foo part" .
