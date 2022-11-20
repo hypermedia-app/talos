@@ -59,6 +59,7 @@ export function getPatchedStream(file: string, cwd: string, api: string, resourc
   }
   const parserStream: Readable | null = parsers.import(mediaType, fileStream, {
     baseIRI: resourceUrl,
+    blankNodePrefix: '',
   }) as any
 
   if (!parserStream) {

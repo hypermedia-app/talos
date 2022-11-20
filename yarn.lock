@@ -1373,7 +1373,7 @@
     "@tpluscode/rdf-string" "^0.2.26"
     "@tpluscode/sparql-builder" "^0.3"
 
-"@hydrofoil/vocabularies@^0.3.4":
+"@hydrofoil/vocabularies@^0.3", "@hydrofoil/vocabularies@^0.3.1", "@hydrofoil/vocabularies@^0.3.3", "@hydrofoil/vocabularies@^0.3.4":
   version "0.3.4"
   resolved "https://registry.yarnpkg.com/@hydrofoil/vocabularies/-/vocabularies-0.3.4.tgz#8dd5c26965366faea8a19469f02a1988846fae75"
   integrity sha512-g8no3YCp7gXKl+k5V/4FB45kQAhjT4etH+nWYCXcXJu3lJPYHVEbl+Or9k/3CEDb/bx6F0CvjCPm230V/oSE2Q==
@@ -1789,9 +1789,9 @@
     readable-to-readable "^0.1.0"
 
 "@rdfjs/parser-n3@^2.0.0":
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/@rdfjs/parser-n3/-/parser-n3-2.0.0.tgz#a439af21976f8bd5ba311f04398f84ef37689eaa"
-  integrity sha512-BXdI+/p2Hvco9+dwf1r4XLaj+iyZiliqY+rRBqcBz2DygsAqgXjbVrWxhiwN5fCAmDCzsEZ2sZMXhHxO7attDQ==
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/@rdfjs/parser-n3/-/parser-n3-2.0.1.tgz#fcb99546c4d545495b4d24ea2d6748a325aee742"
+  integrity sha512-D9ZHQwtuKG7aF3nGcOijXWkaR//lpck0UB3AL+4P7OELY1idjmVjQjhreQxY5ll8cbPp2slavPvFfUWYSDtEwA==
   dependencies:
     "@rdfjs/data-model" "^2.0.1"
     "@rdfjs/sink" "^2.0.0"
