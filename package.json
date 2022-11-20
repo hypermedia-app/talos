@@ -22,7 +22,7 @@
     "@fcostarodrigo/walk": "^5.0.1",
     "@hydrofoil/knossos": "^0.9.7",
     "@hydrofoil/vocabularies": "^0.3",
-    "@rdfjs/formats-common": "^2.2.0",
+    "@rdfjs/formats-common": "^3.1.0",
     "@rdfjs/namespace": "^1.1.0",
     "@rdfjs/term-map": "^1",
     "@rdfjs/term-set": "^1",
