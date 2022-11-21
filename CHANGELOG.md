@@ -1,5 +1,15 @@
 # @hydrofoil/talos
 
+## 0.6.0
+
+### Minor Changes
+
+- ae4c9d8: Switch to ES Modules
+
+### Patch Changes
+
+- 565a088: Blank nodes using same label would be merged as separate nodes
+
 ## 0.5.1
 
 ### Patch Changes
