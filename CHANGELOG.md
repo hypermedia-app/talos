@@ -1,5 +1,11 @@
 # @hydrofoil/talos
 
+## 0.6.2
+
+### Patch Changes
+
+- cd66114: The CLI did not actually work because it called `require`
+
 ## 0.6.1
 
 ### Patch Changes
