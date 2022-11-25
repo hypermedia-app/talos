@@ -1,5 +1,13 @@
 # @hydrofoil/talos
 
+## 0.6.1
+
+### Patch Changes
+
+- e728756: The `--extraVocab` option stopped working in ESM
+- a3d5b38: Updated `@zazuko/rdf-vocabularies`
+- c3f365e: Slightly relax knossos dependency
+
 ## 0.6.0
 
 ### Minor Changes
