@@ -60,7 +60,7 @@
     "@types/deep-equal-in-any-order": "^1.0.1",
     "@types/fcostarodrigo__walk": "^5.0.0",
     "@types/mime-types": "^2.1.1",
-    "@types/mocha": "^10.0.0",
+    "@types/mocha": "^10.0.1",
     "@types/rdf-dataset-ext": "^1.0.2",
     "@types/rdfjs__term-set": "^2",
     "@types/replacestream": "^4.0.1",
