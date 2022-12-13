@@ -1,5 +1,11 @@
 # @hydrofoil/talos
 
+## 0.6.3
+
+### Patch Changes
+
+- 9c1642f: Remove patch-package from postinstall script
+
 ## 0.6.2
 
 ### Patch Changes
