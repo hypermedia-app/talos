@@ -6,7 +6,9 @@ import { expect } from 'chai'
 import * as wikibusVocabs from '@wikibus/vocabularies/builders/strict'
 import { putVocabs, PutVocabs } from '../../../lib/command/put-vocabs.js'
 
-describe('@hydrofoil/talos/lib/command/put-vocabs', () => {
+describe('@hydrofoil/talos/lib/command/put-vocabs', function () {
+  this.timeout(5000)
+
   const params: PutVocabs = {
     endpoint: 'http://db.talos.lndo.site/repositories/tests',
     user: 'minos',
