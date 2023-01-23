@@ -2463,10 +2463,10 @@
   dependencies:
     whatwg-url "^5.0.0"
 
-"@zazuko/rdf-vocabularies@*", "@zazuko/rdf-vocabularies@>=2022.11.25":
-  version "2022.11.25"
-  resolved "https://registry.yarnpkg.com/@zazuko/rdf-vocabularies/-/rdf-vocabularies-2022.11.25.tgz#9dc7785f3bf19ec154a640e4ac23e358c310f81c"
-  integrity sha512-nvLWEcZad3X7GUmGRXAEhjIdRqgDLUlhEpXpyKAybRq39w2nK9L5twHOdZSqcM22dSLYLlGTDIyzzQoaDvfOTQ==
+"@zazuko/rdf-vocabularies@*", "@zazuko/rdf-vocabularies@>=2023.1.19":
+  version "2023.1.19"
+  resolved "https://registry.yarnpkg.com/@zazuko/rdf-vocabularies/-/rdf-vocabularies-2023.1.19.tgz#545da0172b5963a7dea4e1cb9942e312c2724577"
+  integrity sha512-/vC/Ok8etIi4kflbOAoRr9JV95auJaUREV9lrWP3wDEMfhu8jVYogwi/OD1yA2pH6KIYPS2+z7LN1jxOe3G56g==
   dependencies:
     "@rdfjs/parser-n3" "^1.1.4"
     commander "^5.0.0"
