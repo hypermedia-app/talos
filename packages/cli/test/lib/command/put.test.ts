@@ -354,7 +354,7 @@ describe('@hydrofoil/talos/lib/command/put --resources --token', () => {
   before(async () => {
     fetch = sinon.stub().resolves({
       ok: true,
-    } as any)
+    })
     await put([dir], {
       ...params,
       fetch,

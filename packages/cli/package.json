@@ -1,0 +1,57 @@
+{
+  "name": "@hydrofoil/talos",
+  "version": "0.6.3",
+  "main": "index.js",
+  "type": "module",
+  "bin": {
+    "talos": "bin/talos.js"
+  },
+  "scripts": {
+    "prepublishOnly": "tsc",
+    "test": "mocha --package ../../package.json test"
+  },
+  "files": [
+    "lib/**/*.js",
+    "*.js",
+    "*.d.ts"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/hypermedia-app/talos",
+    "directory": "packages/cli"
+  },
+  "bugs": {
+    "url": "https://github.com/hypermedia-app/talos/issues"
+  },
+  "dependencies": {
+    "@fcostarodrigo/walk": "^5.0.1",
+    "@hydrofoil/knossos": ">=0.9.0",
+    "@hydrofoil/vocabularies": "^0.3.4",
+    "@rdfjs/formats-common": "^3.1.0",
+    "@rdfjs/namespace": "^2.0.0",
+    "@rdfjs/term-map": "^2.0.0",
+    "@rdfjs/term-set": "^2.0.1",
+    "@tpluscode/rdf-ns-builders": "^2.0.0",
+    "@tpluscode/rdf-string": "^0.2.26",
+    "@tpluscode/sparql-builder": "^0.3.23",
+    "@zazuko/rdf-vocabularies": ">=2022.11.25",
+    "clownface": "^1.5.1",
+    "commander": "^9.4.0",
+    "debug": "^4.3.4",
+    "is-absolute-url": "^4.0.1",
+    "is-graph-pointer": "^1.2.2",
+    "mime-types": "^2.1.35",
+    "node-fetch": "^3.3.0",
+    "rdf-dataset-ext": "^1.0.1",
+    "rdf-ext": "^2.1.0",
+    "replacestream": "^4.0.3",
+    "sparql-http-client": "^2.4.1"
+  },
+  "devDependencies": {
+    "@wikibus/vocabularies": "^0.2.3",
+    "chai": "^4.3.6",
+    "get-stream": "^5",
+    "into-stream": "^7.0.0",
+    "sinon": "^15"
+  }
+}

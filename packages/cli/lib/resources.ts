@@ -71,8 +71,10 @@ function toGraphs(api: string) {
           resources.add(graph)
           dataset.add($rdf.quad(subject, predicate, object, graph))
         }
-      } catch (e: any) {
-        log('Failed to parse %s: %s', relative, e.message)
+      } catch (e: unknown) {
+        if (e instanceof Error) {
+          log('Failed to parse %s: %s', relative, e.message)
+        }
       }
 
       resources.forEach(id => {

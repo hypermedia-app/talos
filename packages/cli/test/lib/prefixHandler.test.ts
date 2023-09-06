@@ -6,8 +6,8 @@ import getStream from 'get-stream'
 import { optionsFromPrefixes } from '../../lib/prefixHandler.js'
 
 describe('@hydrofoil/talos/lib/prefixHandler', () => {
-  function parse(str: string): Stream {
-    return parsers.import('text/turtle', toStream(str)) as any
+  function parse(str: string) {
+    return parsers.import('text/turtle', toStream(str)) as unknown as Stream
   }
 
   describe('optionsFromPrefixes', () => {

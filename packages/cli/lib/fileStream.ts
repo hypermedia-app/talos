@@ -57,14 +57,14 @@ export function getPatchedStream(file: string, cwd: string, api: string, resourc
   if (filePatchTransforms.has(mediaType)) {
     fileStream = fileStream.pipe(filePatchTransforms.get(mediaType)!(basePath, resourceUrl))
   }
-  const parserStream: Readable | null = parsers.import(mediaType, fileStream, {
+  const parserStream = parsers.import(mediaType, fileStream, {
     baseIRI: resourceUrl,
     blankNodePrefix: '',
-  }) as any
+  })
 
   if (!parserStream) {
     log('Unsupported media type %s from %s', mediaType, relative)
   }
 
-  return parserStream
+  return parserStream as unknown as Readable | null
 }

@@ -6,16 +6,5 @@
   "rules": {
     "no-undef": "off",
     "camelcase": ["error", {"allow": ["hyper_"]}]
-  },
-  "overrides": [{
-    "files": ["*.ts"],
-    "rules": {
-      "no-unused-expressions": "off"
-    }
-  }, {
-    "files": ["*.test.ts"],
-    "rules": {
-      "import/no-unresolved": "off"
-    }
-  }]
+  }
 }
