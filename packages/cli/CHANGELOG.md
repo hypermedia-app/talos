@@ -1,5 +1,22 @@
 # @hydrofoil/talos
 
+## 0.6.4
+
+### Patch Changes
+
+- 085a4a6: Update dependencies:
+
+  - `@hydrofoil/vocabularies` v0.3 -> v1
+  - `@tpluscode/rdf-string` v0.2 -> v1
+  - `@tpluscode/sparql-builder` v0.2 -> v1
+  - `is-graph-pointer` v1 -> v2
+  - `@zazuko/rdf-vocabularies` -> `@zazuko/vocabularies`
+  - `rdf-ext` -> `@zazuko/env`
+
+- 085a4a6: Extracted core functionality of loading resource from file system to a new library `@hydrofoil/talos-core`
+- Updated dependencies [085a4a6]
+  - @hydrofoil/talos-core@0.1.0
+
 ## 0.6.3
 
 ### Patch Changes
