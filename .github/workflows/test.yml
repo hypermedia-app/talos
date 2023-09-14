@@ -32,7 +32,7 @@ jobs:
         with:
           node-version: '18'
       - run: npm ci
-      - run: wsrun -mc prepublishOnly
+      - run: npx wsrun -mc prepublishOnly
       - name: Smoke test bin
         run: node ./packages/cli/bin/talos.js help
 
