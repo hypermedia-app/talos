@@ -11,13 +11,13 @@ import toCanonical from 'rdf-dataset-ext/toCanonical.js'
 import { testData } from '../../client.js'
 import { put, Put } from '../../../lib/command/put.js'
 
-const __dirname = url.fileURLToPath(new URL('.', import.meta.url))
+const testResources = url.fileURLToPath(new URL('../../../../../test-resources', import.meta.url))
 
 const apis = [
   'http://example.com',
   'http://example.com/base',
 ]
-const dir = path.resolve(__dirname, '../../resources')
+const dir = path.resolve(testResources, './resources')
 
 for (const api of apis) {
   const ns = $rdf.namespace(api + '/')
@@ -52,11 +52,11 @@ for (const api of apis) {
     })
 
     it('ignores paths which do not exist', async () => {
-      await expect(put([path.resolve(__dirname, '../../foobar')], params)).not.to.have.been.rejected
+      await expect(put([path.resolve(testResources, '../../foobar')], params)).not.to.have.been.rejected
     })
 
     it('ignores paths which are not directories', async () => {
-      await expect(put([path.resolve(__dirname, './put.test.ts')], params)).not.to.have.been.rejected
+      await expect(put([path.resolve(testResources, './put.test.ts')], params)).not.to.have.been.rejected
     })
 
     describe(`--resources api ${api}`, () => {
@@ -297,8 +297,8 @@ template
 
     context('with multiple directories', () => {
       before(async () => {
-        const fooDir = path.resolve(__dirname, '../../resources.foo')
-        const barDir = path.resolve(__dirname, '../../resources.bar')
+        const fooDir = path.resolve(testResources, './resources.foo')
+        const barDir = path.resolve(testResources, './resources.bar')
 
         await put([dir, fooDir, barDir], params)
       })

@@ -7,7 +7,7 @@ import $rdf from '@zazuko/env'
 import { talosNs } from '../lib/ns.js'
 import { fromDirectories } from '../index.js'
 
-const __dirname = url.fileURLToPath(new URL('.', import.meta.url))
+const testDir = url.fileURLToPath(new URL('../../../test-resources', import.meta.url))
 const ns = $rdf.namespace('https://example.com')
 
 describe('@hydrofoil/talos-core', () => {
@@ -16,9 +16,9 @@ describe('@hydrofoil/talos-core', () => {
 
     beforeEach(async () => {
       const dirs = [
-        path.resolve(__dirname, '../resources'),
-        path.resolve(__dirname, '../resources.foo'),
-        path.resolve(__dirname, '../resources.bar'),
+        path.resolve(testDir, './resources'),
+        path.resolve(testDir, './resources.foo'),
+        path.resolve(testDir, './resources.bar'),
       ]
       dataset = await fromDirectories(dirs, ns().value)
     })
@@ -49,7 +49,8 @@ describe('@hydrofoil/talos-core', () => {
     })
 
     it('marks a resource for "merge" when prefix is used', () => {
-      const [{ object: action }, ...more] = dataset.match(ns('/project/creta/user.group/admins'), talosNs.action, null, talosNs.resources)
+      const datasetCore = dataset.match(ns('/project/creta/user.group/admins'), talosNs.action, null, talosNs.resources)
+      const [{ object: action }, ...more] = datasetCore
 
       expect(action).to.deep.eq(talosNs.merge)
       expect(more).to.be.empty
