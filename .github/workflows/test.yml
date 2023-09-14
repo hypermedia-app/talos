@@ -9,8 +9,8 @@ jobs:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
-          node-version: '14'
-      - run: yarn
+          node-version: '18'
+      - run: npm ci
       - name: setup-docker
         uses: docker-practice/actions-setup-docker@1.0.11
         with:
@@ -20,7 +20,7 @@ jobs:
           version: v3.0.26
           healthcheck: http://db.talos.lndo.site/
           timeout: 30000
-      - run: yarn test
+      - run: npx c8 --reporter lcovonly --reporter text npm test
       - name: Codecov
         uses: codecov/codecov-action@v3
 
@@ -30,11 +30,11 @@ jobs:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
-          node-version: '16'
-      - run: yarn
-      - run: yarn tsc
+          node-version: '18'
+      - run: npm ci
+      - run: npx wsrun -mc prepublishOnly
       - name: Smoke test bin
-        run: node ./bin/talos.js help
+        run: node ./packages/cli/bin/talos.js help
 
   lint:
     runs-on: ubuntu-latest
@@ -42,6 +42,6 @@ jobs:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
-          node-version: '14'
-      - run: yarn
+          node-version: '18'
+      - run: npm ci
       - run: yarn lint

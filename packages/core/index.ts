@@ -1,0 +1,112 @@
+import path from 'path'
+import fs from 'fs'
+import { NamedNode, DatasetCore } from 'rdf-js'
+import walk from '@fcostarodrigo/walk'
+import $rdf from '@zazuko/env'
+import deleteMatch from 'rdf-dataset-ext/deleteMatch.js'
+import addAll from 'rdf-dataset-ext/addAll.js'
+import log from './lib/log.js'
+import { getPatchedStream } from './lib/fileStream.js'
+import { optionsFromPrefixes } from './lib/prefixHandler.js'
+import { talosNs } from './lib/ns.js'
+
+export { talosNs as ns } from './lib/ns.js'
+
+interface ResourceOptions {
+  existingResource: 'merge' | 'overwrite' | 'skip'
+  environmentRepresentation: 'default' | 'replace'
+}
+
+export async function fromDirectories(directories: string[], api: string): Promise<DatasetCore> {
+  const validDirs = directories.filter(isValidDir)
+  const dataset = await validDirs.reduce(toGraphs(api), Promise.resolve($rdf.dataset()))
+
+  setDefaultAction(dataset)
+
+  return dataset
+}
+
+function setDefaultAction(dataset: DatasetCore) {
+  $rdf.clownface({ dataset, graph: talosNs.resources })
+    .has(talosNs.action, talosNs.default)
+    .deleteOut(talosNs.action, talosNs.default)
+    .addOut(talosNs.action, talosNs.overwrite)
+}
+
+function toGraphs(api: string) {
+  return async function (previousPromise: Promise<DatasetCore>, dir: string): Promise<DatasetCore> {
+    let previous = await previousPromise
+    const dataset = $rdf.dataset()
+
+    log.debug('Processing dir %s', dir)
+
+    for await (const file of walk(dir)) {
+      const relative = path.relative(dir, file)
+      const resourcePath = path.relative(dir, file)
+        .replace(/\.[^.]+$/, '')
+        .replace(/\/?index$/, '')
+
+      const url = resourcePath === ''
+        ? encodeURI(api)
+        : encodeURI(`${api}/${resourcePath}`)
+
+      const parserStream = getPatchedStream(file, dir, api, url)
+      if (!parserStream) {
+        continue
+      }
+
+      log.debug('Parsing %s', relative)
+      const parsedResourceOptions: Partial<ResourceOptions> = { }
+      parserStream.on('prefix', optionsFromPrefixes(parsedResourceOptions))
+
+      const resources = $rdf.termSet<NamedNode>()
+      const resourceOptions = $rdf.clownface({ dataset: previous, graph: talosNs.resources })
+      try {
+        for await (const { subject, predicate, object, ...quad } of parserStream) {
+          const graph: NamedNode = quad.graph.equals($rdf.defaultGraph()) ? $rdf.namedNode(url) : quad.graph
+
+          if (!resources.has(graph)) {
+            log.debug('Parsed resource %s', graph.value)
+          }
+          resources.add(graph)
+          dataset.add($rdf.quad(subject, predicate, object, graph))
+        }
+      } catch (e: unknown) {
+        if (e instanceof Error) {
+          log('Failed to parse %s: %s', relative, e.message)
+        }
+      }
+
+      resources.forEach(id => {
+        const action = parsedResourceOptions.existingResource || 'default'
+        const environmentRepresentation = parsedResourceOptions.environmentRepresentation || 'default'
+        const options = resourceOptions.node(id)
+        options
+          .deleteOut(talosNs.action, talosNs.default)
+          .addOut(talosNs.action, talosNs(action))
+          .deleteOut(talosNs.environmentRepresentation, talosNs.default)
+          .addOut(talosNs.environmentRepresentation, talosNs(environmentRepresentation))
+
+        if (options.has(talosNs.environmentRepresentation, talosNs.replace).terms.length) {
+          previous = deleteMatch(previous, undefined, undefined, undefined, id)
+        }
+      })
+    }
+
+    addAll(previous, dataset)
+    return previous
+  }
+}
+
+function isValidDir(dir: string) {
+  if (!fs.existsSync(dir)) {
+    log('Skipping path %s which does not exist', dir)
+    return false
+  }
+  if (!fs.statSync(dir).isDirectory()) {
+    log('Skipping path %s which is not a directory', dir)
+    return false
+  }
+
+  return true
+}
