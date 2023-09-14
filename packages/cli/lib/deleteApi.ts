@@ -1,6 +1,6 @@
 import { NamedNode } from 'rdf-js'
 import nodeFetch from 'node-fetch'
-import { log } from './log.js'
+import log from './log.js'
 
 interface DeleteApi {
   token?: string

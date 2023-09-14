@@ -1,4 +1,4 @@
-import namespace from '@rdfjs/namespace'
+import $rdf from '@zazuko/env'
 
 type TalosTerms =
   'resources' |
@@ -10,4 +10,4 @@ type TalosTerms =
   'environmentRepresentation' |
   'replace'
 
-export const talosNs = namespace<TalosTerms>('urn:talos:')
+export const talosNs = $rdf.namespace<TalosTerms>('urn:talos:')

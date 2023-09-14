@@ -1,12 +1,11 @@
-import { Quad } from 'rdf-js'
+import { DatasetCore, Quad } from 'rdf-js'
 import StreamClient, { StreamClientOptions } from 'sparql-http-client'
-import { prefixes, vocabularies as coreVocabularies } from '@zazuko/rdf-vocabularies'
+import { prefixes, vocabularies as coreVocabularies } from '@zazuko/vocabularies'
 import { prefixes as hydrofoilPrefixes, vocabularies as hydrofoilVocabularies } from '@hydrofoil/vocabularies'
 import { INSERT } from '@tpluscode/sparql-builder'
 import { sparql } from '@tpluscode/rdf-string'
-import $rdf from 'rdf-ext'
-import type DatasetExt from 'rdf-ext/lib/Dataset'
-import { log } from './log.js'
+import $rdf from '@zazuko/env'
+import log from './log.js'
 
 export interface ExtraVocab {
   package: string
@@ -17,7 +16,7 @@ function toTriple({ subject, predicate, object }: Quad) {
   return $rdf.quad(subject, predicate, object)
 }
 
-function loadExtraVocabs(vocabs: ExtraVocab[], allPrefixes: typeof prefixes): Promise<Record<string, DatasetExt>> {
+function loadExtraVocabs(vocabs: ExtraVocab[], allPrefixes: typeof prefixes): Promise<Record<string, DatasetCore>> {
   return vocabs.reduce(async (previous, vocab) => {
     const datasets = await previous
     const { prefixes: extraPrefixes, vocabularies } = await import(vocab.package)
@@ -28,17 +27,17 @@ function loadExtraVocabs(vocabs: ExtraVocab[], allPrefixes: typeof prefixes): Pr
       ...datasets,
       ...await vocabularies({ only: vocab.prefixes }),
     }
-  }, Promise.resolve<Record<string, DatasetExt>>({}))
+  }, Promise.resolve<Record<string, DatasetCore>>({}))
 }
 
 function insertVocab(client: StreamClient, allPrefixes: typeof prefixes) {
-  return async ([prefix, vocab]: [string, DatasetExt | undefined]): Promise<void> => {
+  return async ([prefix, vocab]: [string, DatasetCore | undefined]): Promise<void> => {
     if (!vocab) return
 
     const namespace = $rdf.namedNode(allPrefixes[prefix])
 
     const insert = INSERT.DATA`GRAPH <${namespace.value}> {
-      ${vocab.map(toTriple).toString()}
+      ${[...vocab].map(toTriple)}
     }`
     const query = sparql`DROP SILENT GRAPH <${namespace.value}>;\n${insert}`.toString()
 

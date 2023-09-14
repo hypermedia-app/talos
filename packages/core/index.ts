@@ -2,22 +2,22 @@ import path from 'path'
 import fs from 'fs'
 import { NamedNode, DatasetCore } from 'rdf-js'
 import walk from '@fcostarodrigo/walk'
-import $rdf from 'rdf-ext'
-import type DatasetExt from 'rdf-ext/lib/Dataset'
-import TermSet from '@rdfjs/term-set'
-import clownface from 'clownface'
+import $rdf from '@zazuko/env'
 import deleteMatch from 'rdf-dataset-ext/deleteMatch.js'
-import { log, debug } from './log.js'
-import { getPatchedStream } from './fileStream.js'
-import { optionsFromPrefixes } from './prefixHandler.js'
-import { talosNs } from './ns.js'
+import addAll from 'rdf-dataset-ext/addAll.js'
+import log from './lib/log.js'
+import { getPatchedStream } from './lib/fileStream.js'
+import { optionsFromPrefixes } from './lib/prefixHandler.js'
+import { talosNs } from './lib/ns.js'
+
+export { talosNs as ns } from './lib/ns.js'
 
 interface ResourceOptions {
   existingResource: 'merge' | 'overwrite' | 'skip'
   environmentRepresentation: 'default' | 'replace'
 }
 
-export async function fromDirectories(directories: string[], api: string): Promise<DatasetExt> {
+export async function fromDirectories(directories: string[], api: string): Promise<DatasetCore> {
   const validDirs = directories.filter(isValidDir)
   const dataset = await validDirs.reduce(toGraphs(api), Promise.resolve($rdf.dataset()))
 
@@ -27,18 +27,18 @@ export async function fromDirectories(directories: string[], api: string): Promi
 }
 
 function setDefaultAction(dataset: DatasetCore) {
-  clownface({ dataset, graph: talosNs.resources })
+  $rdf.clownface({ dataset, graph: talosNs.resources })
     .has(talosNs.action, talosNs.default)
     .deleteOut(talosNs.action, talosNs.default)
     .addOut(talosNs.action, talosNs.overwrite)
 }
 
 function toGraphs(api: string) {
-  return async function (previousPromise: Promise<DatasetExt>, dir: string): Promise<DatasetExt> {
+  return async function (previousPromise: Promise<DatasetCore>, dir: string): Promise<DatasetCore> {
     let previous = await previousPromise
     const dataset = $rdf.dataset()
 
-    debug('Processing dir %s', dir)
+    log.debug('Processing dir %s', dir)
 
     for await (const file of walk(dir)) {
       const relative = path.relative(dir, file)
@@ -55,18 +55,18 @@ function toGraphs(api: string) {
         continue
       }
 
-      debug('Parsing %s', relative)
+      log.debug('Parsing %s', relative)
       const parsedResourceOptions: Partial<ResourceOptions> = { }
       parserStream.on('prefix', optionsFromPrefixes(parsedResourceOptions))
 
-      const resources = new TermSet<NamedNode>()
-      const resourceOptions = clownface({ dataset: previous, graph: talosNs.resources })
+      const resources = $rdf.termSet<NamedNode>()
+      const resourceOptions = $rdf.clownface({ dataset: previous, graph: talosNs.resources })
       try {
         for await (const { subject, predicate, object, ...quad } of parserStream) {
           const graph: NamedNode = quad.graph.equals($rdf.defaultGraph()) ? $rdf.namedNode(url) : quad.graph
 
           if (!resources.has(graph)) {
-            debug('Parsed resource %s', graph.value)
+            log.debug('Parsed resource %s', graph.value)
           }
           resources.add(graph)
           dataset.add($rdf.quad(subject, predicate, object, graph))
@@ -93,7 +93,7 @@ function toGraphs(api: string) {
       })
     }
 
-    previous.addAll(dataset)
+    addAll(previous, dataset)
     return previous
   }
 }

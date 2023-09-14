@@ -1,11 +1,11 @@
-import $rdf from 'rdf-ext'
-import { ResourcePerGraphStore } from '@hydrofoil/knossos/lib/store.js'
+import $rdf from '@zazuko/env'
+import { ResourcePerGraphStore } from '@hydrofoil/resource-store'
 import StreamClient from 'sparql-http-client'
 import nodeFetch from 'node-fetch'
+import { fromDirectories } from '@hydrofoil/talos-core'
 import { bootstrap } from '../bootstrap.js'
 import { deleteApi } from '../deleteApi.js'
-import { fromDirectories } from '../resources.js'
-import type { Command } from '.'
+import type { Command } from './index.js'
 
 export interface Put extends Command {
   api: string

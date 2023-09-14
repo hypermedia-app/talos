@@ -1,8 +1,8 @@
-import $rdf from 'rdf-ext'
+import $rdf from '@zazuko/env'
 import { ExtraVocab, insertVocabs } from '../insertVocabs.js'
 import { deleteApi } from '../deleteApi.js'
-import { log } from '../log.js'
-import type { Command } from '.'
+import log from '../log.js'
+import type { Command } from './index.js'
 
 export interface PutVocabs extends Command {
   apiDoc?: string

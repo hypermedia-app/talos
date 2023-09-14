@@ -4,9 +4,10 @@ import { ASK, CONSTRUCT, DELETE, SELECT } from '@tpluscode/sparql-builder'
 import ParsingClient from 'sparql-http-client/ParsingClient.js'
 import { expect } from 'chai'
 import { dash, doap, hydra, schema, vcard, sh, foaf } from '@tpluscode/rdf-ns-builders/loose'
-import namespace from '@rdfjs/namespace'
 import sinon from 'sinon'
-import $rdf from 'rdf-ext'
+import $rdf from '@zazuko/env'
+import addAll from 'rdf-dataset-ext/addAll.js'
+import toCanonical from 'rdf-dataset-ext/toCanonical.js'
 import { testData } from '../../client.js'
 import { put, Put } from '../../../lib/command/put.js'
 
@@ -19,7 +20,7 @@ const apis = [
 const dir = path.resolve(__dirname, '../../resources')
 
 for (const api of apis) {
-  const ns = namespace(api + '/')
+  const ns = $rdf.namespace(api + '/')
 
   describe('@hydrofoil/talos/lib/command/put', () => {
     const params: Put = {
@@ -65,21 +66,21 @@ for (const api of apis) {
 
       context('turtle', () => {
         it('replaces entire graph by default', async function () {
-          const dataset = $rdf.dataset().addAll(await CONSTRUCT`?s ?p ?o`
+          const dataset = addAll($rdf.dataset(), await CONSTRUCT`?s ?p ?o`
             .FROM(ns('project'))
             .WHERE`?s ?p ?o`
             .execute(client.query))
 
-          expect(dataset.toCanonical()).to.matchSnapshot(this)
+          expect(toCanonical(dataset)).to.matchSnapshot(this)
         })
 
         it('merge existing graph when annotated', async function () {
-          const dataset = $rdf.dataset().addAll(await CONSTRUCT`?s ?p ?o`
+          const dataset = addAll($rdf.dataset(), await CONSTRUCT`?s ?p ?o`
             .FROM(ns('project/creta/user.group/admins'))
             .WHERE`?s ?p ?o`
             .execute(client.query))
 
-          expect(dataset.toCanonical()).to.matchSnapshot(this)
+          expect(toCanonical(dataset)).to.matchSnapshot(this)
         })
 
         it('inserts into graph constructed from path', async () => {

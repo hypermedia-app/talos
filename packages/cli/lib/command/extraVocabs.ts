@@ -1,4 +1,4 @@
-import { ExtraVocab } from '../insertVocabs'
+import { ExtraVocab } from '../insertVocabs.js'
 
 export function parseExtraVocabs(value: string, vocabs: ExtraVocab[] = []): ExtraVocab[] {
   const [packageName, ...prefixes] = value.split(',')
