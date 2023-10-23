@@ -44,6 +44,6 @@
     "@tpluscode/rdf-ns-builders": "^4.1.0",
     "@wikibus/vocabularies": "^0.2.3",
     "chai": "^4.3.6",
-    "sinon": "^15"
+    "sinon": "^17"
   }
 }
