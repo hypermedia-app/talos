@@ -2,14 +2,14 @@ import path from 'path'
 import fs from 'fs'
 import { NamedNode, DatasetCore } from 'rdf-js'
 import walk from '@fcostarodrigo/walk'
-import $rdf from '@zazuko/env'
 import type { Dataset } from '@zazuko/env/lib/Dataset'
+import $rdf from './lib/env.js'
 import log from './lib/log.js'
 import { getPatchedStream } from './lib/fileStream.js'
 import { optionsFromPrefixes } from './lib/prefixHandler.js'
-import { talosNs } from './lib/ns.js'
 
-export { talosNs as ns } from './lib/ns.js'
+const { talos: ns } = $rdf.ns
+export { ns }
 
 interface ResourceOptions {
   existingResource: 'merge' | 'overwrite' | 'skip'
@@ -26,10 +26,10 @@ export async function fromDirectories(directories: string[], api: string): Promi
 }
 
 function setDefaultAction(dataset: DatasetCore) {
-  $rdf.clownface({ dataset, graph: talosNs.resources })
-    .has(talosNs.action, talosNs.default)
-    .deleteOut(talosNs.action, talosNs.default)
-    .addOut(talosNs.action, talosNs.overwrite)
+  $rdf.clownface({ dataset, graph: $rdf.ns.talos.resources })
+    .has($rdf.ns.talos.action, $rdf.ns.talos.default)
+    .deleteOut($rdf.ns.talos.action, $rdf.ns.talos.default)
+    .addOut($rdf.ns.talos.action, $rdf.ns.talos.overwrite)
 }
 
 function toGraphs(api: string) {
@@ -59,7 +59,7 @@ function toGraphs(api: string) {
       parserStream.on('prefix', optionsFromPrefixes(parsedResourceOptions))
 
       const resources = $rdf.termSet<NamedNode>()
-      const resourceOptions = $rdf.clownface({ dataset: previous, graph: talosNs.resources })
+      const resourceOptions = $rdf.clownface({ dataset: previous, graph: $rdf.ns.talos.resources })
       try {
         for await (const { subject, predicate, object, ...quad } of parserStream) {
           const graph: NamedNode = quad.graph.equals($rdf.defaultGraph()) ? $rdf.namedNode(url) : quad.graph
@@ -81,12 +81,12 @@ function toGraphs(api: string) {
         const environmentRepresentation = parsedResourceOptions.environmentRepresentation || 'default'
         const options = resourceOptions.node(id)
         options
-          .deleteOut(talosNs.action, talosNs.default)
-          .addOut(talosNs.action, talosNs(action))
-          .deleteOut(talosNs.environmentRepresentation, talosNs.default)
-          .addOut(talosNs.environmentRepresentation, talosNs(environmentRepresentation))
+          .deleteOut($rdf.ns.talos.action, $rdf.ns.talos.default)
+          .addOut($rdf.ns.talos.action, $rdf.ns.talos(action))
+          .deleteOut($rdf.ns.talos.environmentRepresentation, $rdf.ns.talos.default)
+          .addOut($rdf.ns.talos.environmentRepresentation, $rdf.ns.talos(environmentRepresentation))
 
-        if (options.has(talosNs.environmentRepresentation, talosNs.replace).terms.length) {
+        if (options.has($rdf.ns.talos.environmentRepresentation, $rdf.ns.talos.replace).terms.length) {
           previous = previous.deleteMatches(undefined, undefined, undefined, id)
         }
       })

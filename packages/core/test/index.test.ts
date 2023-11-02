@@ -1,10 +1,9 @@
 import path from 'path'
 import url from 'url'
 import { expect } from 'chai'
-import $rdf from '@zazuko/env'
 import formats from '@rdfjs-elements/formats-pretty'
-import { Dataset } from '@zazuko/env/lib/Dataset'
-import { talosNs } from '../lib/ns.js'
+import type { Dataset } from '@zazuko/env/lib/Dataset'
+import $rdf from '../lib/env.js'
 import { fromDirectories } from '../index.js'
 
 const testDir = url.fileURLToPath(new URL('../../../test-resources', import.meta.url))
@@ -44,18 +43,18 @@ describe('@hydrofoil/talos-core', () => {
     })
 
     it('marks a resource for "overwrite" by default', () => {
-      const match = dataset.match(ns(), talosNs.action, null, talosNs.resources)
+      const match = dataset.match(ns(), $rdf.ns.talos.action, null, $rdf.ns.talos.resources)
       const [{ object: action }, ...more] = match
 
-      expect(action).to.deep.eq(talosNs.overwrite)
+      expect(action).to.deep.eq($rdf.ns.talos.overwrite)
       expect(more).to.be.empty
     })
 
     it('marks a resource for "merge" when prefix is used', () => {
-      const datasetCore = dataset.match(ns('/project/creta/user.group/admins'), talosNs.action, null, talosNs.resources)
+      const datasetCore = dataset.match(ns('/project/creta/user.group/admins'), $rdf.ns.talos.action, null, $rdf.ns.talos.resources)
       const [{ object: action }, ...more] = datasetCore
 
-      expect(action).to.deep.eq(talosNs.merge)
+      expect(action).to.deep.eq($rdf.ns.talos.merge)
       expect(more).to.be.empty
     })
 

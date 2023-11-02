@@ -3,7 +3,7 @@ import { Readable } from 'stream'
 import path from 'path'
 import * as mime from 'mime-types'
 import replaceStream from 'replacestream'
-import { parsers } from '@rdfjs/formats-common'
+import rdf from '@zazuko/env-node'
 import isAbsoluteUrl from 'is-absolute-url'
 import log from './log.js'
 
@@ -57,7 +57,8 @@ export function getPatchedStream(file: string, cwd: string, api: string, resourc
   if (filePatchTransforms.has(mediaType)) {
     fileStream = fileStream.pipe(filePatchTransforms.get(mediaType)!(basePath, resourceUrl))
   }
-  const parserStream = parsers.import(mediaType, fileStream, {
+
+  const parserStream = rdf.formats.parsers.import(mediaType, fileStream, {
     baseIRI: resourceUrl,
     blankNodePrefix: '',
   })
