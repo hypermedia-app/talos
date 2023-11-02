@@ -4,7 +4,7 @@ import { prefixes, vocabularies as coreVocabularies } from '@zazuko/vocabularies
 import { prefixes as hydrofoilPrefixes, vocabularies as hydrofoilVocabularies } from '@hydrofoil/vocabularies'
 import { INSERT } from '@tpluscode/sparql-builder'
 import { sparql } from '@tpluscode/rdf-string'
-import $rdf from '@zazuko/env'
+import $rdf from '@hydrofoil/talos-core/env.js'
 import log from './log.js'
 
 export interface ExtraVocab {
