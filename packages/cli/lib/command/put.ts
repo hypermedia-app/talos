@@ -1,4 +1,4 @@
-import $rdf from '@zazuko/env'
+import $rdf from '@hydrofoil/talos-core/env.js'
 import { ResourcePerGraphStore } from '@hydrofoil/resource-store'
 import StreamClient from 'sparql-http-client'
 import nodeFetch from 'node-fetch'

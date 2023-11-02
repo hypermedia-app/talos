@@ -1,13 +1,13 @@
 import { Stream } from 'stream'
 import { expect } from 'chai'
-import { parsers } from '@rdfjs/formats-common'
+import rdf from '@zazuko/env-node'
 import toStream from 'into-stream'
 import getStream from 'get-stream'
 import { optionsFromPrefixes } from '../../lib/prefixHandler.js'
 
 describe('@hydrofoil/talos/lib/prefixHandler', () => {
   function parse(str: string) {
-    return parsers.import('text/turtle', toStream(str)) as unknown as Stream
+    return rdf.formats.parsers.import('text/turtle', toStream(str)) as unknown as Stream
   }
 
   describe('optionsFromPrefixes', () => {
