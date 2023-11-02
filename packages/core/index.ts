@@ -3,8 +3,7 @@ import fs from 'fs'
 import { NamedNode, DatasetCore } from 'rdf-js'
 import walk from '@fcostarodrigo/walk'
 import $rdf from '@zazuko/env'
-import deleteMatch from 'rdf-dataset-ext/deleteMatch.js'
-import addAll from 'rdf-dataset-ext/addAll.js'
+import type { Dataset } from '@zazuko/env/lib/Dataset'
 import log from './lib/log.js'
 import { getPatchedStream } from './lib/fileStream.js'
 import { optionsFromPrefixes } from './lib/prefixHandler.js'
@@ -17,7 +16,7 @@ interface ResourceOptions {
   environmentRepresentation: 'default' | 'replace'
 }
 
-export async function fromDirectories(directories: string[], api: string): Promise<DatasetCore> {
+export async function fromDirectories(directories: string[], api: string): Promise<Dataset> {
   const validDirs = directories.filter(isValidDir)
   const dataset = await validDirs.reduce(toGraphs(api), Promise.resolve($rdf.dataset()))
 
@@ -34,7 +33,7 @@ function setDefaultAction(dataset: DatasetCore) {
 }
 
 function toGraphs(api: string) {
-  return async function (previousPromise: Promise<DatasetCore>, dir: string): Promise<DatasetCore> {
+  return async function (previousPromise: Promise<Dataset>, dir: string): Promise<Dataset> {
     let previous = await previousPromise
     const dataset = $rdf.dataset()
 
@@ -88,12 +87,12 @@ function toGraphs(api: string) {
           .addOut(talosNs.environmentRepresentation, talosNs(environmentRepresentation))
 
         if (options.has(talosNs.environmentRepresentation, talosNs.replace).terms.length) {
-          previous = deleteMatch(previous, undefined, undefined, undefined, id)
+          previous = previous.deleteMatches(undefined, undefined, undefined, id)
         }
       })
     }
 
-    addAll(previous, dataset)
+    previous.addAll(dataset)
     return previous
   }
 }

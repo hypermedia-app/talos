@@ -1,18 +1,20 @@
-import { DatasetCore } from 'rdf-js'
 import path from 'path'
 import url from 'url'
 import { expect } from 'chai'
-import toCanonical from 'rdf-dataset-ext/toCanonical.js'
 import $rdf from '@zazuko/env'
+import formats from '@rdfjs-elements/formats-pretty'
+import { Dataset } from '@zazuko/env/lib/Dataset'
 import { talosNs } from '../lib/ns.js'
 import { fromDirectories } from '../index.js'
 
 const testDir = url.fileURLToPath(new URL('../../../test-resources', import.meta.url))
 const ns = $rdf.namespace('https://example.com')
 
+$rdf.formats.import(formats)
+
 describe('@hydrofoil/talos-core', () => {
   describe('fromDirectories', () => {
-    let dataset: DatasetCore
+    let dataset: Dataset
 
     beforeEach(async () => {
       const dirs = [
@@ -23,26 +25,27 @@ describe('@hydrofoil/talos-core', () => {
       dataset = await fromDirectories(dirs, ns().value)
     })
 
-    it('merges resources from multiple graph documents', function () {
+    it('merges resources from multiple graph documents', async function () {
       const resource = dataset.match(null, null, null, ns())
 
-      expect(toCanonical(resource)).to.matchSnapshot(this)
+      expect(await resource.serialize({ format: 'application/trig' })).to.matchSnapshot(this)
     })
 
-    it('merges resources from dataset and graph documents', function () {
+    it('merges resources from dataset and graph documents', async function () {
       const resource = dataset.match(null, null, null, ns('/trig/users/john-doe'))
 
-      expect(toCanonical(resource)).to.matchSnapshot(this)
+      expect(await resource.serialize({ format: 'application/trig' })).to.matchSnapshot(this)
     })
 
-    it('merges resources from multiple dataset documents', function () {
+    it('merges resources from multiple dataset documents', async function () {
       const resource = dataset.match(null, null, null, ns('/trig/users/jane-doe'))
 
-      expect(toCanonical(resource)).to.matchSnapshot(this)
+      expect(await resource.serialize({ format: 'application/trig' })).to.matchSnapshot(this)
     })
 
     it('marks a resource for "overwrite" by default', () => {
-      const [{ object: action }, ...more] = dataset.match(ns(), talosNs.action, null, talosNs.resources)
+      const match = dataset.match(ns(), talosNs.action, null, talosNs.resources)
+      const [{ object: action }, ...more] = match
 
       expect(action).to.deep.eq(talosNs.overwrite)
       expect(more).to.be.empty
@@ -56,22 +59,22 @@ describe('@hydrofoil/talos-core', () => {
       expect(more).to.be.empty
     })
 
-    it('uses the last representation when is marked to replace other envs', function () {
+    it('uses the last representation when is marked to replace other envs', async function () {
       const resource = dataset.match(null, null, null, ns('/only/one'))
 
-      expect(toCanonical(resource)).to.matchSnapshot(this)
+      expect(await resource.serialize({ format: 'application/trig' })).to.matchSnapshot(this)
     })
 
-    it('uses the last representation when is marked in another env', function () {
+    it('uses the last representation when is marked in another env', async function () {
       const resource = dataset.match(null, null, null, ns('/only/two'))
 
-      expect(toCanonical(resource)).to.matchSnapshot(this)
+      expect(await resource.serialize({ format: 'application/trig' })).to.matchSnapshot(this)
     })
 
-    it('uses the last representation when is marked in a dataset document', function () {
+    it('uses the last representation when is marked in a dataset document', async function () {
       const resource = dataset.match(null, null, null, ns('/only/three'))
 
-      expect(toCanonical(resource)).to.matchSnapshot(this)
+      expect(await resource.serialize({ format: 'application/trig' })).to.matchSnapshot(this)
     })
   })
 })
