@@ -1,7 +1,7 @@
 import { NamedNode, DatasetCore } from 'rdf-js'
 import type { ResourceStore } from '@hydrofoil/resource-store'
 import { isNamedNode } from 'is-graph-pointer'
-import $rdf from '@zazuko/env'
+import $rdf from '@hydrofoil/talos-core/env.js'
 import { ns as talosNs } from '@hydrofoil/talos-core'
 import addAll from 'rdf-dataset-ext/addAll.js'
 import log from './log.js'
@@ -21,7 +21,7 @@ export async function bootstrap({ dataset, apiUri, store }: Bootstrap): Promise<
     const pointer = $rdf.clownface({
       dataset: $rdf.dataset(resourceData),
     })
-      .namedNode(resource)
+      .namedNode(resource.term)
       .addOut($rdf.ns.hydra.apiDocumentation, apiUri)
 
     const action = resource.out(talosNs.action).term

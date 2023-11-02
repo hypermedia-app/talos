@@ -3,7 +3,7 @@ import url from 'url'
 import { expect } from 'chai'
 import formats from '@rdfjs-elements/formats-pretty'
 import type { Dataset } from '@zazuko/env/lib/Dataset'
-import $rdf from '../lib/env.js'
+import $rdf from '../env.js'
 import { fromDirectories } from '../index.js'
 
 const testDir = url.fileURLToPath(new URL('../../../test-resources', import.meta.url))
