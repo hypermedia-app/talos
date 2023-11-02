@@ -29,7 +29,7 @@
     "@hydrofoil/vocabularies": "^1.1.0",
     "@tpluscode/rdf-string": "^1.0.3",
     "@tpluscode/sparql-builder": "^1.1.0",
-    "@zazuko/vocabularies": "^2.0.0",
+    "@zazuko/vocabularies": "^2.0.3",
     "anylogger": "^1.0.11",
     "anylogger-debug": "^1.0.3",
     "commander": "^9.4.0",
