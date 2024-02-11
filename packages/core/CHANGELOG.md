@@ -1,5 +1,11 @@
 # @hydrofoil/talos-core
 
+## 0.1.1
+
+### Patch Changes
+
+- 59639c1: Update `@zazuko/env`
+
 ## 0.1.0
 
 ### Minor Changes
