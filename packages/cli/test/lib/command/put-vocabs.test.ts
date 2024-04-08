@@ -63,7 +63,7 @@ describe('@hydrofoil/talos/lib/command/put-vocabs', function () {
       await putVocabs({
         ...params,
         extraVocabs: [{
-          package: '@wikibus/vocabularies',
+          package: '@zazuko/vocabulary-extras',
         }],
       })
 
