@@ -1,5 +1,16 @@
 # @hydrofoil/talos
 
+## 0.6.5
+
+### Patch Changes
+
+- 0cbf9cf: Update `sparql-http-client` to v3
+- 44528ac: Update commander to v12
+- 59639c1: Update `@zazuko/env`
+- Updated dependencies [0cbf9cf]
+- Updated dependencies [59639c1]
+  - @hydrofoil/talos-core@0.1.1
+
 ## 0.6.4
 
 ### Patch Changes
