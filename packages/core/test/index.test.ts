@@ -2,7 +2,7 @@ import path from 'path'
 import url from 'url'
 import { expect } from 'chai'
 import formats from '@rdfjs-elements/formats-pretty'
-import type { Dataset } from '@zazuko/env/lib/Dataset'
+import type { Dataset } from '@zazuko/env/lib/DatasetExt.js'
 import $rdf from '../env.js'
 import { fromDirectories } from '../index.js'
 

@@ -26,7 +26,7 @@ export async function put(directories: string[], { token, api, endpoint, updateE
       updateUrl: updateEndpoint || endpoint,
       user,
       password,
-    })),
+    }), $rdf),
   })
 
   await deleteApi({ apiUri, token, fetch })

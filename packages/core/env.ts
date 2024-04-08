@@ -1,4 +1,4 @@
-import { create } from '@zazuko/env-node'
+import parent, { Environment } from '@zazuko/env-node'
 import { TalosNsFactory } from './lib/ns.js'
 
-export default create(TalosNsFactory)
+export default new Environment([TalosNsFactory], { parent })

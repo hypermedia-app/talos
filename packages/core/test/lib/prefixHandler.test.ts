@@ -1,4 +1,4 @@
-import { Stream } from 'stream'
+import { Readable, Stream } from 'stream'
 import { expect } from 'chai'
 import rdf from '@zazuko/env-node'
 import toStream from 'into-stream'
@@ -7,7 +7,7 @@ import { optionsFromPrefixes } from '../../lib/prefixHandler.js'
 
 describe('@hydrofoil/talos/lib/prefixHandler', () => {
   function parse(str: string) {
-    return rdf.formats.parsers.import('text/turtle', toStream(str)) as unknown as Stream
+    return rdf.formats.parsers.import('text/turtle', toStream(str)) as unknown as Stream & Readable
   }
 
   describe('optionsFromPrefixes', () => {

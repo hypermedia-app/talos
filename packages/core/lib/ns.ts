@@ -1,6 +1,6 @@
-import type { NsBuildersFactory } from '@tpluscode/rdf-ns-builders/Factory'
-import type { NamespaceFactory } from '@rdfjs/namespace/Factory'
-import type { Environment } from '@rdfjs/environment/Environment'
+import type NsBuildersFactory from '@tpluscode/rdf-ns-builders'
+import type { NamespaceFactory } from '@rdfjs/namespace/Factory.js'
+import type { Environment } from '@rdfjs/environment/Environment.js'
 import type { NamespaceBuilder } from '@rdfjs/namespace'
 
 type TalosTerms =

@@ -38,7 +38,7 @@ for (const api of apis) {
     })
 
     before(async () => {
-      await DELETE`?s ?p ?o`.WHERE`?s ?p ?o`.execute(client.query)
+      await DELETE`?s ?p ?o`.WHERE`?s ?p ?o`.execute(client)
 
       await testData`          
         GRAPH ${ns('project/creta/user.group/admins')} {
@@ -69,7 +69,7 @@ for (const api of apis) {
           const dataset = addAll($rdf.dataset(), await CONSTRUCT`?s ?p ?o`
             .FROM(ns('project'))
             .WHERE`?s ?p ?o`
-            .execute(client.query))
+            .execute(client))
 
           expect(toCanonical(dataset)).to.matchSnapshot(this)
         })
@@ -78,7 +78,7 @@ for (const api of apis) {
           const dataset = addAll($rdf.dataset(), await CONSTRUCT`?s ?p ?o`
             .FROM(ns('project/creta/user.group/admins'))
             .WHERE`?s ?p ?o`
-            .execute(client.query))
+            .execute(client))
 
           expect(toCanonical(dataset)).to.matchSnapshot(this)
         })
@@ -86,7 +86,7 @@ for (const api of apis) {
         it('inserts into graph constructed from path', async () => {
           const userCreated = ASK`${ns('project/creta/user/tpluscode')} a ${schema.Person}`
             .FROM(ns('project/creta/user/tpluscode'))
-            .execute(client.query)
+            .execute(client)
 
           await expect(userCreated).to.eventually.be.true
         })
@@ -94,7 +94,7 @@ for (const api of apis) {
         it('escapes paths to produce valid URIs', async () => {
           const userCreated = ASK`${ns('project/creta/user/Kov%C3%A1cs%20J%C3%A1nos')} a ${schema.Person}`
             .FROM(ns('project/creta/user/Kov%C3%A1cs%20J%C3%A1nos'))
-            .execute(client.query)
+            .execute(client)
 
           await expect(userCreated).to.eventually.be.true
         })
@@ -102,7 +102,7 @@ for (const api of apis) {
         it('allows dots in paths', async () => {
           const userCreated = ASK`${ns('project/creta/user.group/john.doe')} a ${vcard.Group}`
             .FROM(ns('project/creta/user.group/john.doe'))
-            .execute(client.query)
+            .execute(client)
 
           await expect(userCreated).to.eventually.be.true
         })
@@ -110,7 +110,7 @@ for (const api of apis) {
         it('adds apiDocumentation link', async () => {
           const [{ api }] = await SELECT`?api`.WHERE`${ns('project/creta/user/tpluscode')} ${hydra.apiDocumentation} ?api`
             .FROM(ns('project/creta/user/tpluscode'))
-            .execute(client.query)
+            .execute(client)
 
           expect(api).to.deep.eq(ns('api'))
         })
@@ -122,7 +122,7 @@ for (const api of apis) {
               ${schema.project} ${ns('project/creta/project/creta')} 
           `
             .FROM(ns('project/creta/user/tpluscode'))
-            .execute(client.query)
+            .execute(client)
 
           await expect(hasExpectedLinks).to.eventually.be.true
         })
@@ -132,7 +132,7 @@ for (const api of apis) {
             ${ns('project/creta/user/tpluscode')} a ${ns('api/Person')}
           `
             .FROM(ns('project/creta/user/tpluscode'))
-            .execute(client.query)
+            .execute(client)
 
           await expect(hasExpectedType).to.eventually.be.true
         })
@@ -146,7 +146,7 @@ for (const api of apis) {
             .
           `
             .FROM(ns('project/creta/shape'))
-            .execute(client.query)
+            .execute(client)
 
           expect(value.value).to.eq('<span>single line template</span>')
         })
@@ -160,7 +160,7 @@ for (const api of apis) {
             .
           `
             .FROM(ns('project/creta/shape'))
-            .execute(client.query)
+            .execute(client)
 
           expect(value.value).to.eq(`<span>
 multi
@@ -175,7 +175,7 @@ template
             ${ns('project')} a ${schema.Thing}
           `
             .FROM(ns('project'))
-            .execute(client.query)
+            .execute(client)
 
           await expect(indexCorrectlyInserted).to.eventually.be.true
         })
@@ -185,7 +185,7 @@ template
             ${$rdf.namedNode(api)} a ${schema.Thing}
           `
             .FROM($rdf.namedNode(api))
-            .execute(client.query)
+            .execute(client)
 
           await expect(indexCorrectlyInserted).to.eventually.be.true
         })
@@ -195,7 +195,7 @@ template
             ${ns('project')} ${schema.parentItem} <${api}>
           `
             .FROM(ns('project'))
-            .execute(client.query)
+            .execute(client)
 
           await expect(indexCorrectlyInserted).to.eventually.be.true
         })
@@ -205,7 +205,7 @@ template
             ${ns('project/creta/user/tpluscode')} ${schema.parentItem} ${ns('project/creta/')}
           `
             .FROM(ns('project/creta/user/tpluscode'))
-            .execute(client.query)
+            .execute(client)
 
           await expect(indexCorrectlyInserted).to.eventually.be.true
         })
@@ -218,7 +218,7 @@ template
             ${group} ${vcard.hasMember} ${ns('project/creta/user/tpluscode')} .
           `
             .FROM(group)
-            .execute(client.query)
+            .execute(client)
 
           await expect(indexCorrectlyInserted).to.eventually.be.true
         })
@@ -228,7 +228,7 @@ template
         it('inserts into graph constructed from path', async () => {
           const userCreated = ASK`${ns('project/creta/project/creta')} a ${doap.Project}`
             .FROM(ns('project/creta/project/creta'))
-            .execute(client.query)
+            .execute(client)
 
           await expect(userCreated).to.eventually.be.true
         })
@@ -238,7 +238,7 @@ template
             ${ns('project/creta/project/creta')} ${schema.related} ${ns('project/roadshow')}
           `
             .FROM(ns('project/creta/project/creta'))
-            .execute(client.query)
+            .execute(client)
 
           await expect(hasExpectedType).to.eventually.be.true
         })
@@ -250,7 +250,7 @@ template
             ${ns('project/roadshow')} ${schema.related} ${ns('project/creta')}
           `
             .FROM(ns('project/roadshow'))
-            .execute(client.query)
+            .execute(client)
 
           await expect(hasExpectedType).to.eventually.be.true
         })
@@ -262,7 +262,7 @@ template
             ${ns('project/shaperone')} ${schema.related} ${ns('project/roadshow')}, ${ns('project/creta')}
           `
             .FROM(ns('project/shaperone'))
-            .execute(client.query)
+            .execute(client)
 
           await expect(hasExpectedType).to.eventually.be.true
         })
@@ -276,7 +276,7 @@ template
                 ?resource <http://www.w3.org/ns/earl#test> "trig" ; a ?type
               }
             `
-            .execute(client.query)
+            .execute(client)
 
           expect(results).to.deep.equalInAnyOrder([{
             resource: ns('trig/users'),
@@ -314,7 +314,7 @@ template
           .
         `
 
-        await expect(ask.execute(client.query)).to.eventually.be.true
+        await expect(ask.execute(client)).to.eventually.be.true
       })
 
       it('merges statements from multiple dataset documents', async () => {
@@ -323,7 +323,7 @@ template
             a ${foaf.Person} ;
             ${foaf.name} "Jane Doe" ;
           .
-        `.execute(client.query)
+        `.execute(client)
 
         await expect(ask).to.eventually.be.true
       })
@@ -334,7 +334,7 @@ template
             a ${foaf.Person} ;
             ${foaf.name} "John Doe" ;
           .
-        `.execute(client.query)
+        `.execute(client)
 
         await expect(ask).to.eventually.be.true
       })
