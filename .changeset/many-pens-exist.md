@@ -2,4 +2,4 @@
 "@hydrofoil/talos": patch
 ---
 
-Update commander to v11
+Update commander to v12
