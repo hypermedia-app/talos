@@ -20,7 +20,7 @@
     "@zazuko/env": "^2",
     "chai": "^4.3.8",
     "get-stream": "^8.0.1",
-    "into-stream": "^8.0.0"
+    "into-stream": "^8.0.1"
   },
   "repository": {
     "type": "git",
