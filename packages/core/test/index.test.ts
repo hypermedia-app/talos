@@ -9,7 +9,9 @@ import { fromDirectories } from '../index.js'
 const testDir = url.fileURLToPath(new URL('../../../test-resources', import.meta.url))
 const ns = $rdf.namespace('https://example.com')
 
-$rdf.formats.import(formats)
+$rdf.formats.import({
+  serializers: formats.serializers,
+})
 
 describe('@hydrofoil/talos-core', () => {
   describe('fromDirectories', () => {
