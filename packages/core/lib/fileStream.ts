@@ -3,8 +3,8 @@ import { Readable } from 'stream'
 import path from 'path'
 import * as mime from 'mime-types'
 import replaceStream from 'replacestream'
-import rdf from '@zazuko/env-node'
 import isAbsoluteUrl from 'is-absolute-url'
+import rdf from '../env.js'
 import log from './log.js'
 
 function replacer(basePath: string, resourceUrl: string, s: string, e = s) {

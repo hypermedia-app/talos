@@ -2,14 +2,16 @@ import path from 'path'
 import url from 'url'
 import { expect } from 'chai'
 import formats from '@rdfjs-elements/formats-pretty'
-import type { Dataset } from '@zazuko/env/lib/Dataset'
+import type { Dataset } from '@zazuko/env/lib/DatasetExt.js'
 import $rdf from '../env.js'
 import { fromDirectories } from '../index.js'
 
 const testDir = url.fileURLToPath(new URL('../../../test-resources', import.meta.url))
 const ns = $rdf.namespace('https://example.com')
 
-$rdf.formats.import(formats)
+$rdf.formats.import({
+  serializers: formats.serializers,
+})
 
 describe('@hydrofoil/talos-core', () => {
   describe('fromDirectories', () => {

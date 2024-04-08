@@ -3,7 +3,7 @@ import ParsingClient from 'sparql-http-client/ParsingClient.js'
 import { ASK, DELETE, SELECT } from '@tpluscode/sparql-builder'
 import { acl, as, hydra, rdfs } from '@tpluscode/rdf-ns-builders'
 import { expect } from 'chai'
-import * as wikibusVocabs from '@wikibus/vocabularies/builders/strict'
+import * as externalVocabs from '@zazuko/vocabulary-extras/builders'
 import { putVocabs, PutVocabs } from '../../../lib/command/put-vocabs.js'
 
 describe('@hydrofoil/talos/lib/command/put-vocabs', function () {
@@ -23,7 +23,7 @@ describe('@hydrofoil/talos/lib/command/put-vocabs', function () {
   })
 
   before(async () => {
-    await DELETE`?s ?p ?o`.WHERE`?s ?p ?o`.execute(client.query)
+    await DELETE`?s ?p ?o`.WHERE`?s ?p ?o`.execute(client)
   })
 
   describe('--', () => {
@@ -44,7 +44,7 @@ describe('@hydrofoil/talos/lib/command/put-vocabs', function () {
       it(`inserts ${prefix} into graph ${namespace.value}`, async () => {
         const results = await SELECT`(count(*) as ?count)`
           .WHERE`?s ?p ?o`
-          .FROM(namespace).execute(client.query)
+          .FROM(namespace).execute(client)
 
         expect(parseInt(results[0].count.value)).to.be.greaterThan(0)
       })
@@ -52,10 +52,10 @@ describe('@hydrofoil/talos/lib/command/put-vocabs', function () {
   })
 
   describe('--extraVocab', () => {
-    const vocabs = Object.values(wikibusVocabs).map((ns) => ns())
+    const vocabs = Object.values(externalVocabs).map((ns) => ns())
 
     beforeEach(async () => {
-      await DELETE`?s ?p ?o`.WHERE`?s ?p ?o`.execute(client.query)
+      await DELETE`?s ?p ?o`.WHERE`?s ?p ?o`.execute(client)
     })
 
     it('inserts all vocabs when no specific prefixes selected', async () => {
@@ -63,7 +63,7 @@ describe('@hydrofoil/talos/lib/command/put-vocabs', function () {
       await putVocabs({
         ...params,
         extraVocabs: [{
-          package: '@wikibus/vocabularies',
+          package: '@zazuko/vocabulary-extras',
         }],
       })
 
@@ -71,7 +71,7 @@ describe('@hydrofoil/talos/lib/command/put-vocabs', function () {
       for (const namespace of vocabs) {
         const results = await SELECT`(count(*) as ?count)`
           .WHERE`?s ?p ?o`
-          .FROM(namespace).execute(client.query)
+          .FROM(namespace).execute(client)
 
         expect(parseInt(results[0].count.value)).to.be.greaterThan(0)
       }
@@ -82,18 +82,18 @@ describe('@hydrofoil/talos/lib/command/put-vocabs', function () {
       await putVocabs({
         ...params,
         extraVocabs: [{
-          package: '@wikibus/vocabularies',
-          prefixes: ['wba'],
+          package: '@zazuko/vocabulary-extras',
+          prefixes: ['code'],
         }],
       })
 
       // then
-      const hasWba = await ASK`?s ?p ?o`.FROM(wikibusVocabs.wba()).execute(client.query)
+      const hasWba = await ASK`?s ?p ?o`.FROM(externalVocabs.code()).execute(client)
       expect(hasWba).to.be.true
 
       const hasOther = await ASK`?s ?p ?o`
-        .FROM(wikibusVocabs.wbo()).FROM(wikibusVocabs.wb_events())
-        .execute(client.query)
+        .FROM(externalVocabs.b59()).FROM(externalVocabs.meta())
+        .execute(client)
       expect(hasOther).to.be.false
     })
   })
