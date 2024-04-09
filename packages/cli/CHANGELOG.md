@@ -1,5 +1,11 @@
 # @hydrofoil/talos
 
+## 0.6.6
+
+### Patch Changes
+
+- 0efe8fc: Running command from installed package errored with missing ts-node
+
 ## 0.6.5
 
 ### Patch Changes
