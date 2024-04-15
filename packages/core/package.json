@@ -19,7 +19,7 @@
     "@rdfjs-elements/formats-pretty": "^0.6.7",
     "@zazuko/env": "^2",
     "chai": "^4.3.8",
-    "get-stream": "^8.0.1",
+    "get-stream": "^9.0.1",
     "into-stream": "^8.0.1"
   },
   "repository": {
