@@ -1,3 +1,3 @@
-import Debugger from 'anylogger'
+import log from '@hydrofoil/talos-core/lib/log.js'
 
-export default Debugger('talos')
+export default log
