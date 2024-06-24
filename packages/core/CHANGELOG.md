@@ -1,5 +1,12 @@
 # @hydrofoil/talos-core
 
+## 0.1.3
+
+### Patch Changes
+
+- 1b662a7: Make `apiUrl` optional for bootstrap. Will not set `hydra:apiDocumentation` link when not given
+- 1b662a7: Remove `rdf-js`
+
 ## 0.1.2
 
 ### Patch Changes

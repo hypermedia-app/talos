@@ -1,5 +1,14 @@
 # @hydrofoil/talos
 
+## 0.6.8
+
+### Patch Changes
+
+- 1b662a7: Remove `rdf-js`
+- Updated dependencies [1b662a7]
+- Updated dependencies [1b662a7]
+  - @hydrofoil/talos-core@0.1.3
+
 ## 0.6.7
 
 ### Patch Changes
