@@ -1,5 +1,13 @@
 # @hydrofoil/talos
 
+## 0.6.9
+
+### Patch Changes
+
+- 06a4156: Missing files in package
+- Updated dependencies [06a4156]
+  - @hydrofoil/talos-core@0.1.4
+
 ## 0.6.8
 
 ### Patch Changes
