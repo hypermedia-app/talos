@@ -1,9 +1,9 @@
 import { NamedNode, DatasetCore } from 'rdf-js'
 import type { ResourceStore } from '@hydrofoil/resource-store'
 import { isNamedNode } from 'is-graph-pointer'
-import $rdf from '@hydrofoil/talos-core/env.js'
 import addAll from 'rdf-dataset-ext/addAll.js'
-import log from './log.js'
+import $rdf from './env.js'
+import log from './lib/log.js'
 
 type Bootstrap = {
   store: ResourceStore

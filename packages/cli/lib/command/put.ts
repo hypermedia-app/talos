@@ -3,7 +3,7 @@ import { ResourcePerGraphStore } from '@hydrofoil/resource-store'
 import StreamClient from 'sparql-http-client'
 import nodeFetch from 'node-fetch'
 import { fromDirectories } from '@hydrofoil/talos-core'
-import { bootstrap } from '../bootstrap.js'
+import { bootstrap } from '@hydrofoil/talos-core/bootstrap.js'
 import { deleteApi } from '../deleteApi.js'
 import type { Command } from './index.js'
 
