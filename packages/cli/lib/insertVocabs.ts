@@ -1,5 +1,6 @@
 import { DatasetCore, Quad } from 'rdf-js'
-import StreamClient, { StreamClientOptions } from 'sparql-http-client'
+import StreamClient from 'sparql-http-client'
+import { Options as StreamClientOptions } from 'sparql-http-client/StreamClient.js'
 import { prefixes, vocabularies as coreVocabularies } from '@zazuko/vocabularies'
 import { prefixes as hydrofoilPrefixes, vocabularies as hydrofoilVocabularies } from '@hydrofoil/vocabularies'
 import { INSERT } from '@tpluscode/sparql-builder'
