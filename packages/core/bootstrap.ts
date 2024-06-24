@@ -1,4 +1,4 @@
-import { NamedNode, DatasetCore } from 'rdf-js'
+import type { NamedNode, DatasetCore } from '@rdfjs/types'
 import type { ResourceStore } from '@hydrofoil/resource-store'
 import { isNamedNode } from 'is-graph-pointer'
 import addAll from 'rdf-dataset-ext/addAll.js'

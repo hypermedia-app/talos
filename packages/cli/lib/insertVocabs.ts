@@ -1,4 +1,4 @@
-import { DatasetCore, Quad } from 'rdf-js'
+import type { DatasetCore, Quad } from '@rdfjs/types'
 import StreamClient from 'sparql-http-client'
 import { Options as StreamClientOptions } from 'sparql-http-client/StreamClient.js'
 import { prefixes, vocabularies as coreVocabularies } from '@zazuko/vocabularies'

@@ -1,4 +1,4 @@
-import { NamedNode } from 'rdf-js'
+import type { NamedNode } from '@rdfjs/types'
 
 export function optionsFromPrefixes(options: Record<string, unknown>) {
   return (prefix: string, namespace: NamedNode) => {

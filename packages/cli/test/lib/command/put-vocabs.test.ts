@@ -1,4 +1,4 @@
-import { NamedNode } from 'rdf-js'
+import type { NamedNode } from '@rdfjs/types'
 import ParsingClient from 'sparql-http-client/ParsingClient.js'
 import { ASK, DELETE, SELECT } from '@tpluscode/sparql-builder'
 import { acl, as, hydra, rdfs } from '@tpluscode/rdf-ns-builders'
