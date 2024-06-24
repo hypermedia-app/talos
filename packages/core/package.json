@@ -4,9 +4,15 @@
   "type": "module",
   "main": "index.js",
   "scripts": {
-    "prepublishOnly": "tsc",
+    "prepack": "tsc",
     "test": "mocha --package ../../package.json test"
   },
+  "files": [
+    "lib/**/*.js",
+    "lib/**/*.d.ts",
+    "*.js",
+    "*.d.ts"
+  ],
   "dependencies": {
     "@fcostarodrigo/walk": "^5.0.1",
     "@types/rdf-dataset-ext": "^1.0.8",

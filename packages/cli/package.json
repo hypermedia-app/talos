@@ -7,11 +7,12 @@
     "talos": "bin/talos.js"
   },
   "scripts": {
-    "prepublishOnly": "tsc",
+    "prepack": "tsc",
     "test": "mocha --package ../../package.json test"
   },
   "files": [
     "lib/**/*.js",
+    "lib/**/*.d.ts",
     "*.js",
     "*.d.ts"
   ],
