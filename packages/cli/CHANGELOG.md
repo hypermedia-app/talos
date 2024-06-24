@@ -1,5 +1,14 @@
 # @hydrofoil/talos
 
+## 0.6.7
+
+### Patch Changes
+
+- 33d941d: Moved `bootstrap.js` to core package
+- Updated dependencies [33d941d]
+- Updated dependencies [3d2bf6e]
+  - @hydrofoil/talos-core@0.1.2
+
 ## 0.6.6
 
 ### Patch Changes
