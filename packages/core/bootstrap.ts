@@ -8,7 +8,7 @@ import log from './lib/log.js'
 type Bootstrap = {
   store: ResourceStore
   dataset: DatasetCore
-  apiUri: NamedNode
+  apiUri?: NamedNode
 }
 
 export async function bootstrap({ dataset, apiUri, store }: Bootstrap): Promise<void> {
@@ -19,9 +19,12 @@ export async function bootstrap({ dataset, apiUri, store }: Bootstrap): Promise<
       .map(({ subject, predicate, object }) => $rdf.quad(subject, predicate, object))
     const pointer = $rdf.clownface({
       dataset: $rdf.dataset(resourceData),
+      term: resource.term,
     })
-      .namedNode(resource.term)
-      .addOut($rdf.ns.hydra.apiDocumentation, apiUri)
+
+    if (apiUri) {
+      pointer.addOut($rdf.ns.hydra.apiDocumentation, apiUri)
+    }
 
     const action = resource.out($rdf.ns.talos.action).term
     const exists = await store.exists(pointer.term)
