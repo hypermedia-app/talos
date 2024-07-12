@@ -1,7 +1,7 @@
 import path from 'path'
 import fs from 'fs'
 import type { NamedNode, DatasetCore } from '@rdfjs/types'
-import walk from '@fcostarodrigo/walk'
+import { walk } from '@fcostarodrigo/walk'
 import type { Dataset } from '@zazuko/env/lib/DatasetExt.js'
 import $rdf from './env.js'
 import log from './lib/log.js'
