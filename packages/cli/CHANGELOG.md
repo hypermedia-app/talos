@@ -1,5 +1,11 @@
 # @hydrofoil/talos
 
+## 0.6.11
+
+### Patch Changes
+
+- 88b9185: By default, does not include the meta graph, with option `--include-talos-meta-graph`
+
 ## 0.6.10
 
 ### Patch Changes
