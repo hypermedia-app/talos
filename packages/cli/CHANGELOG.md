@@ -1,5 +1,13 @@
 # @hydrofoil/talos
 
+## 0.6.10
+
+### Patch Changes
+
+- afc6566: Added `print` command
+- Updated dependencies [231d905]
+  - @hydrofoil/talos-core@0.1.5
+
 ## 0.6.9
 
 ### Patch Changes
