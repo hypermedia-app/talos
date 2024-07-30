@@ -4,6 +4,7 @@ import { fromDirectories } from '@hydrofoil/talos-core'
 import { put, putVocabs } from './lib/command/index.js'
 import { parseExtraVocabs } from './lib/command/extraVocabs.js'
 import log from './lib/log.js'
+import resourceFilter from './lib/resourceFilter.js'
 
 program.command('put [dirs...]')
   .description('Initializes the database from local resource files')
@@ -40,11 +41,13 @@ program.command('put-vocabs')
 
 program.command('print [dirs...]')
   .requiredOption('--base <base>')
+  .option('--include-talos-meta-graph')
   .description('Prints the resources')
-  .action(async (dirs = ['./resources'], { base } = { base: '' }) => {
+  .action(async (dirs = ['./resources'], { base, includeTalosMetaGraph } = { base: '' }) => {
     const dataset = await fromDirectories(dirs, base)
 
-    const nquads = rdf.formats.serializers.import('application/n-quads', dataset.toStream()) as unknown as NodeJS.ReadableStream
+    const quads = dataset.toStream().pipe(resourceFilter({ includeTalosMetaGraph }))
+    const nquads = rdf.formats.serializers.import('application/n-quads', quads) as unknown as NodeJS.ReadableStream
     nquads.pipe(process.stdout)
   })
 
