@@ -1,4 +1,6 @@
 import { program } from 'commander'
+import rdf from '@zazuko/env-node'
+import { fromDirectories } from '@hydrofoil/talos-core'
 import { put, putVocabs } from './lib/command/index.js'
 import { parseExtraVocabs } from './lib/command/extraVocabs.js'
 import log from './lib/log.js'
@@ -12,8 +14,8 @@ program.command('put [dirs...]')
   .option('-u, --user <user>')
   .option('-p, --password <password>')
   .option('--apiPath <apiPath>', 'The path of the API Documentation resource', '/api')
-  .action(async (dirs, arg) => {
-    put(dirs.length ? dirs : ['./resources'], arg)
+  .action(async (dirs = ['./resources'], arg) => {
+    put(dirs, arg)
       .catch((e) => {
         log(e)
         process.exit(1)
@@ -34,6 +36,16 @@ program.command('put-vocabs')
         log(e)
         process.exit(1)
       })
+  })
+
+program.command('print [dirs...]')
+  .requiredOption('--base <base>')
+  .description('Prints the resources')
+  .action(async (dirs = ['./resources'], { base } = { base: '' }) => {
+    const dataset = await fromDirectories(dirs, base)
+
+    const nquads = rdf.formats.serializers.import('application/n-quads', dataset.toStream()) as unknown as NodeJS.ReadableStream
+    nquads.pipe(process.stdout)
   })
 
 program.parse(process.argv)
