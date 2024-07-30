@@ -9,7 +9,8 @@ import $rdf from '@hydrofoil/talos-core/env.js'
 import addAll from 'rdf-dataset-ext/addAll.js'
 import toCanonical from 'rdf-dataset-ext/toCanonical.js'
 import { testData } from '../../client.js'
-import { put, Put } from '../../../lib/command/put.js'
+import type { Put } from '../../../lib/command/put.js'
+import { put } from '../../../lib/command/put.js'
 
 const testResources = url.fileURLToPath(new URL('../../../../../test-resources', import.meta.url))
 

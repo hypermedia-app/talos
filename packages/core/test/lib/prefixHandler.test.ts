@@ -1,4 +1,4 @@
-import { Readable, Stream } from 'stream'
+import type { Readable, Stream } from 'stream'
 import { expect } from 'chai'
 import rdf from '@zazuko/env-node'
 import toStream from 'into-stream'
