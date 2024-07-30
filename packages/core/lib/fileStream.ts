@@ -1,5 +1,5 @@
 import fs from 'fs'
-import { Readable } from 'stream'
+import type { Readable } from 'stream'
 import path from 'path'
 import * as mime from 'mime-types'
 import replaceStream from 'replacestream'

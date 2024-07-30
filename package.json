@@ -12,7 +12,7 @@
   ],
   "devDependencies": {
     "@changesets/cli": "^2.27.7",
-    "@tpluscode/eslint-config": "^0.4.5",
+    "@tpluscode/eslint-config": "^0.4.9",
     "@types/chai": "^4.3.4",
     "@types/chai-as-promised": "^7.1.5",
     "@types/chai-snapshot-matcher": "^1.0.4",

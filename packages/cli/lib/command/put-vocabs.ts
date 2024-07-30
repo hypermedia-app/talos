@@ -1,5 +1,6 @@
 import $rdf from '@hydrofoil/talos-core/env.js'
-import { ExtraVocab, insertVocabs } from '../insertVocabs.js'
+import type { ExtraVocab } from '../insertVocabs.js'
+import { insertVocabs } from '../insertVocabs.js'
 import { deleteApi } from '../deleteApi.js'
 import log from '../log.js'
 import type { Command } from './index.js'

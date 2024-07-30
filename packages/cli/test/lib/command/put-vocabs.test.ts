@@ -4,7 +4,8 @@ import { ASK, DELETE, SELECT } from '@tpluscode/sparql-builder'
 import { acl, as, hydra, rdfs } from '@tpluscode/rdf-ns-builders'
 import { expect } from 'chai'
 import * as externalVocabs from '@zazuko/vocabulary-extras/builders'
-import { putVocabs, PutVocabs } from '../../../lib/command/put-vocabs.js'
+import type { PutVocabs } from '../../../lib/command/put-vocabs.js'
+import { putVocabs } from '../../../lib/command/put-vocabs.js'
 
 describe('@hydrofoil/talos/lib/command/put-vocabs', function () {
   this.timeout(5000)
