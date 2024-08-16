@@ -21,7 +21,7 @@ interface ResourceOptions {
 export async function fromDirectories(directories: string[], api: string): Promise<Dataset> {
   const validDirs = directories.filter(isValidDir)
   let dataset = await validDirs.reduce(toGraphs(api), Promise.resolve($rdf.dataset()))
-  dataset = await applyUpdates(validDirs, dataset)
+  dataset = await applyUpdates(api, validDirs, dataset)
 
   setDefaultAction(dataset)
 
@@ -100,18 +100,28 @@ function toGraphs(api: string) {
   }
 }
 
-async function applyUpdates(validDirs: string[], dataset: DatasetCore) {
+async function applyUpdates(api: string, validDirs: string[], dataset: DatasetCore) {
   const engine = new QueryEngine()
   const store = new Store([...dataset])
   for (const dir of validDirs) {
     for await (const file of walk(dir)) {
       if (file.endsWith('.ru')) {
-        log.debug('Applying updates from %s, dataset size %s', file, store.size)
+        const relative = path.relative(dir, file)
+        const resourcePath = path.relative(dir, file)
+          .replace(/\.[^.]+$/, '')
+          .replace(/\/?index$/, '')
+
+        const url = resourcePath === ''
+          ? encodeURI(api)
+          : encodeURI(`${api}/${resourcePath}`)
+
+        log.debug('Applying updates from %s, dataset size %s', relative, store.size)
         const query = fs.readFileSync(file, 'utf-8')
         await engine.queryVoid(query, {
           sources: [store],
+          baseIRI: url,
         })
-        log.debug('Applied updates from %s, dataset size %s', file, store.size)
+        log.debug('Applied updates from %s, dataset size %s', relative, store.size)
       }
     }
   }
