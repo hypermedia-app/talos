@@ -48,7 +48,7 @@ describe('@hydrofoil/talos-core', () => {
       const match = dataset.match(ns(), $rdf.ns.talos.action, null, $rdf.ns.talos.resources)
       const [{ object: action }, ...more] = match
 
-      expect(action).to.deep.eq($rdf.ns.talos.overwrite)
+      expect(action.equals($rdf.ns.talos.overwrite)).to.be.true
       expect(more).to.be.empty
     })
 
@@ -56,7 +56,7 @@ describe('@hydrofoil/talos-core', () => {
       const datasetCore = dataset.match(ns('/project/creta/user.group/admins'), $rdf.ns.talos.action, null, $rdf.ns.talos.resources)
       const [{ object: action }, ...more] = datasetCore
 
-      expect(action).to.deep.eq($rdf.ns.talos.merge)
+      expect(action.equals($rdf.ns.talos.merge)).to.be.true
       expect(more).to.be.empty
     })
 

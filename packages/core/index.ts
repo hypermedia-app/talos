@@ -3,6 +3,8 @@ import fs from 'fs'
 import type { NamedNode, DatasetCore } from '@rdfjs/types'
 import { walk } from '@fcostarodrigo/walk'
 import type { Dataset } from '@zazuko/env/lib/DatasetExt.js'
+import { QueryEngine } from '@comunica/query-sparql'
+import { Store } from 'n3'
 import $rdf from './env.js'
 import log from './lib/log.js'
 import { getPatchedStream } from './lib/fileStream.js'
@@ -18,7 +20,8 @@ interface ResourceOptions {
 
 export async function fromDirectories(directories: string[], api: string): Promise<Dataset> {
   const validDirs = directories.filter(isValidDir)
-  const dataset = await validDirs.reduce(toGraphs(api), Promise.resolve($rdf.dataset()))
+  let dataset = await validDirs.reduce(toGraphs(api), Promise.resolve($rdf.dataset()))
+  dataset = await applyUpdates(validDirs, dataset)
 
   setDefaultAction(dataset)
 
@@ -95,6 +98,24 @@ function toGraphs(api: string) {
     previous.addAll(dataset)
     return previous
   }
+}
+
+async function applyUpdates(validDirs: string[], dataset: DatasetCore) {
+  const engine = new QueryEngine()
+  const store = new Store([...dataset])
+  for (const dir of validDirs) {
+    for await (const file of walk(dir)) {
+      if (file.endsWith('.ru')) {
+        log.debug('Applying updates from %s, dataset size %s', file, store.size)
+        const query = fs.readFileSync(file, 'utf-8')
+        await engine.queryVoid(query, {
+          sources: [store],
+        })
+        log.debug('Applied updates from %s, dataset size %s', file, store.size)
+      }
+    }
+  }
+  return $rdf.dataset(store)
 }
 
 function isValidDir(dir: string) {
