@@ -6,3 +6,27 @@ INSERT DATA {
     <john-doe> schema:givenName "John" .
   }
 }
+;
+
+INSERT {
+  GRAPH <john-doe-additional> {
+    <john-doe> schema:givenName ?name .
+  }
+}
+WHERE {
+  GRAPH <john-doe> {
+    <john-doe> schema:givenName ?name .
+  }
+}
+;
+
+INSERT {
+  GRAPH <john-doe-additional> {
+    <john-doe> a ?type 
+  }
+}
+WHERE {
+  GRAPH <john-doe> {
+    <john-doe> a ?type .
+  }
+}

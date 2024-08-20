@@ -77,5 +77,10 @@ describe('@hydrofoil/talos-core', () => {
 
       expect(await resource.serialize({ format: 'application/trig' })).to.matchSnapshot(this)
     })
+    it('adds data with SPARQL', async function () {
+      const resource = dataset.match(null, null, null, ns('/trig/users/john-doe-additional'))
+
+      expect(await resource.serialize({ format: 'application/trig' })).to.matchSnapshot(this)
+    })
   })
 })
