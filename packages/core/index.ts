@@ -35,6 +35,15 @@ function setDefaultAction(dataset: DatasetCore) {
     .addOut($rdf.ns.talos.action, $rdf.ns.talos.overwrite)
 }
 
+function baseIRI(resourcePath: string, api: string) {
+  resourcePath = resourcePath
+    .replace(/\.[^.]+$/, '')
+    .replace(/\/?index$/, '')
+  return resourcePath === ''
+    ? encodeURI(api)
+    : encodeURI(`${api}/${resourcePath}`)
+}
+
 function toGraphs(api: string) {
   return async function (previousPromise: Promise<Dataset>, dir: string): Promise<Dataset> {
     let previous = await previousPromise
@@ -44,13 +53,7 @@ function toGraphs(api: string) {
 
     for await (const file of walk(dir)) {
       const relative = path.relative(dir, file)
-      const resourcePath = path.relative(dir, file)
-        .replace(/\.[^.]+$/, '')
-        .replace(/\/?index$/, '')
-
-      const url = resourcePath === ''
-        ? encodeURI(api)
-        : encodeURI(`${api}/${resourcePath}`)
+      const url = baseIRI(relative, api)
 
       const parserStream = getPatchedStream(file, dir, api, url)
       if (!parserStream) {
@@ -107,19 +110,11 @@ async function applyUpdates(api: string, validDirs: string[], dataset: DatasetCo
     for await (const file of walk(dir)) {
       if (file.endsWith('.ru')) {
         const relative = path.relative(dir, file)
-        const resourcePath = path.relative(dir, file)
-          .replace(/\.[^.]+$/, '')
-          .replace(/\/?index$/, '')
-
-        const url = resourcePath === ''
-          ? encodeURI(api)
-          : encodeURI(`${api}/${resourcePath}`)
-
         log.debug('Applying updates from %s, dataset size %s', relative, store.size)
         const query = fs.readFileSync(file, 'utf-8')
         await engine.queryVoid(query, {
           sources: [store],
-          baseIRI: url,
+          baseIRI: baseIRI(relative, api),
         })
         log.debug('Applied updates from %s, dataset size %s', relative, store.size)
       }
