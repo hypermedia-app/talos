@@ -291,6 +291,14 @@ template
             resource: ns('trig/users/jane-doe'),
             graph: ns('trig/users/jane-doe'),
             type: foaf.Person,
+          }, {
+            resource: ns('trig/users/john-doe'),
+            graph: ns('trig/users/john-doe'),
+            type: schema.Person,
+          }, {
+            resource: ns('trig/users/jane-doe'),
+            graph: ns('trig/users/jane-doe'),
+            type: schema.Person,
           }])
         })
       })
