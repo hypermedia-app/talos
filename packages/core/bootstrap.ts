@@ -1,7 +1,6 @@
 import type { NamedNode, DatasetCore } from '@rdfjs/types'
 import type { ResourceStore } from '@hydrofoil/resource-store'
 import { isNamedNode } from 'is-graph-pointer'
-import addAll from 'rdf-dataset-ext/addAll.js'
 import $rdf from './env.js'
 import log from './lib/log.js'
 
@@ -37,7 +36,7 @@ export async function bootstrap({ dataset, apiUri, store }: Bootstrap): Promise<
       if ($rdf.ns.talos.merge.equals(action)) {
         log(`Merging existing resource ${resource}`)
         const current = await store.load(pointer.term)
-        addAll(pointer.dataset, current.dataset)
+        pointer.dataset.addAll(current.dataset)
       } else {
         log(`Replacing resource ${resource}`)
       }
