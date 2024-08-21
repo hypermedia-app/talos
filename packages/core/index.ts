@@ -20,12 +20,12 @@ interface ResourceOptions {
 
 export async function fromDirectories(directories: string[], api: string): Promise<Dataset> {
   const validDirs = directories.filter(isValidDir)
-  let dataset = await validDirs.reduce(toGraphs(api), Promise.resolve($rdf.dataset()))
-  dataset = await applyUpdates(api, validDirs, dataset)
+  const dataset = await validDirs.reduce(toGraphs(api), Promise.resolve($rdf.dataset()))
+  const updatedDataset = await applyUpdates(api, validDirs, dataset)
 
-  setDefaultAction(dataset)
+  setDefaultAction(updatedDataset)
 
-  return dataset
+  return updatedDataset
 }
 
 function setDefaultAction(dataset: DatasetCore) {
@@ -106,6 +106,7 @@ function toGraphs(api: string) {
 async function applyUpdates(api: string, validDirs: string[], dataset: DatasetCore) {
   const engine = new QueryEngine()
   const store = new Store([...dataset])
+  const destination = new Store([...dataset])
   for (const dir of validDirs) {
     for await (const file of walk(dir)) {
       if (file.endsWith('.ru')) {
@@ -114,13 +115,14 @@ async function applyUpdates(api: string, validDirs: string[], dataset: DatasetCo
         const query = fs.readFileSync(file, 'utf-8')
         await engine.queryVoid(query, {
           sources: [store],
+          destination,
           baseIRI: baseIRI(relative, api),
         })
         log.debug('Applied updates from %s, dataset size %s', relative, store.size)
       }
     }
   }
-  return $rdf.dataset(store)
+  return $rdf.dataset(destination)
 }
 
 function isValidDir(dir: string) {

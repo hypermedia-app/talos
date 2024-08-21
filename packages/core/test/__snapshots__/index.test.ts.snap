@@ -10,5 +10,5 @@ exports["@hydrofoil/talos-core fromDirectories uses the last representation when
 
 exports["@hydrofoil/talos-core fromDirectories uses the last representation when is marked in a dataset document"] = "\n<https://example.com/only/three> {\n\t<https://example.com/only/three> <http://schema.org/name> \"bar\" .\n}\n\n";
 
-exports["@hydrofoil/talos-core fromDirectories adds data with SPARQL"] = "\n<https://example.com/trig/users/john-doe-additional> {\n\t<https://example.com/trig/users/john-doe> a <http://schema.org/Person>, <http://xmlns.com/foaf/0.1/Person> ;\n\t\t<http://schema.org/givenName> \"John\" .\n}\n\n";
+exports["@hydrofoil/talos-core fromDirectories adds data with SPARQL"] = "\n<https://example.com/trig/users/john-doe-additional> {\n\t<https://example.com/trig/users/john-doe> a <http://xmlns.com/foaf/0.1/Person> .\n}\n\n";
 
