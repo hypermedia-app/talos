@@ -1,5 +1,12 @@
 # @hydrofoil/talos-core
 
+## 0.1.6
+
+### Patch Changes
+
+- 9f5d521: Remove `rdf-dataset-ext` direct dependency
+- 49e9f3a: Add SPARQL Update support for generating resources
+
 ## 0.1.5
 
 ### Patch Changes
