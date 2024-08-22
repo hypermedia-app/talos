@@ -1,6 +1,6 @@
 {
   "name": "@hydrofoil/talos-core",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "type": "module",
   "main": "index.js",
   "scripts": {
@@ -23,7 +23,7 @@
     "is-absolute-url": "^4.0.1",
     "is-graph-pointer": "^2.1.0",
     "mime-types": "^2.1.35",
-    "rdf-dataset-ext": "^1.0.1",
+    "n3": "^1.20.4",
     "replacestream": "^4.0.3"
   },
   "devDependencies": {

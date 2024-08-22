@@ -1,5 +1,14 @@
 # @hydrofoil/talos
 
+## 0.6.12
+
+### Patch Changes
+
+- 49e9f3a: Add SPARQL Update support for generating resources
+- Updated dependencies [9f5d521]
+- Updated dependencies [49e9f3a]
+  - @hydrofoil/talos-core@0.1.6
+
 ## 0.6.11
 
 ### Patch Changes

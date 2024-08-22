@@ -6,8 +6,6 @@ import chai, { expect } from 'chai'
 import { dash, doap, hydra, schema, vcard, sh, foaf } from '@tpluscode/rdf-ns-builders/loose'
 import sinon from 'sinon'
 import $rdf from '@hydrofoil/talos-core/env.js'
-import addAll from 'rdf-dataset-ext/addAll.js'
-import toCanonical from 'rdf-dataset-ext/toCanonical.js'
 import { jestSnapshotPlugin } from 'mocha-chai-jest-snapshot'
 import { testData } from '../../client.js'
 import type { Put } from '../../../lib/command/put.js'
@@ -70,21 +68,21 @@ for (const api of apis) {
 
       context('turtle', () => {
         it('replaces entire graph by default', async function () {
-          const dataset = addAll($rdf.dataset(), await CONSTRUCT`?s ?p ?o`
+          const dataset = $rdf.dataset().addAll(await CONSTRUCT`?s ?p ?o`
             .FROM(ns('project'))
             .WHERE`?s ?p ?o`
             .execute(client))
 
-          expect(toCanonical(dataset)).toMatchSnapshot()
+          expect(dataset.toCanonical()).toMatchSnapshot()
         })
 
         it('merge existing graph when annotated', async function () {
-          const dataset = addAll($rdf.dataset(), await CONSTRUCT`?s ?p ?o`
+          const dataset = $rdf.dataset().addAll(await CONSTRUCT`?s ?p ?o`
             .FROM(ns('project/creta/user.group/admins'))
             .WHERE`?s ?p ?o`
             .execute(client))
 
-          expect(toCanonical(dataset)).toMatchSnapshot()
+          expect(dataset.toCanonical()).toMatchSnapshot()
         })
 
         it('inserts into graph constructed from path', async () => {

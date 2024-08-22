@@ -3,12 +3,12 @@ import fs from 'fs'
 import type { NamedNode, DatasetCore } from '@rdfjs/types'
 import { walk } from '@fcostarodrigo/walk'
 import type { Dataset } from '@zazuko/env/lib/DatasetExt.js'
-import { QueryEngine } from '@comunica/query-sparql'
-import { Store } from 'n3'
 import $rdf from './env.js'
 import log from './lib/log.js'
 import { getPatchedStream } from './lib/fileStream.js'
 import { optionsFromPrefixes } from './lib/prefixHandler.js'
+import { baseIRI } from './lib/baseIRI.js'
+import { applyUpdates } from './lib/applyUpdates.js'
 
 const { talos: ns } = $rdf.ns
 export { ns }
@@ -33,15 +33,6 @@ function setDefaultAction(dataset: DatasetCore) {
     .has($rdf.ns.talos.action, $rdf.ns.talos.default)
     .deleteOut($rdf.ns.talos.action, $rdf.ns.talos.default)
     .addOut($rdf.ns.talos.action, $rdf.ns.talos.overwrite)
-}
-
-function baseIRI(resourcePath: string, api: string) {
-  resourcePath = resourcePath
-    .replace(/\.[^.]+$/, '')
-    .replace(/\/?index$/, '')
-  return resourcePath === ''
-    ? encodeURI(api)
-    : encodeURI(`${api}/${resourcePath}`)
 }
 
 function toGraphs(api: string) {
@@ -101,33 +92,6 @@ function toGraphs(api: string) {
     previous.addAll(dataset)
     return previous
   }
-}
-
-async function applyUpdates(api: string, validDirs: string[], dataset: DatasetCore) {
-  const engine = new QueryEngine()
-  const store = new Store([...dataset])
-  const results = $rdf.dataset()
-  for (const dir of validDirs) {
-    for await (const file of walk(dir)) {
-      if (!file.endsWith('.ru')) {
-        continue
-      }
-      const destination = new Store()
-      const relative = path.relative(dir, file)
-      log.debug('Applying updates from %s, dataset size %s', relative, store.size)
-      const query = fs.readFileSync(file, 'utf-8')
-      for (const command of query.split(';')) {
-        await engine.queryVoid(command, {
-          sources: [destination, store],
-          destination,
-          baseIRI: baseIRI(relative, api),
-        })
-      }
-      log.debug('Applied updates from %s, dataset size %s', relative, store.size)
-      results.addAll(destination)
-    }
-  }
-  return $rdf.dataset([...dataset, ...results])
 }
 
 function isValidDir(dir: string) {
