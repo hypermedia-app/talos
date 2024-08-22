@@ -23,6 +23,7 @@
     "is-absolute-url": "^4.0.1",
     "is-graph-pointer": "^2.1.0",
     "mime-types": "^2.1.35",
+    "n3": "^1.20.4",
     "replacestream": "^4.0.3"
   },
   "devDependencies": {
