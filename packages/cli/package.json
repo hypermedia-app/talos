@@ -42,6 +42,7 @@
   "devDependencies": {
     "@tpluscode/rdf-ns-builders": "^4.1.0",
     "chai": "^4.4.1",
+    "mocha-chai-jest-snapshot": "^1.1.4",
     "rdf-dataset-ext": "^1.0.1",
     "sinon": "^17"
   }
