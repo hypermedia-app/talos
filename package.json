@@ -1,6 +1,7 @@
 {
   "name": "talos",
   "private": true,
+  "type": "module",
   "scripts": {
     "prepare": "husky install; patch-package",
     "lint": "eslint . --ext .ts --quiet --ignore-path .gitignore --ignore-path .eslintignore",
