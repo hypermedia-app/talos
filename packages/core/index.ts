@@ -7,6 +7,8 @@ import $rdf from './env.js'
 import log from './lib/log.js'
 import { getPatchedStream } from './lib/fileStream.js'
 import { optionsFromPrefixes } from './lib/prefixHandler.js'
+import { baseIRI } from './lib/baseIRI.js'
+import { applyUpdates } from './lib/applyUpdates.js'
 
 const { talos: ns } = $rdf.ns
 export { ns }
@@ -19,10 +21,11 @@ interface ResourceOptions {
 export async function fromDirectories(directories: string[], api: string): Promise<Dataset> {
   const validDirs = directories.filter(isValidDir)
   const dataset = await validDirs.reduce(toGraphs(api), Promise.resolve($rdf.dataset()))
+  const updatedDataset = await applyUpdates(api, validDirs, dataset)
 
-  setDefaultAction(dataset)
+  setDefaultAction(updatedDataset)
 
-  return dataset
+  return updatedDataset
 }
 
 function setDefaultAction(dataset: DatasetCore) {
@@ -41,13 +44,7 @@ function toGraphs(api: string) {
 
     for await (const file of walk(dir)) {
       const relative = path.relative(dir, file)
-      const resourcePath = path.relative(dir, file)
-        .replace(/\.[^.]+$/, '')
-        .replace(/\/?index$/, '')
-
-      const url = resourcePath === ''
-        ? encodeURI(api)
-        : encodeURI(`${api}/${resourcePath}`)
+      const url = baseIRI(relative, api)
 
       const parserStream = getPatchedStream(file, dir, api, url)
       if (!parserStream) {
