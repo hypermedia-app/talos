@@ -1,6 +1,7 @@
 {
   "name": "talos",
   "private": true,
+  "type": "module",
   "scripts": {
     "prepare": "husky; patch-package",
     "lint": "eslint . --ext .ts --quiet --ignore-path .gitignore --ignore-path .eslintignore",
@@ -15,7 +16,6 @@
     "@tpluscode/eslint-config": "^0.4.9",
     "@types/chai": "^4.3.4",
     "@types/chai-as-promised": "^7.1.5",
-    "@types/chai-snapshot-matcher": "^1.0.4",
     "@types/deep-equal-in-any-order": "^1.0.3",
     "@types/mime-types": "^2.1.4",
     "@types/mocha": "^10.0.7",
@@ -30,7 +30,6 @@
     "c8": "^9.1.0",
     "chai-as-promised": "^8.0.0",
     "chai-quantifiers": "^1.0.18",
-    "chai-snapshot-matcher": "^2.0.3",
     "deep-equal-in-any-order": "^2.0.0",
     "eslint-import-resolver-typescript": "^3.6.1",
     "husky": "^9.1.5",

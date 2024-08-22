@@ -1,8 +1,9 @@
 import path from 'path'
 import url from 'url'
-import { expect } from 'chai'
+import chai, { expect } from 'chai'
 import formats from '@rdfjs-elements/formats-pretty'
 import type { Dataset } from '@zazuko/env/lib/DatasetExt.js'
+import { jestSnapshotPlugin } from 'mocha-chai-jest-snapshot'
 import $rdf from '../env.js'
 import { fromDirectories } from '../index.js'
 
@@ -14,6 +15,8 @@ $rdf.formats.import({
 })
 
 describe('@hydrofoil/talos-core', () => {
+  chai.use(jestSnapshotPlugin())
+
   describe('fromDirectories', () => {
     let dataset: Dataset
 
@@ -29,19 +32,19 @@ describe('@hydrofoil/talos-core', () => {
     it('merges resources from multiple graph documents', async function () {
       const resource = dataset.match(null, null, null, ns())
 
-      expect(await resource.serialize({ format: 'application/trig' })).to.matchSnapshot(this)
+      expect(await resource.serialize({ format: 'application/trig' })).toMatchSnapshot()
     })
 
     it('merges resources from dataset and graph documents', async function () {
       const resource = dataset.match(null, null, null, ns('/trig/users/john-doe'))
 
-      expect(await resource.serialize({ format: 'application/trig' })).to.matchSnapshot(this)
+      expect(await resource.serialize({ format: 'application/trig' })).toMatchSnapshot()
     })
 
     it('merges resources from multiple dataset documents', async function () {
       const resource = dataset.match(null, null, null, ns('/trig/users/jane-doe'))
 
-      expect(await resource.serialize({ format: 'application/trig' })).to.matchSnapshot(this)
+      expect(await resource.serialize({ format: 'application/trig' })).toMatchSnapshot()
     })
 
     it('marks a resource for "overwrite" by default', () => {
@@ -63,24 +66,24 @@ describe('@hydrofoil/talos-core', () => {
     it('uses the last representation when is marked to replace other envs', async function () {
       const resource = dataset.match(null, null, null, ns('/only/one'))
 
-      expect(await resource.serialize({ format: 'application/trig' })).to.matchSnapshot(this)
+      expect(await resource.serialize({ format: 'application/trig' })).toMatchSnapshot()
     })
 
     it('uses the last representation when is marked in another env', async function () {
       const resource = dataset.match(null, null, null, ns('/only/two'))
 
-      expect(await resource.serialize({ format: 'application/trig' })).to.matchSnapshot(this)
+      expect(await resource.serialize({ format: 'application/trig' })).toMatchSnapshot()
     })
 
     it('uses the last representation when is marked in a dataset document', async function () {
       const resource = dataset.match(null, null, null, ns('/only/three'))
 
-      expect(await resource.serialize({ format: 'application/trig' })).to.matchSnapshot(this)
+      expect(await resource.serialize({ format: 'application/trig' })).toMatchSnapshot()
     })
     it('adds data with SPARQL', async function () {
       const resource = dataset.match(null, null, null, ns('/trig/users/john-doe-additional'))
 
-      expect(await resource.serialize({ format: 'application/trig' })).to.matchSnapshot(this)
+      expect(await resource.serialize({ format: 'application/trig' })).toMatchSnapshot()
     })
   })
 })

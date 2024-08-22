@@ -2,10 +2,11 @@ import * as path from 'path'
 import * as url from 'url'
 import { ASK, CONSTRUCT, DELETE, SELECT } from '@tpluscode/sparql-builder'
 import ParsingClient from 'sparql-http-client/ParsingClient.js'
-import { expect } from 'chai'
+import chai, { expect } from 'chai'
 import { dash, doap, hydra, schema, vcard, sh, foaf } from '@tpluscode/rdf-ns-builders/loose'
 import sinon from 'sinon'
 import $rdf from '@hydrofoil/talos-core/env.js'
+import { jestSnapshotPlugin } from 'mocha-chai-jest-snapshot'
 import { testData } from '../../client.js'
 import type { Put } from '../../../lib/command/put.js'
 import { put } from '../../../lib/command/put.js'
@@ -19,6 +20,8 @@ const apis = [
 const dir = path.resolve(testResources, './resources')
 
 for (const api of apis) {
+  chai.use(jestSnapshotPlugin())
+
   const ns = $rdf.namespace(api + '/')
 
   describe('@hydrofoil/talos/lib/command/put', () => {
@@ -70,7 +73,7 @@ for (const api of apis) {
             .WHERE`?s ?p ?o`
             .execute(client))
 
-          expect(dataset.toCanonical()).to.matchSnapshot(this)
+          expect(dataset.toCanonical()).toMatchSnapshot()
         })
 
         it('merge existing graph when annotated', async function () {
@@ -79,7 +82,7 @@ for (const api of apis) {
             .WHERE`?s ?p ?o`
             .execute(client))
 
-          expect(dataset.toCanonical()).to.matchSnapshot(this)
+          expect(dataset.toCanonical()).toMatchSnapshot()
         })
 
         it('inserts into graph constructed from path', async () => {

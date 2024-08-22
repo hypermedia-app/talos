@@ -1,12 +1,10 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
-require('chai-snapshot-matcher')
-
-const chai = require('chai')
-const sinonChai = require('sinon-chai')
-const chaiQuantifiers = require('chai-quantifiers')
-const deepEqualInAnyOrder = require('deep-equal-in-any-order')
+import chai from 'chai'
+import sinonChai from 'sinon-chai'
+import chaiQuantifiers from 'chai-quantifiers'
+import deepEqualInAnyOrder from 'deep-equal-in-any-order'
+import chaiAsPromised from 'chai-as-promised'
 
 chai.use(sinonChai)
 chai.use(chaiQuantifiers)
-import('chai-as-promised').then((chaiAsPromised) => chai.use(chaiAsPromised.default))
+chai.use(chaiAsPromised)
 chai.use(deepEqualInAnyOrder)
