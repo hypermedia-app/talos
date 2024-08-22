@@ -2,7 +2,7 @@
   "name": "talos",
   "private": true,
   "scripts": {
-    "prepare": "husky install; patch-package",
+    "prepare": "husky; patch-package",
     "lint": "eslint . --ext .ts --quiet --ignore-path .gitignore --ignore-path .eslintignore",
     "test": "wsrun --no-prefix -mc test",
     "release": "changeset publish"
@@ -33,7 +33,7 @@
     "chai-snapshot-matcher": "^2.0.3",
     "deep-equal-in-any-order": "^2.0.0",
     "eslint-import-resolver-typescript": "^3.6.1",
-    "husky": "^8.0.2",
+    "husky": "^9.1.5",
     "mocha": "^10.7.0",
     "patch-package": "^8.0.0",
     "rdf-dataset-ext": "^1.1.0",
