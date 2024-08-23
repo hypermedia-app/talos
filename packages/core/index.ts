@@ -35,7 +35,7 @@ function setDefaultAction(dataset: Dataset) {
     .map(({ graph }) => graph)
     .filter(graph => {
       const action = metaGraph.node(graph).out($rdf.ns.talos.action).term
-      return !action || action.equals($rdf.ns.talos.default)
+      return (!action || action.equals($rdf.ns.talos.default)) && !graph.equals($rdf.ns.talos.resources)
     })
 
   metaGraph

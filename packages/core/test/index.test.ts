@@ -102,5 +102,10 @@ describe('@hydrofoil/talos-core', () => {
 
       expect(action.object).to.deep.equal($rdf.ns.talos.overwrite)
     })
+
+    it('excludes urn:talos:resources from the output', async function () {
+      expect(dataset.match($rdf.ns.talos.resources, null, null, $rdf.ns.talos.resources))
+        .to.have.property('size').equal(0)
+    })
   })
 })
