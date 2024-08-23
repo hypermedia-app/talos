@@ -1,5 +1,11 @@
 # @hydrofoil/talos-core
 
+## 0.1.8
+
+### Patch Changes
+
+- bc9e34c: Resources generated from SPARQL query would not be included in the deployment
+
 ## 0.1.7
 
 ### Patch Changes
