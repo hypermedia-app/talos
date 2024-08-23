@@ -1,6 +1,6 @@
 import path from 'path'
 import fs from 'fs'
-import type { NamedNode, DatasetCore } from '@rdfjs/types'
+import type { NamedNode } from '@rdfjs/types'
 import { walk } from '@fcostarodrigo/walk'
 import type { Dataset } from '@zazuko/env/lib/DatasetExt.js'
 import $rdf from './env.js'
@@ -28,10 +28,19 @@ export async function fromDirectories(directories: string[], api: string): Promi
   return updatedDataset
 }
 
-function setDefaultAction(dataset: DatasetCore) {
-  $rdf.clownface({ dataset, graph: $rdf.ns.talos.resources })
-    .has($rdf.ns.talos.action, $rdf.ns.talos.default)
-    .deleteOut($rdf.ns.talos.action, $rdf.ns.talos.default)
+function setDefaultAction(dataset: Dataset) {
+  const metaGraph = $rdf.clownface({ dataset, graph: $rdf.ns.talos.resources })
+
+  const resourcesToOverwrite = [...dataset]
+    .map(({ graph }) => graph)
+    .filter(graph => {
+      const action = metaGraph.node(graph).out($rdf.ns.talos.action).term
+      return !action || action.equals($rdf.ns.talos.default)
+    })
+
+  metaGraph
+    .node(resourcesToOverwrite)
+    .deleteOut($rdf.ns.talos.action)
     .addOut($rdf.ns.talos.action, $rdf.ns.talos.overwrite)
 }
 

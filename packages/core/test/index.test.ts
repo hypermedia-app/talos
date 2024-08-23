@@ -51,7 +51,7 @@ describe('@hydrofoil/talos-core', () => {
       const match = dataset.match(ns(), $rdf.ns.talos.action, null, $rdf.ns.talos.resources)
       const [{ object: action }, ...more] = match
 
-      expect(action.equals($rdf.ns.talos.overwrite)).to.be.true
+      expect(action).to.deep.equal($rdf.ns.talos.overwrite)
       expect(more).to.be.empty
     })
 
@@ -80,10 +80,25 @@ describe('@hydrofoil/talos-core', () => {
 
       expect(await resource.serialize({ format: 'application/trig' })).toMatchSnapshot()
     })
+
     it('adds data with SPARQL', async function () {
       const resource = dataset.match(null, null, null, ns('/trig/users/john-doe-additional'))
 
       expect(await resource.serialize({ format: 'application/trig' })).toMatchSnapshot()
+    })
+
+    it('successfully executed federated query', () => {
+      const cubes = $rdf.clownface({
+        dataset: dataset.match(null, null, null, ns('/lindas-cubes')),
+      }).has($rdf.ns.rdf.type, $rdf.namedNode('https://cube.link/Cube'))
+
+      expect(cubes.values).to.have.property('length').greaterThan(0)
+    })
+
+    it('marks generated resources to overwrite', () => {
+      const [action] = dataset.match(ns('/lindas-cubes'), $rdf.ns.talos.action, null, $rdf.ns.talos.resources)
+
+      expect(action.object).to.deep.equal($rdf.ns.talos.overwrite)
     })
   })
 })
