@@ -1,5 +1,11 @@
 # @hydrofoil/talos-core
 
+## 0.1.7
+
+### Patch Changes
+
+- 2ba36e4: Queries wer split incorrectly causing parse errors
+
 ## 0.1.6
 
 ### Patch Changes

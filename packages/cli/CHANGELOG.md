@@ -1,5 +1,13 @@
 # @hydrofoil/talos
 
+## 0.6.13
+
+### Patch Changes
+
+- f70c5d0: build(deps): update `@tpluscode/sparql-builder` (should fix logging from CLI)
+- Updated dependencies [2ba36e4]
+  - @hydrofoil/talos-core@0.1.7
+
 ## 0.6.12
 
 ### Patch Changes
