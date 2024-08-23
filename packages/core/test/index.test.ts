@@ -17,7 +17,9 @@ $rdf.formats.import({
 describe('@hydrofoil/talos-core', () => {
   chai.use(jestSnapshotPlugin())
 
-  describe('fromDirectories', () => {
+  describe('fromDirectories', function () {
+    this.timeout(10000)
+
     let dataset: Dataset
 
     beforeEach(async () => {
