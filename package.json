@@ -3,7 +3,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "prepare": "husky; patch-package",
+    "prepare": "husky",
     "lint": "eslint . --ext .ts --quiet --ignore-path .gitignore --ignore-path .eslintignore",
     "test": "wsrun --no-prefix -mc test",
     "release": "changeset publish"
@@ -27,6 +27,7 @@
     "@types/sparql-http-client": "^3.0.2",
     "@typescript-eslint/eslint-plugin": "^7.18.0",
     "@typescript-eslint/parser": "^7.18.0",
+    "anylogger-debug": "^1.1.0-beta.5",
     "c8": "^9.1.0",
     "chai-as-promised": "^8.0.0",
     "chai-quantifiers": "^1.0.18",
@@ -34,7 +35,6 @@
     "eslint-import-resolver-typescript": "^3.6.1",
     "husky": "^9.1.5",
     "mocha": "^10.7.0",
-    "patch-package": "^8.0.0",
     "rdf-dataset-ext": "^1.1.0",
     "sinon-chai": "^3.7.0",
     "ts-node": "^10.9.2",
