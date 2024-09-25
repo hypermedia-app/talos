@@ -1,3 +1,4 @@
 *.d.ts
 mocha-setup.js
 bin/
+packages/cli/lib/anylogger-pino.js
