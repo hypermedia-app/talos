@@ -42,9 +42,8 @@ jobs:
           healthcheck: http://db.talos.lndo.site/
           timeout: 30000
       - run: npx tsc
+      - run: npx talos put test-resources --endpoint http://db.talos.lndo.site/repositories/tests --api http://talos.lndo.site -u minos -p password
       - run: npx talos put-vocabs --endpoint http://db.talos.lndo.site/repositories/tests -u minos -p password
-        env:
-          DEBUG: talos
 
   build:
     runs-on: ubuntu-latest

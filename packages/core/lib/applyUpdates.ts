@@ -23,7 +23,7 @@ export async function applyUpdates(api: string, validDirs: string[], dataset: Da
       const destination = new Store()
       const relative = path.relative(dir, file)
       const baseIRI = getBaseIRI(relative, api)
-      log.debug('Applying updates from %s, dataset size %s', relative, store.size)
+      log.trace('Applying updates from %s', relative)
       const query = fs.readFileSync(file, 'utf-8')
 
       const algebra = translate(query, { quads: true, baseIRI })
@@ -34,11 +34,14 @@ export async function applyUpdates(api: string, validDirs: string[], dataset: Da
           baseIRI,
         })
       }
-      log.debug('Applied updates from %s, dataset size %s', relative, store.size)
       results.addAll(destination)
+      log.debug('Applied updates from %s, added %s triples', relative, destination.size)
     }
   }
-  return $rdf.dataset([...dataset, ...results])
+  const result = $rdf.dataset([...dataset, ...results])
+
+  log.info('SPARQL updates applied. Triples before: %s. Triples after: %s', store.size, result.size)
+  return result
 }
 
 function getUpdates(query: Operation) {
@@ -48,7 +51,7 @@ function getUpdates(query: Operation) {
     case types.DELETE_INSERT:
       return [query]
     default:
-      log.debug('Only update queries are allowed')
+      log.warn('Only update queries are supported, got %s', query.type)
       return []
   }
 }

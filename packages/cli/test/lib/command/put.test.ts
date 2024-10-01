@@ -19,30 +19,31 @@ const apis = [
 ]
 const dir = path.resolve(testResources, './resources')
 
-for (const api of apis) {
-  chai.use(jestSnapshotPlugin())
+describe('@hydrofoil/talos', () => {
+  for (const api of apis) {
+    chai.use(jestSnapshotPlugin())
 
-  const ns = $rdf.namespace(api + '/')
+    const ns = $rdf.namespace(api + '/')
 
-  describe('@hydrofoil/talos/lib/command/put', () => {
-    const params: Put = {
-      api,
-      endpoint: 'http://db.talos.lndo.site/repositories/tests',
-      user: 'minos',
-      password: 'password',
-    }
+    describe('@hydrofoil/talos/lib/command/put', () => {
+      const params: Put = {
+        api,
+        endpoint: 'http://db.talos.lndo.site/repositories/tests',
+        user: 'minos',
+        password: 'password',
+      }
 
-    const client = new ParsingClient({
-      endpointUrl: 'http://db.talos.lndo.site/repositories/tests',
-      updateUrl: 'http://db.talos.lndo.site/repositories/tests',
-      user: 'minos',
-      password: 'password',
-    })
+      const client = new ParsingClient({
+        endpointUrl: 'http://db.talos.lndo.site/repositories/tests',
+        updateUrl: 'http://db.talos.lndo.site/repositories/tests',
+        user: 'minos',
+        password: 'password',
+      })
 
-    before(async () => {
-      await DELETE`?s ?p ?o`.WHERE`?s ?p ?o`.execute(client)
+      before(async () => {
+        await DELETE`?s ?p ?o`.WHERE`?s ?p ?o`.execute(client)
 
-      await testData`          
+        await testData`          
         GRAPH ${ns('project/creta/user.group/admins')} {
           ${ns('project/creta/user.group/admins')} ${vcard.hasMember} ${ns('project/creta/user/tpluscode')}
         }
@@ -51,270 +52,270 @@ for (const api of apis) {
           ${ns('project')} ${schema.name} "DELETE" .
         }
       `
-    })
-
-    it('ignores paths which do not exist', async () => {
-      await expect(put([path.resolve(testResources, '../../foobar')], params)).not.to.have.been.rejected
-    })
-
-    it('ignores paths which are not directories', async () => {
-      await expect(put([path.resolve(testResources, './put.test.ts')], params)).not.to.have.been.rejected
-    })
-
-    describe(`--resources api ${api}`, () => {
-      before(async () => {
-        await put([dir], params)
       })
 
-      context('turtle', () => {
-        it('replaces entire graph by default', async function () {
-          const dataset = $rdf.dataset().addAll(await CONSTRUCT`?s ?p ?o`
-            .FROM(ns('project'))
-            .WHERE`?s ?p ?o`
-            .execute(client))
+      it('ignores paths which do not exist', async () => {
+        await expect(put([path.resolve(testResources, '../../foobar')], params)).not.to.have.been.rejected
+      })
 
-          expect(dataset.toCanonical()).toMatchSnapshot()
+      it('ignores paths which are not directories', async () => {
+        await expect(put([path.resolve(testResources, './put.test.ts')], params)).not.to.have.been.rejected
+      })
+
+      describe(`--resources api ${api}`, () => {
+        before(async () => {
+          await put([dir], params)
         })
 
-        it('merge existing graph when annotated', async function () {
-          const dataset = $rdf.dataset().addAll(await CONSTRUCT`?s ?p ?o`
-            .FROM(ns('project/creta/user.group/admins'))
-            .WHERE`?s ?p ?o`
-            .execute(client))
+        context('turtle', () => {
+          it('replaces entire graph by default', async function () {
+            const dataset = $rdf.dataset().addAll(await CONSTRUCT`?s ?p ?o`
+              .FROM(ns('project'))
+              .WHERE`?s ?p ?o`
+              .execute(client))
 
-          expect(dataset.toCanonical()).toMatchSnapshot()
-        })
+            expect(dataset.toCanonical()).toMatchSnapshot()
+          })
 
-        it('inserts into graph constructed from path', async () => {
-          const userCreated = ASK`${ns('project/creta/user/tpluscode')} a ${schema.Person}`
-            .FROM(ns('project/creta/user/tpluscode'))
-            .execute(client)
+          it('merge existing graph when annotated', async function () {
+            const dataset = $rdf.dataset().addAll(await CONSTRUCT`?s ?p ?o`
+              .FROM(ns('project/creta/user.group/admins'))
+              .WHERE`?s ?p ?o`
+              .execute(client))
 
-          await expect(userCreated).to.eventually.be.true
-        })
+            expect(dataset.toCanonical()).toMatchSnapshot()
+          })
 
-        it('escapes paths to produce valid URIs', async () => {
-          const userCreated = ASK`${ns('project/creta/user/Kov%C3%A1cs%20J%C3%A1nos')} a ${schema.Person}`
-            .FROM(ns('project/creta/user/Kov%C3%A1cs%20J%C3%A1nos'))
-            .execute(client)
+          it('inserts into graph constructed from path', async () => {
+            const userCreated = ASK`${ns('project/creta/user/tpluscode')} a ${schema.Person}`
+              .FROM(ns('project/creta/user/tpluscode'))
+              .execute(client)
 
-          await expect(userCreated).to.eventually.be.true
-        })
+            await expect(userCreated).to.eventually.be.true
+          })
 
-        it('allows dots in paths', async () => {
-          const userCreated = ASK`${ns('project/creta/user.group/john.doe')} a ${vcard.Group}`
-            .FROM(ns('project/creta/user.group/john.doe'))
-            .execute(client)
+          it('escapes paths to produce valid URIs', async () => {
+            const userCreated = ASK`${ns('project/creta/user/Kov%C3%A1cs%20J%C3%A1nos')} a ${schema.Person}`
+              .FROM(ns('project/creta/user/Kov%C3%A1cs%20J%C3%A1nos'))
+              .execute(client)
 
-          await expect(userCreated).to.eventually.be.true
-        })
+            await expect(userCreated).to.eventually.be.true
+          })
 
-        it('adds apiDocumentation link', async () => {
-          const [{ api }] = await SELECT`?api`.WHERE`${ns('project/creta/user/tpluscode')} ${hydra.apiDocumentation} ?api`
-            .FROM(ns('project/creta/user/tpluscode'))
-            .execute(client)
+          it('allows dots in paths', async () => {
+            const userCreated = ASK`${ns('project/creta/user.group/john.doe')} a ${vcard.Group}`
+              .FROM(ns('project/creta/user.group/john.doe'))
+              .execute(client)
 
-          expect(api).to.deep.eq(ns('api'))
-        })
+            await expect(userCreated).to.eventually.be.true
+          })
 
-        it('correctly applies relative URIs to base paths', async () => {
-          const hasExpectedLinks = ASK`
+          it('adds apiDocumentation link', async () => {
+            const [{ api }] = await SELECT`?api`.WHERE`${ns('project/creta/user/tpluscode')} ${hydra.apiDocumentation} ?api`
+              .FROM(ns('project/creta/user/tpluscode'))
+              .execute(client)
+
+            expect(api).to.deep.eq(ns('api'))
+          })
+
+          it('correctly applies relative URIs to base paths', async () => {
+            const hasExpectedLinks = ASK`
             ${ns('project/creta/user/tpluscode')} 
               ${schema.knows} ${ns('project/creta/user/Kov%C3%A1cs%20J%C3%A1nos')} ;
               ${schema.project} ${ns('project/creta/project/creta')} 
           `
-            .FROM(ns('project/creta/user/tpluscode'))
-            .execute(client)
+              .FROM(ns('project/creta/user/tpluscode'))
+              .execute(client)
 
-          await expect(hasExpectedLinks).to.eventually.be.true
-        })
+            await expect(hasExpectedLinks).to.eventually.be.true
+          })
 
-        it('correctly applies absolute URIs to base paths', async () => {
-          const hasExpectedType = ASK`
+          it('correctly applies absolute URIs to base paths', async () => {
+            const hasExpectedType = ASK`
             ${ns('project/creta/user/tpluscode')} a ${ns('api/Person')}
           `
-            .FROM(ns('project/creta/user/tpluscode'))
-            .execute(client)
+              .FROM(ns('project/creta/user/tpluscode'))
+              .execute(client)
 
-          await expect(hasExpectedType).to.eventually.be.true
-        })
+            await expect(hasExpectedType).to.eventually.be.true
+          })
 
-        it('leaves angle brackets inside single line string literals intact', async () => {
-          const [{ value }] = await SELECT`?value`.WHERE`
+          it('leaves angle brackets inside single line string literals intact', async () => {
+            const [{ value }] = await SELECT`?value`.WHERE`
             ${ns('project/creta/shape')} ${sh.property} ?property .
             
             ?property ${sh.name} "single" ;
                       ${sh.values}/${dash.js} ?value ;
             .
           `
-            .FROM(ns('project/creta/shape'))
-            .execute(client)
+              .FROM(ns('project/creta/shape'))
+              .execute(client)
 
-          expect(value.value).to.eq('<span>single line template</span>')
-        })
+            expect(value.value).to.eq('<span>single line template</span>')
+          })
 
-        it('leaves angle brackets inside multi line string literals intact', async () => {
-          const [{ value }] = await SELECT`?value`.WHERE`
+          it('leaves angle brackets inside multi line string literals intact', async () => {
+            const [{ value }] = await SELECT`?value`.WHERE`
             ${ns('project/creta/shape')} ${sh.property} ?property .
             
             ?property ${sh.name} "multi" ;
                       ${sh.values}/${dash.js} ?value ;
             .
           `
-            .FROM(ns('project/creta/shape'))
-            .execute(client)
+              .FROM(ns('project/creta/shape'))
+              .execute(client)
 
-          expect(value.value).to.eq(`<span>
+            expect(value.value).to.eq(`<span>
 multi
 line
 template
 </span>
 `)
-        })
+          })
 
-        it('handles index.ttl file as parent path', async () => {
-          const indexCorrectlyInserted = ASK`
+          it('handles index.ttl file as parent path', async () => {
+            const indexCorrectlyInserted = ASK`
             ${ns('project')} a ${schema.Thing}
           `
-            .FROM(ns('project'))
-            .execute(client)
+              .FROM(ns('project'))
+              .execute(client)
 
-          await expect(indexCorrectlyInserted).to.eventually.be.true
-        })
+            await expect(indexCorrectlyInserted).to.eventually.be.true
+          })
 
-        it('does not generated trailing slash for root handles index.ttl', async () => {
-          const indexCorrectlyInserted = ASK`
+          it('does not generated trailing slash for root handles index.ttl', async () => {
+            const indexCorrectlyInserted = ASK`
             ${$rdf.namedNode(api)} a ${schema.Thing}
           `
-            .FROM($rdf.namedNode(api))
-            .execute(client)
+              .FROM($rdf.namedNode(api))
+              .execute(client)
 
-          await expect(indexCorrectlyInserted).to.eventually.be.true
-        })
+            await expect(indexCorrectlyInserted).to.eventually.be.true
+          })
 
-        it('removes trailing slash from relative paths resulting in root URI', async () => {
-          const indexCorrectlyInserted = ASK`
+          it('removes trailing slash from relative paths resulting in root URI', async () => {
+            const indexCorrectlyInserted = ASK`
             ${ns('project')} ${schema.parentItem} <${api}>
           `
-            .FROM(ns('project'))
-            .execute(client)
+              .FROM(ns('project'))
+              .execute(client)
 
-          await expect(indexCorrectlyInserted).to.eventually.be.true
-        })
+            await expect(indexCorrectlyInserted).to.eventually.be.true
+          })
 
-        it('preserves trailing slash if present in path', async () => {
-          const indexCorrectlyInserted = ASK`
+          it('preserves trailing slash if present in path', async () => {
+            const indexCorrectlyInserted = ASK`
             ${ns('project/creta/user/tpluscode')} ${schema.parentItem} ${ns('project/creta/')}
           `
-            .FROM(ns('project/creta/user/tpluscode'))
-            .execute(client)
+              .FROM(ns('project/creta/user/tpluscode'))
+              .execute(client)
 
-          await expect(indexCorrectlyInserted).to.eventually.be.true
-        })
+            await expect(indexCorrectlyInserted).to.eventually.be.true
+          })
 
-        it('merges with existing resource representation when option is set', async () => {
-          const group = ns('project/creta/user.group/admins')
+          it('merges with existing resource representation when option is set', async () => {
+            const group = ns('project/creta/user.group/admins')
 
-          const indexCorrectlyInserted = ASK`
+            const indexCorrectlyInserted = ASK`
             ${group} ${vcard.n} "Administrators" .
             ${group} ${vcard.hasMember} ${ns('project/creta/user/tpluscode')} .
           `
-            .FROM(group)
-            .execute(client)
+              .FROM(group)
+              .execute(client)
 
-          await expect(indexCorrectlyInserted).to.eventually.be.true
-        })
-      })
-
-      context('n-quads', () => {
-        it('inserts into graph constructed from path', async () => {
-          const userCreated = ASK`${ns('project/creta/project/creta')} a ${doap.Project}`
-            .FROM(ns('project/creta/project/creta'))
-            .execute(client)
-
-          await expect(userCreated).to.eventually.be.true
+            await expect(indexCorrectlyInserted).to.eventually.be.true
+          })
         })
 
-        it('correctly applies absolute URIs to base paths', async () => {
-          const hasExpectedType = ASK`
+        context('n-quads', () => {
+          it('inserts into graph constructed from path', async () => {
+            const userCreated = ASK`${ns('project/creta/project/creta')} a ${doap.Project}`
+              .FROM(ns('project/creta/project/creta'))
+              .execute(client)
+
+            await expect(userCreated).to.eventually.be.true
+          })
+
+          it('correctly applies absolute URIs to base paths', async () => {
+            const hasExpectedType = ASK`
             ${ns('project/creta/project/creta')} ${schema.related} ${ns('project/roadshow')}
           `
-            .FROM(ns('project/creta/project/creta'))
-            .execute(client)
+              .FROM(ns('project/creta/project/creta'))
+              .execute(client)
 
-          await expect(hasExpectedType).to.eventually.be.true
+            await expect(hasExpectedType).to.eventually.be.true
+          })
         })
-      })
 
-      context('JSON-LD', () => {
-        it('correctly applies absolute URIs to base paths', async () => {
-          const hasExpectedType = ASK`
+        context('JSON-LD', () => {
+          it('correctly applies absolute URIs to base paths', async () => {
+            const hasExpectedType = ASK`
             ${ns('project/roadshow')} ${schema.related} ${ns('project/creta')}
           `
-            .FROM(ns('project/roadshow'))
-            .execute(client)
+              .FROM(ns('project/roadshow'))
+              .execute(client)
 
-          await expect(hasExpectedType).to.eventually.be.true
+            await expect(hasExpectedType).to.eventually.be.true
+          })
         })
-      })
 
-      context('n-triples', () => {
-        it('correctly applies absolute URIs to base paths', async () => {
-          const hasExpectedType = ASK`
+        context('n-triples', () => {
+          it('correctly applies absolute URIs to base paths', async () => {
+            const hasExpectedType = ASK`
             ${ns('project/shaperone')} ${schema.related} ${ns('project/roadshow')}, ${ns('project/creta')}
           `
-            .FROM(ns('project/shaperone'))
-            .execute(client)
+              .FROM(ns('project/shaperone'))
+              .execute(client)
 
-          await expect(hasExpectedType).to.eventually.be.true
+            await expect(hasExpectedType).to.eventually.be.true
+          })
         })
-      })
 
-      context('trig', () => {
-        it('inserts into graphs constructed from path', async () => {
-          const results = await SELECT`?resource ?graph ?type`
-            .WHERE`
+        context('trig', () => {
+          it('inserts into graphs constructed from path', async () => {
+            const results = await SELECT`?resource ?graph ?type`
+              .WHERE`
               graph ?graph {
                 ?resource <http://www.w3.org/ns/earl#test> "trig" ; a ?type
               }
             `
-            .execute(client)
+              .execute(client)
 
-          expect(results).to.deep.equalInAnyOrder([{
-            resource: ns('trig/users'),
-            graph: ns('trig/users'),
-            type: hydra.Collection,
-          }, {
-            resource: ns('trig/users/john-doe'),
-            graph: ns('trig/users/john-doe'),
-            type: foaf.Person,
-          }, {
-            resource: ns('trig/users/jane-doe'),
-            graph: ns('trig/users/jane-doe'),
-            type: foaf.Person,
-          }, {
-            resource: ns('trig/users/john-doe'),
-            graph: ns('trig/users/john-doe'),
-            type: schema.Person,
-          }, {
-            resource: ns('trig/users/jane-doe'),
-            graph: ns('trig/users/jane-doe'),
-            type: schema.Person,
-          }])
+            expect(results).to.deep.equalInAnyOrder([{
+              resource: ns('trig/users'),
+              graph: ns('trig/users'),
+              type: hydra.Collection,
+            }, {
+              resource: ns('trig/users/john-doe'),
+              graph: ns('trig/users/john-doe'),
+              type: foaf.Person,
+            }, {
+              resource: ns('trig/users/jane-doe'),
+              graph: ns('trig/users/jane-doe'),
+              type: foaf.Person,
+            }, {
+              resource: ns('trig/users/john-doe'),
+              graph: ns('trig/users/john-doe'),
+              type: schema.Person,
+            }, {
+              resource: ns('trig/users/jane-doe'),
+              graph: ns('trig/users/jane-doe'),
+              type: schema.Person,
+            }])
+          })
         })
       })
-    })
 
-    context('with multiple directories', () => {
-      before(async () => {
-        const fooDir = path.resolve(testResources, './resources.foo')
-        const barDir = path.resolve(testResources, './resources.bar')
+      context('with multiple directories', () => {
+        before(async () => {
+          const fooDir = path.resolve(testResources, './resources.foo')
+          const barDir = path.resolve(testResources, './resources.bar')
 
-        await put([dir, fooDir, barDir], params)
-      })
+          await put([dir, fooDir, barDir], params)
+        })
 
-      it('merges statements from multiple graph documents', async () => {
-        const ask = ASK`
+        it('merges statements from multiple graph documents', async () => {
+          const ask = ASK`
           <${api}>
             ${schema.name} "Bar environment" ;
             ${schema.hasPart} [
@@ -324,66 +325,67 @@ template
           .
         `
 
-        await expect(ask.execute(client)).to.eventually.be.true
-      })
+          await expect(ask.execute(client)).to.eventually.be.true
+        })
 
-      it('merges statements from multiple dataset documents', async () => {
-        const ask = ASK`
+        it('merges statements from multiple dataset documents', async () => {
+          const ask = ASK`
           ${ns('trig/users/jane-doe')}
             a ${foaf.Person} ;
             ${foaf.name} "Jane Doe" ;
           .
         `.execute(client)
 
-        await expect(ask).to.eventually.be.true
-      })
+          await expect(ask).to.eventually.be.true
+        })
 
-      it('merges statements from a mix of dataset and graph documents', async () => {
-        const ask = ASK`
+        it('merges statements from a mix of dataset and graph documents', async () => {
+          const ask = ASK`
           ${ns('trig/users/john-doe')}
             a ${foaf.Person} ;
             ${foaf.name} "John Doe" ;
           .
         `.execute(client)
 
-        await expect(ask).to.eventually.be.true
+          await expect(ask).to.eventually.be.true
+        })
       })
     })
-  })
-}
-
-describe('@hydrofoil/talos/lib/command/put --resources --token', () => {
-  let fetch: sinon.SinonStub
-
-  const params: Put = {
-    api: 'http://example.com',
-    endpoint: 'http://db.talos.lndo.site/repositories/tests',
-    user: 'minos',
-    password: 'password',
   }
 
-  before(async () => {
-    fetch = sinon.stub().resolves({
-      ok: true,
-    })
-    await put([dir], {
-      ...params,
-      fetch,
-      token: 'foo-bar',
-    })
-  })
+  describe('@hydrofoil/talos/lib/command/put --resources --token', () => {
+    let fetch: sinon.SinonStub
 
-  after(() => {
-    sinon.restore()
-  })
+    const params: Put = {
+      api: 'http://example.com',
+      endpoint: 'http://db.talos.lndo.site/repositories/tests',
+      user: 'minos',
+      password: 'password',
+    }
 
-  it('requests DELETE of ApiDocumentation', () => {
+    before(async () => {
+      fetch = sinon.stub().resolves({
+        ok: true,
+      })
+      await put([dir], {
+        ...params,
+        fetch,
+        token: 'foo-bar',
+      })
+    })
+
+    after(() => {
+      sinon.restore()
+    })
+
+    it('requests DELETE of ApiDocumentation', () => {
     // expect
-    expect(fetch).to.have.been.calledWith('http://example.com/api', sinon.match({
-      method: 'DELETE',
-      headers: {
-        Authorization: sinon.match(/^System foo-bar/),
-      },
-    }))
+      expect(fetch).to.have.been.calledWith('http://example.com/api', sinon.match({
+        method: 'DELETE',
+        headers: {
+          Authorization: sinon.match(/^System foo-bar/),
+        },
+      }))
+    })
   })
 })

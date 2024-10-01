@@ -13,6 +13,12 @@ type Bootstrap = {
 export async function bootstrap({ dataset, apiUri, store }: Bootstrap): Promise<void> {
   const graph = $rdf.clownface({ dataset, graph: $rdf.ns.talos.resources })
   const resources = graph.has($rdf.ns.talos.action)
+  const summary = {
+    created: 0,
+    updated: 0,
+    skipped: 0,
+  }
+
   for (const resource of resources.toArray().filter(isNamedNode)) {
     const resourceData = [...dataset.match(null, null, null, resource.term)]
       .map(({ subject, predicate, object }) => $rdf.quad(subject, predicate, object))
@@ -28,22 +34,27 @@ export async function bootstrap({ dataset, apiUri, store }: Bootstrap): Promise<
     const action = resource.out($rdf.ns.talos.action).term
     const exists = await store.exists(pointer.term)
     if (exists && $rdf.ns.talos.skip.equals(action)) {
-      log(`Skipping resource ${resource}`)
+      summary.skipped++
+      log(`Skipping graph ${resource}`)
       continue
     }
 
     if (exists) {
+      summary.updated++
       if ($rdf.ns.talos.merge.equals(action)) {
-        log(`Merging existing resource ${resource}`)
+        log(`Merging with existing graph ${resource}`)
         const current = await store.load(pointer.term)
         pointer.dataset.addAll(current.dataset)
       } else {
-        log(`Replacing resource ${resource}`)
+        log(`Replacing graph ${resource}`)
       }
     } else {
-      log(`Creating resource ${resource}`)
+      summary.created++
+      log(`Creating graph ${resource}`)
     }
 
     await store.save(pointer)
   }
+
+  log.info('Graphs bootstrapped: %o', summary)
 }
