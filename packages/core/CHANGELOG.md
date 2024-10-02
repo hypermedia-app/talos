@@ -1,5 +1,17 @@
 # @hydrofoil/talos-core
 
+## 0.2.0
+
+### Minor Changes
+
+- dc36bad: Do not add `hydra:apiDocumentation` to resources
+
+### Patch Changes
+
+- c7a13b3: build(deps): bump @comunica/query-sparql from 3.2.1 to 3.2.3
+- 3d7ab56: Option to not deploy talos meta graph
+- fef6277: Downgrade anylogger to stable v1 branch
+
 ## 0.1.8
 
 ### Patch Changes

@@ -1,5 +1,23 @@
 # @hydrofoil/talos
 
+## 0.7.0
+
+### Minor Changes
+
+- dc36bad: Rename `--api` to `--base`
+- dc36bad: Remove options `--apiPath` and `--token`
+- dc36bad: Remove `put-vocabs` command
+
+### Patch Changes
+
+- fef6277: Use pino for logging
+- fef6277: Downgrade anylogger to stable v1 branch
+- Updated dependencies [c7a13b3]
+- Updated dependencies [3d7ab56]
+- Updated dependencies [dc36bad]
+- Updated dependencies [fef6277]
+  - @hydrofoil/talos-core@0.2.0
+
 ## 0.6.13
 
 ### Patch Changes
