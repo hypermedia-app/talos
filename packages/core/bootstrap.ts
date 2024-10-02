@@ -51,5 +51,5 @@ export async function bootstrap({ dataset, store }: Bootstrap): Promise<void> {
     await store.save(pointer)
   }
 
-  log.info('Graphs bootstrapped: %o', summary)
+  log.info('Graphs bootstrapped: ', summary)
 }
