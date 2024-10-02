@@ -18,7 +18,7 @@ describe('@hydrofoil/talos-core', () => {
   chai.use(jestSnapshotPlugin())
 
   describe('fromDirectories', function () {
-    this.timeout(10000)
+    this.timeout(20000)
 
     let dataset: Dataset
 

@@ -16,7 +16,7 @@ jobs:
           version: v3.0.26
           healthcheck: http://db.talos.lndo.site/
           timeout: 30000
-      - run: npx c8 --reporter lcovonly --reporter text npm test -- -t 5000
+      - run: npx c8 --reporter lcovonly --reporter text npm test
       - name: Codecov
         uses: codecov/codecov-action@v3
 

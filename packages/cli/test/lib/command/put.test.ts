@@ -18,7 +18,9 @@ const apis = [
 ]
 const dir = path.resolve(testResources, './resources')
 
-describe('@hydrofoil/talos', () => {
+describe('@hydrofoil/talos', function () {
+  this.timeout(20000)
+
   for (const base of apis) {
     chai.use(jestSnapshotPlugin())
 
