@@ -55,7 +55,7 @@ function toGraphs(api: string) {
     let previous = await previousPromise
     const dataset = $rdf.dataset()
 
-    log.debug('Processing dir %s', dir)
+    log.debug(`Processing dir ${dir}`)
 
     for await (const file of walk(dir)) {
       if (file.endsWith('.ru')) {
@@ -70,7 +70,7 @@ function toGraphs(api: string) {
         continue
       }
 
-      log.debug('Parsing %s', relative)
+      log.debug(`Parsing ${relative}`)
       const parsedResourceOptions: Partial<ResourceOptions> = { }
       parserStream.on('prefix', optionsFromPrefixes(parsedResourceOptions))
 
@@ -81,14 +81,14 @@ function toGraphs(api: string) {
           const graph: NamedNode = quad.graph.equals($rdf.defaultGraph()) ? $rdf.namedNode(url) : quad.graph
 
           if (!resources.has(graph)) {
-            log.debug('Found graph %s', graph.value)
+            log.debug(`Found graph ${graph.value}`)
           }
           resources.add(graph)
           dataset.add($rdf.quad(subject, predicate, object, graph))
         }
       } catch (e: unknown) {
         if (e instanceof Error) {
-          log.error('Failed to parse %s: %s', relative, e.message)
+          log.error(`Failed to parse ${relative}: ${e.message}`)
         }
       }
 
@@ -115,11 +115,11 @@ function toGraphs(api: string) {
 
 function isValidDir(dir: string) {
   if (!fs.existsSync(dir)) {
-    log.warn('Skipping path %s which does not exist', dir)
+    log.warn(`Skipping path ${dir} which does not exist`)
     return false
   }
   if (!fs.statSync(dir).isDirectory()) {
-    log.warn('Skipping path %s which is not a directory', dir)
+    log.warn(`Skipping path ${dir} which is not a directory`)
     return false
   }
 

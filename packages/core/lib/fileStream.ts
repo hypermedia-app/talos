@@ -49,7 +49,7 @@ export function getPatchedStream(file: string, cwd: string, api: string, resourc
   const basePath = new URL(api).pathname
   const mediaType = mime.lookup(file)
   if (!mediaType) {
-    log.warn('Could not determine media type for file %s', relative)
+    log.warn(`Could not determine media type for file ${relative}`)
     return null
   }
 
@@ -64,7 +64,7 @@ export function getPatchedStream(file: string, cwd: string, api: string, resourc
   })
 
   if (!parserStream) {
-    log.warn('Unsupported media type %s from %s', mediaType, relative)
+    log.warn(`Unsupported media type ${mediaType} from ${relative}`)
   }
 
   return parserStream as unknown as Readable | null

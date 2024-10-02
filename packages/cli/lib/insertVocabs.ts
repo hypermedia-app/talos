@@ -42,7 +42,7 @@ function insertVocab(client: StreamClient, allPrefixes: typeof prefixes) {
     }`
     const query = sparql`DROP SILENT GRAPH <${namespace.value}>;\n${insert}`.toString()
 
-    log('Inserting vocab %s', namespace.value)
+    log(`Inserting vocab ${namespace.value}`)
     return client.query.update(query)
   }
 }
