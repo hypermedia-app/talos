@@ -1,31 +1,27 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`@hydrofoil/talos @hydrofoil/talos/lib/command/put --resources api http://example.com turtle merge existing graph when annotated 1`] = `
+exports[`@hydrofoil/talos @hydrofoil/talos/lib/command/put --resources base http://example.com turtle merge existing graph when annotated 1`] = `
 "<http://example.com/project/creta/user.group/admins> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2006/vcard/ns#Group> .
 <http://example.com/project/creta/user.group/admins> <http://www.w3.org/2006/vcard/ns#hasMember> <http://example.com/project/creta/user/tpluscode> .
 <http://example.com/project/creta/user.group/admins> <http://www.w3.org/2006/vcard/ns#n> \\"Administrators\\" .
-<http://example.com/project/creta/user.group/admins> <http://www.w3.org/ns/hydra/core#apiDocumentation> <http://example.com/api> .
 "
 `;
 
-exports[`@hydrofoil/talos @hydrofoil/talos/lib/command/put --resources api http://example.com turtle replaces entire graph by default 1`] = `
+exports[`@hydrofoil/talos @hydrofoil/talos/lib/command/put --resources base http://example.com turtle replaces entire graph by default 1`] = `
 "<http://example.com/project> <http://schema.org/parentItem> <http://example.com> .
 <http://example.com/project> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://schema.org/Thing> .
-<http://example.com/project> <http://www.w3.org/ns/hydra/core#apiDocumentation> <http://example.com/api> .
 "
 `;
 
-exports[`@hydrofoil/talos @hydrofoil/talos/lib/command/put --resources api http://example.com/base turtle merge existing graph when annotated 1`] = `
+exports[`@hydrofoil/talos @hydrofoil/talos/lib/command/put --resources base http://example.com/base turtle merge existing graph when annotated 1`] = `
 "<http://example.com/base/project/creta/user.group/admins> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2006/vcard/ns#Group> .
 <http://example.com/base/project/creta/user.group/admins> <http://www.w3.org/2006/vcard/ns#hasMember> <http://example.com/base/project/creta/user/tpluscode> .
 <http://example.com/base/project/creta/user.group/admins> <http://www.w3.org/2006/vcard/ns#n> \\"Administrators\\" .
-<http://example.com/base/project/creta/user.group/admins> <http://www.w3.org/ns/hydra/core#apiDocumentation> <http://example.com/base/api> .
 "
 `;
 
-exports[`@hydrofoil/talos @hydrofoil/talos/lib/command/put --resources api http://example.com/base turtle replaces entire graph by default 1`] = `
+exports[`@hydrofoil/talos @hydrofoil/talos/lib/command/put --resources base http://example.com/base turtle replaces entire graph by default 1`] = `
 "<http://example.com/base/project> <http://schema.org/parentItem> <http://example.com/base> .
 <http://example.com/base/project> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://schema.org/Thing> .
-<http://example.com/base/project> <http://www.w3.org/ns/hydra/core#apiDocumentation> <http://example.com/base/api> .
 "
 `;

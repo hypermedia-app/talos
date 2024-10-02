@@ -109,14 +109,6 @@ describe('@hydrofoil/talos', () => {
             await expect(userCreated).to.eventually.be.true
           })
 
-          it('adds apiDocumentation link', async () => {
-            const [{ api }] = await SELECT`?api`.WHERE`${ns('project/creta/user/tpluscode')} ${hydra.apiDocumentation} ?api`
-              .FROM(ns('project/creta/user/tpluscode'))
-              .execute(client)
-
-            expect(api).to.deep.eq(ns('api'))
-          })
-
           it('correctly applies relative URIs to base paths', async () => {
             const hasExpectedLinks = ASK`
             ${ns('project/creta/user/tpluscode')} 
