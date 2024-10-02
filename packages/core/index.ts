@@ -18,28 +18,34 @@ interface ResourceOptions {
   environmentRepresentation: 'default' | 'replace'
 }
 
-export async function fromDirectories(directories: string[], api: string): Promise<Dataset> {
+interface Options {
+  includeMetaGraph?: boolean
+}
+
+export async function fromDirectories(directories: string[], baseIri: string, { includeMetaGraph }: Options = { includeMetaGraph: true }): Promise<Dataset> {
   const validDirs = directories.filter(isValidDir)
-  const dataset = await validDirs.reduce(toGraphs(api), Promise.resolve($rdf.dataset()))
-  const updatedDataset = await applyUpdates(api, validDirs, dataset)
+  const dataset = await validDirs.reduce(toGraphs(baseIri), Promise.resolve($rdf.dataset()))
+  const updatedDataset = await applyUpdates(baseIri, validDirs, dataset)
 
   setDefaultAction(updatedDataset)
 
-  return updatedDataset
+  return updatedDataset.filter(({ graph }) => {
+    return includeMetaGraph || !graph.equals($rdf.ns.talos.resources)
+  })
 }
 
 function setDefaultAction(dataset: Dataset) {
   const metaGraph = $rdf.clownface({ dataset, graph: $rdf.ns.talos.resources })
 
-  const resourcesToOverwrite = [...dataset]
+  const graphsToOverwrite = [...dataset]
     .map(({ graph }) => graph)
     .filter(graph => {
       const action = metaGraph.node(graph).out($rdf.ns.talos.action).term
-      return (!action || action.equals($rdf.ns.talos.default)) && !graph.equals($rdf.ns.talos.resources)
+      return !action || action.equals($rdf.ns.talos.default)
     })
 
   metaGraph
-    .node(resourcesToOverwrite)
+    .node(graphsToOverwrite)
     .deleteOut($rdf.ns.talos.action)
     .addOut($rdf.ns.talos.action, $rdf.ns.talos.overwrite)
 }
