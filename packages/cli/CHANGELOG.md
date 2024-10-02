@@ -1,5 +1,13 @@
 # @hydrofoil/talos
 
+## 0.7.1
+
+### Patch Changes
+
+- b4bf27e: Prettier logs
+- Updated dependencies [b4bf27e]
+  - @hydrofoil/talos-core@0.2.1
+
 ## 0.7.0
 
 ### Minor Changes
