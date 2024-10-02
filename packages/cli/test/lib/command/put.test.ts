@@ -4,7 +4,6 @@ import { ASK, CONSTRUCT, DELETE, SELECT } from '@tpluscode/sparql-builder'
 import ParsingClient from 'sparql-http-client/ParsingClient.js'
 import chai, { expect } from 'chai'
 import { dash, doap, hydra, schema, vcard, sh, foaf } from '@tpluscode/rdf-ns-builders/loose'
-import sinon from 'sinon'
 import $rdf from '@hydrofoil/talos-core/env.js'
 import { jestSnapshotPlugin } from 'mocha-chai-jest-snapshot'
 import { testData } from '../../client.js'
@@ -20,14 +19,14 @@ const apis = [
 const dir = path.resolve(testResources, './resources')
 
 describe('@hydrofoil/talos', () => {
-  for (const api of apis) {
+  for (const base of apis) {
     chai.use(jestSnapshotPlugin())
 
-    const ns = $rdf.namespace(api + '/')
+    const ns = $rdf.namespace(base + '/')
 
     describe('@hydrofoil/talos/lib/command/put', () => {
       const params: Put = {
-        api,
+        base,
         endpoint: 'http://db.talos.lndo.site/repositories/tests',
         user: 'minos',
         password: 'password',
@@ -62,7 +61,7 @@ describe('@hydrofoil/talos', () => {
         await expect(put([path.resolve(testResources, './put.test.ts')], params)).not.to.have.been.rejected
       })
 
-      describe(`--resources api ${api}`, () => {
+      describe(`--resources base ${base}`, () => {
         before(async () => {
           await put([dir], params)
         })
@@ -185,9 +184,9 @@ template
 
           it('does not generated trailing slash for root handles index.ttl', async () => {
             const indexCorrectlyInserted = ASK`
-            ${$rdf.namedNode(api)} a ${schema.Thing}
+            ${$rdf.namedNode(base)} a ${schema.Thing}
           `
-              .FROM($rdf.namedNode(api))
+              .FROM($rdf.namedNode(base))
               .execute(client)
 
             await expect(indexCorrectlyInserted).to.eventually.be.true
@@ -195,7 +194,7 @@ template
 
           it('removes trailing slash from relative paths resulting in root URI', async () => {
             const indexCorrectlyInserted = ASK`
-            ${ns('project')} ${schema.parentItem} <${api}>
+            ${ns('project')} ${schema.parentItem} <${base}>
           `
               .FROM(ns('project'))
               .execute(client)
@@ -316,7 +315,7 @@ template
 
         it('merges statements from multiple graph documents', async () => {
           const ask = ASK`
-          <${api}>
+          <${base}>
             ${schema.name} "Bar environment" ;
             ${schema.hasPart} [
               ${schema.minValue} 10 ;
@@ -352,40 +351,4 @@ template
       })
     })
   }
-
-  describe('@hydrofoil/talos/lib/command/put --resources --token', () => {
-    let fetch: sinon.SinonStub
-
-    const params: Put = {
-      api: 'http://example.com',
-      endpoint: 'http://db.talos.lndo.site/repositories/tests',
-      user: 'minos',
-      password: 'password',
-    }
-
-    before(async () => {
-      fetch = sinon.stub().resolves({
-        ok: true,
-      })
-      await put([dir], {
-        ...params,
-        fetch,
-        token: 'foo-bar',
-      })
-    })
-
-    after(() => {
-      sinon.restore()
-    })
-
-    it('requests DELETE of ApiDocumentation', () => {
-    // expect
-      expect(fetch).to.have.been.calledWith('http://example.com/api', sinon.match({
-        method: 'DELETE',
-        headers: {
-          Authorization: sinon.match(/^System foo-bar/),
-        },
-      }))
-    })
-  })
 })
