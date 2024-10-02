@@ -1,4 +1,4 @@
-import type { NamedNode, DatasetCore } from '@rdfjs/types'
+import type { DatasetCore } from '@rdfjs/types'
 import type { ResourceStore } from '@hydrofoil/resource-store'
 import { isNamedNode } from 'is-graph-pointer'
 import $rdf from './env.js'
@@ -7,10 +7,9 @@ import log from './lib/log.js'
 type Bootstrap = {
   store: ResourceStore
   dataset: DatasetCore
-  apiUri?: NamedNode
 }
 
-export async function bootstrap({ dataset, apiUri, store }: Bootstrap): Promise<void> {
+export async function bootstrap({ dataset, store }: Bootstrap): Promise<void> {
   const graph = $rdf.clownface({ dataset, graph: $rdf.ns.talos.resources })
   const resources = graph.has($rdf.ns.talos.action)
   const summary = {
@@ -26,10 +25,6 @@ export async function bootstrap({ dataset, apiUri, store }: Bootstrap): Promise<
       dataset: $rdf.dataset(resourceData),
       term: resource.term,
     })
-
-    if (apiUri) {
-      pointer.addOut($rdf.ns.hydra.apiDocumentation, apiUri)
-    }
 
     const action = resource.out($rdf.ns.talos.action).term
     const exists = await store.exists(pointer.term)

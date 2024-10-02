@@ -11,10 +11,6 @@ jobs:
         with:
           node-version: '18'
       - run: npm ci
-      - name: setup-docker
-        uses: docker-practice/actions-setup-docker@1.0.11
-        with:
-          docker_version: 20.10.3
       - uses: tpluscode/setup-lando@v0.1.2
         with:
           version: v3.0.26
@@ -32,18 +28,13 @@ jobs:
         with:
           node-version: '18'
       - run: npm ci
-      - name: setup-docker
-        uses: docker-practice/actions-setup-docker@1.0.11
-        with:
-          docker_version: 20.10.3
       - uses: tpluscode/setup-lando@v0.1.2
         with:
           version: v3.0.26
           healthcheck: http://db.talos.lndo.site/
           timeout: 30000
       - run: npx tsc
-      - run: npx talos put test-resources --endpoint http://db.talos.lndo.site/repositories/tests --api http://talos.lndo.site -u minos -p password
-      - run: npx talos put-vocabs --endpoint http://db.talos.lndo.site/repositories/tests -u minos -p password
+      - run: npx talos put test-resources --endpoint http://db.talos.lndo.site/repositories/tests --base http://talos.lndo.site -u minos -p password
 
   build:
     runs-on: ubuntu-latest
@@ -60,8 +51,8 @@ jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: '18'
       - run: npm ci
