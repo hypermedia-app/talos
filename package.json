@@ -35,7 +35,7 @@
     "chai-quantifiers": "^1.0.18",
     "deep-equal-in-any-order": "^2.0.0",
     "eslint-import-resolver-typescript": "^3.6.1",
-    "husky": "^9.1.5",
+    "husky": "^9.1.6",
     "mocha": "^10.7.0",
     "rdf-dataset-ext": "^1.1.0",
     "sinon-chai": "^3.7.0",
