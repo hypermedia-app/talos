@@ -14,7 +14,7 @@
     "*.d.ts"
   ],
   "dependencies": {
-    "@comunica/query-sparql": "^3.2.3",
+    "@comunica/query-sparql": "^3.3.0",
     "@fcostarodrigo/walk": "^6.0.1",
     "@types/n3": "^1.16.5",
     "@types/rdf-dataset-ext": "^1.0.8",
