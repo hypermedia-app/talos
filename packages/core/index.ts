@@ -23,9 +23,10 @@ interface Options {
 }
 
 export async function fromDirectories(directories: string[], baseIri: string, { includeMetaGraph }: Options = { includeMetaGraph: true }): Promise<Dataset> {
+  const baseIriNoSlash = baseIri.replace(/\/$/, '')
   const validDirs = directories.filter(isValidDir)
   const dataset = await validDirs.reduce(toGraphs(baseIri), Promise.resolve($rdf.dataset()))
-  const updatedDataset = await applyUpdates(baseIri, validDirs, dataset)
+  const updatedDataset = await applyUpdates(baseIriNoSlash, validDirs, dataset)
 
   setDefaultAction(updatedDataset)
 

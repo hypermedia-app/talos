@@ -60,6 +60,12 @@ describe('@hydrofoil/talos-core', () => {
           expect(await resource.serialize({ format: 'application/trig' })).toMatchSnapshot()
         })
 
+        it('resolves variables bound in query using relative URIs', async function () {
+          const resource = dataset.match(null, null, null, ns('/relative-bind/subject'))
+
+          expect(await resource.serialize({ format: 'application/trig' })).toMatchSnapshot()
+        })
+
         it('marks a resource for "overwrite" by default', () => {
           const match = dataset.match($rdf.namedNode(baseIri), $rdf.ns.talos.action, null, $rdf.ns.talos.resources)
           const [{ object: action }, ...more] = match

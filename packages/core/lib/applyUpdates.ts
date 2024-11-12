@@ -25,15 +25,20 @@ export async function applyUpdates(api: string, validDirs: string[], dataset: Da
       const destination = new Store()
       const relative = path.relative(dir, file)
       const resourcePath = resourcePathFromFilePath(relative)
+      const baseIRI = api + '/' + resourcePath + '/'
       log.trace(`Applying updates from ${relative}`)
       const query = await toString(fs.createReadStream(file, 'utf-8').pipe(angleBracketTransform(api, resourcePath)))
 
-      const algebra = translate(query, { quads: true })
+      if (!hasBaseIRI(query)) {
+        log.info(`No BASE clause in ${relative}. Effective base IRI: ${baseIRI}`)
+      }
+      const algebra = translate(query, { quads: true, baseIRI })
 
       for (const command of getUpdates(algebra)) {
         await engine.queryVoid(command, {
           sources: [destination, store],
           destination,
+          baseIRI,
         })
       }
       results.addAll(destination)
@@ -44,6 +49,10 @@ export async function applyUpdates(api: string, validDirs: string[], dataset: Da
 
   log.info(`SPARQL updates applied. Triples before: ${store.size}. Triples after: ${result.size}`)
   return result
+}
+
+function hasBaseIRI(query: string) {
+  return query.match(/^(?!\s*#)\s*BASE\s+<[^>]*>/m)
 }
 
 function getUpdates(query: Operation) {

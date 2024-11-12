@@ -262,6 +262,24 @@ exports[`@hydrofoil/talos-core fromDirectories with default options merges resou
 "
 `;
 
+exports[`@hydrofoil/talos-core fromDirectories with default options resolves variables bound in query using relative URIs 1`] = `
+"
+<https://example.com/relative-bind/subject> {
+	<https://example.com/relative-bind/subject> a <https://example.com/api/schema/Person> .
+}
+
+"
+`;
+
+exports[`@hydrofoil/talos-core fromDirectories with default options resolves variables bound in query using relative URIs 2`] = `
+"
+<https://example.com/relative-bind/subject> {
+	<https://example.com/relative-bind/subject> a <https://example.com/api/schema/Person> .
+}
+
+"
+`;
+
 exports[`@hydrofoil/talos-core fromDirectories with default options resolves various relative references 1`] = `
 "
 <https://example.com/slashes/test> {
