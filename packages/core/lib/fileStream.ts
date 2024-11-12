@@ -6,37 +6,24 @@ import replaceStream from 'replacestream'
 import isAbsoluteUrl from 'is-absolute-url'
 import rdf from '../env.js'
 import log from './log.js'
+import { resolveResourceUri } from './streamPatchTransform.js'
 
-function replacer(basePath: string, resourceUrl: string, s: string, e = s) {
+function replacer(baseUri: string, resourcePath: string, s: string, e = s) {
+  const resolve = resolveResourceUri(baseUri, resourcePath)
+
   return (_: unknown, match: string) => {
-    let absolute: string
     if (isAbsoluteUrl(match)) {
       return `${s}${match}${e}`
     }
 
-    if (match.startsWith('/') && basePath !== '/') {
-      absolute = basePath + match
-    } else {
-      absolute = new URL(match, resourceUrl).toString()
-      if (!match.endsWith('/')) {
-        absolute = absolute.replace(/\/?$/, '')
-      }
-    }
-
-    const absoluteUrl = new URL(absolute, resourceUrl)
-    if (absoluteUrl.pathname === '/' && basePath !== '/') {
-      absoluteUrl.pathname = basePath
-      absolute = absoluteUrl.toString()
-    }
-
-    return `${s}${absolute}${e}`
+    return `${s}${resolve(match)}${e}`
   }
 }
 
-const angleBracketTransform = (basePath: string, resourceUrl: string) => replaceStream(/<([^>]+)>(?=([^"\\]*(\\.|"([^"\\]*\\.)*[^"\\]*"))*[^"]*$)/g, replacer(basePath, resourceUrl, '<', '>'))
-const jsonTransform = (basePath: string, resourceUrl: string) => replaceStream(/"([./][^"]+)"/g, replacer(basePath, resourceUrl, '"'))
+export const angleBracketTransform = (baseUri: string, resourcePath: string) => replaceStream(/<([^>]*)>(?=([^"\\]*(\\.|"([^"\\]*\\.)*[^"\\]*"))*[^"]*$)/g, replacer(baseUri, resourcePath, '<', '>'))
+export const jsonTransform = (baseUri: string, resourcePath: string) => replaceStream(/"([./][^"]+)"/g, replacer(baseUri, resourcePath, '"'))
 
-const filePatchTransforms = new Map([
+export const filePatchTransforms = new Map([
   ['text/turtle', angleBracketTransform],
   ['application/n-triples', angleBracketTransform],
   ['application/n-quads', angleBracketTransform],
@@ -44,9 +31,8 @@ const filePatchTransforms = new Map([
   ['application/ld+json', jsonTransform],
 ])
 
-export function getPatchedStream(file: string, cwd: string, api: string, resourceUrl: string): Readable | null {
+export function getPatchedStream(file: string, cwd: string, baseIRI: string, resourcePath: string): Readable | null {
   const relative = path.relative(cwd, file)
-  const basePath = new URL(api).pathname
   const mediaType = mime.lookup(file)
   if (!mediaType) {
     log.warn(`Could not determine media type for file ${relative}`)
@@ -55,11 +41,11 @@ export function getPatchedStream(file: string, cwd: string, api: string, resourc
 
   let fileStream = fs.createReadStream(file)
   if (filePatchTransforms.has(mediaType)) {
-    fileStream = fileStream.pipe(filePatchTransforms.get(mediaType)!(basePath, resourceUrl))
+    fileStream = fileStream.pipe(filePatchTransforms.get(mediaType)!(baseIRI, resourcePath))
   }
 
   const parserStream = rdf.formats.parsers.import(mediaType, fileStream, {
-    baseIRI: resourceUrl,
+    baseIRI,
     blankNodePrefix: '',
   })
 

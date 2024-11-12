@@ -7,9 +7,11 @@ import type { DatasetCore } from '@rdfjs/types'
 import { translate } from 'sparqlalgebrajs'
 import type { Operation } from 'sparqlalgebrajs/lib/algebra.js'
 import { types } from 'sparqlalgebrajs/lib/algebra.js'
+import toString from 'stream-to-string'
 import $rdf from '../env.js'
 import log from './log.js'
-import { baseIRI as getBaseIRI } from './baseIRI.js'
+import { resourcePathFromFilePath } from './iri.js'
+import { angleBracketTransform } from './fileStream.js'
 
 export async function applyUpdates(api: string, validDirs: string[], dataset: DatasetCore) {
   const engine = new QueryEngine()
@@ -22,16 +24,16 @@ export async function applyUpdates(api: string, validDirs: string[], dataset: Da
       }
       const destination = new Store()
       const relative = path.relative(dir, file)
-      const baseIRI = getBaseIRI(relative, api)
+      const resourcePath = resourcePathFromFilePath(relative)
       log.trace(`Applying updates from ${relative}`)
-      const query = fs.readFileSync(file, 'utf-8')
+      const query = await toString(fs.createReadStream(file, 'utf-8').pipe(angleBracketTransform(api, resourcePath)))
 
-      const algebra = translate(query, { quads: true, baseIRI })
+      const algebra = translate(query, { quads: true })
+
       for (const command of getUpdates(algebra)) {
         await engine.queryVoid(command, {
           sources: [destination, store],
           destination,
-          baseIRI,
         })
       }
       results.addAll(destination)

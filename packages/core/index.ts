@@ -7,8 +7,8 @@ import $rdf from './env.js'
 import log from './lib/log.js'
 import { getPatchedStream } from './lib/fileStream.js'
 import { optionsFromPrefixes } from './lib/prefixHandler.js'
-import { baseIRI } from './lib/baseIRI.js'
 import { applyUpdates } from './lib/applyUpdates.js'
+import { resourcePathFromFilePath } from './lib/iri.js'
 
 const { talos: ns } = $rdf.ns
 export { ns }
@@ -50,7 +50,8 @@ function setDefaultAction(dataset: Dataset) {
     .addOut($rdf.ns.talos.action, $rdf.ns.talos.overwrite)
 }
 
-function toGraphs(api: string) {
+function toGraphs(baseIri: string) {
+  const baseIriNoSlash = baseIri.replace(/\/$/, '')
   return async function (previousPromise: Promise<Dataset>, dir: string): Promise<Dataset> {
     let previous = await previousPromise
     const dataset = $rdf.dataset()
@@ -63,9 +64,10 @@ function toGraphs(api: string) {
       }
 
       const relative = path.relative(dir, file)
-      const url = baseIRI(relative, api)
+      const resourcePath = resourcePathFromFilePath(relative)
+      const resourceUrl = $rdf.namedNode(resourcePath === '' ? baseIri : `${baseIriNoSlash}/${resourcePath}`)
 
-      const parserStream = getPatchedStream(file, dir, api, url)
+      const parserStream = getPatchedStream(file, dir, baseIriNoSlash, resourcePath)
       if (!parserStream) {
         continue
       }
@@ -78,7 +80,7 @@ function toGraphs(api: string) {
       const resourceOptions = $rdf.clownface({ dataset: previous, graph: $rdf.ns.talos.resources })
       try {
         for await (const { subject, predicate, object, ...quad } of parserStream) {
-          const graph: NamedNode = quad.graph.equals($rdf.defaultGraph()) ? $rdf.namedNode(url) : quad.graph
+          const graph: NamedNode = quad.graph.equals($rdf.defaultGraph()) ? resourceUrl : quad.graph
 
           if (!resources.has(graph)) {
             log.debug(`Found graph ${graph.value}`)
