@@ -5,7 +5,7 @@ INSERT {
     ?s a cube:Cube
   }
 } WHERE {
-  SERVICE <https://test.lindas.admin.ch/query> {
+  SERVICE <https://test.lindas.admin.ch/x-query> {
     ?s a cube:Cube
   }
 }
