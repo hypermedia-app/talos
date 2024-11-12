@@ -21,7 +21,7 @@ function replacer(baseUri: string, resourcePath: string, s: string, e = s) {
 }
 
 export const angleBracketTransform = (baseUri: string, resourcePath: string) => replaceStream(/<([^>]*)>(?=([^"\\]*(\\.|"([^"\\]*\\.)*[^"\\]*"))*[^"]*$)/g, replacer(baseUri, resourcePath, '<', '>'))
-export const jsonTransform = (baseUri: string, resourcePath: string) => replaceStream(/"([./][^"]+)"/g, replacer(baseUri, resourcePath, '"'))
+export const jsonTransform = (baseUri: string, resourcePath: string) => replaceStream(/"@id": "([^"]*)"/g, replacer(baseUri, resourcePath, '"@id": "', '"'))
 
 export const filePatchTransforms = new Map([
   ['text/turtle', angleBracketTransform],
