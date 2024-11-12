@@ -1,5 +1,6 @@
 export function resolveResourceUri(baseUri: string, resourcePath: string) {
-  const basePath = new URL(baseUri).pathname.split('/').filter(Boolean)
+  const baseUriUri = new URL(baseUri)
+  const basePath = baseUriUri.pathname.split('/').filter(Boolean)
 
   if (resourcePath.endsWith('/')) {
     throw new Error('Resource URL must not end with a slash')
@@ -10,10 +11,10 @@ export function resolveResourceUri(baseUri: string, resourcePath: string) {
 
   return (path: string) => {
     if (path === '/') {
-      return baseUri
+      return baseUriUri.toString()
     }
     if ((path === '' || path === '.') && resourcePath === '') {
-      return baseUri
+      return baseUriUri.toString()
     }
 
     if (path.startsWith('/')) {

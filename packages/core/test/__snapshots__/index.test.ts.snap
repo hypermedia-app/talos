@@ -68,8 +68,8 @@ exports[`@hydrofoil/talos-core fromDirectories merges resources from multiple da
 
 exports[`@hydrofoil/talos-core fromDirectories merges resources from multiple graph documents 1`] = `
 "
-<https://example.com> {
-	<https://example.com> a <http://schema.org/Thing> ;
+<https://example.com/> {
+	<https://example.com/> a <http://schema.org/Thing> ;
 		<http://schema.org/hasPart> <https://example.com/#part>, _:b1, _:namedPart, _:b6 ;
 		<http://schema.org/name> \\"Bar environment\\" .
 
@@ -88,8 +88,8 @@ exports[`@hydrofoil/talos-core fromDirectories merges resources from multiple gr
 
 exports[`@hydrofoil/talos-core fromDirectories merges resources from multiple graph documents 2`] = `
 "
-<https://example.com> {
-	<https://example.com> a <http://schema.org/Thing> ;
+<https://example.com/> {
+	<https://example.com/> a <http://schema.org/Thing> ;
 		<http://schema.org/hasPart> <https://example.com/#part>, _:b1, _:namedPart, _:b6 ;
 		<http://schema.org/name> \\"Bar environment\\" .
 
@@ -228,7 +228,7 @@ exports[`@hydrofoil/talos-core fromDirectories with default options merges resou
 
 exports[`@hydrofoil/talos-core fromDirectories with default options merges resources from multiple graph documents 1`] = `
 "
-<https://example.com> a <http://schema.org/Thing> ;
+<https://example.com/> a <http://schema.org/Thing> ;
 	<http://schema.org/hasPart> <https://example.com/#part>, [
 		<http://schema.org/name> \\"totally anonymous\\" ;
 	], [
@@ -246,7 +246,7 @@ exports[`@hydrofoil/talos-core fromDirectories with default options merges resou
 
 exports[`@hydrofoil/talos-core fromDirectories with default options merges resources from multiple graph documents 2`] = `
 "
-<https://example.com> a <http://schema.org/Thing> ;
+<https://example.com/> a <http://schema.org/Thing> ;
 	<http://schema.org/hasPart> <https://example.com/#part>, [
 		<http://schema.org/name> \\"totally anonymous\\" ;
 	], [
@@ -283,7 +283,7 @@ exports[`@hydrofoil/talos-core fromDirectories with default options resolves var
 exports[`@hydrofoil/talos-core fromDirectories with default options resolves various relative references 1`] = `
 "
 <https://example.com/slashes/test> {
-	<https://example.com> <http://www.w3.org/2000/01/rdf-schema#label> \\"/\\" .
+	<https://example.com/> <http://www.w3.org/2000/01/rdf-schema#label> \\"/\\" .
 
 	<https://example.com/slashes/test> <http://www.w3.org/2000/01/rdf-schema#label> \\"/slashes/test\\" .
 
@@ -304,9 +304,9 @@ exports[`@hydrofoil/talos-core fromDirectories with default options resolves var
 exports[`@hydrofoil/talos-core fromDirectories with default options resolves various relative references 2`] = `
 "
 <https://example.com/slashes/test> {
-	<https://example.com/slashes/test> <http://www.w3.org/2000/01/rdf-schema#label> \\"/slashes/test\\" .
+	<https://example.com/> <http://www.w3.org/2000/01/rdf-schema#label> \\"/\\" .
 
-	<https://example.com> <http://www.w3.org/2000/01/rdf-schema#label> \\"/\\" .
+	<https://example.com/slashes/test> <http://www.w3.org/2000/01/rdf-schema#label> \\"/slashes/test\\" .
 
 	<https://example.com/slashes/test/> <http://www.w3.org/2000/01/rdf-schema#label> \\"/slashes/test/\\" .
 

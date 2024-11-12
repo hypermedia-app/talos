@@ -23,9 +23,9 @@ describe('@hydrofoil/talos-core', () => {
     let dataset: Dataset
 
     [
-      'https://example.com',
-      'https://example.com/',
-    ].forEach((baseIri) => {
+      ['https://example.com', 'https://example.com/'],
+      ['https://example.com/', 'https://example.com/'],
+    ].forEach(([baseIri, rootResource]) => {
       context('with default options', () => {
         beforeEach(async () => {
           const dirs = [
@@ -37,7 +37,7 @@ describe('@hydrofoil/talos-core', () => {
         })
 
         it('merges resources from multiple graph documents', async function () {
-          const resource = dataset.match(null, null, null, $rdf.namedNode(baseIri))
+          const resource = dataset.match(null, null, null, $rdf.namedNode(rootResource))
 
           expect(await resource.serialize({ format: 'text/turtle' })).toMatchSnapshot()
         })
@@ -67,7 +67,7 @@ describe('@hydrofoil/talos-core', () => {
         })
 
         it('marks a resource for "overwrite" by default', () => {
-          const match = dataset.match($rdf.namedNode(baseIri), $rdf.ns.talos.action, null, $rdf.ns.talos.resources)
+          const match = dataset.match($rdf.namedNode(rootResource), $rdf.ns.talos.action, null, $rdf.ns.talos.resources)
           const [{ object: action }, ...more] = match
 
           expect(action).to.deep.equal($rdf.ns.talos.overwrite)

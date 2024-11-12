@@ -8,7 +8,7 @@ exports[`@hydrofoil/talos @hydrofoil/talos/lib/command/put --resources base http
 `;
 
 exports[`@hydrofoil/talos @hydrofoil/talos/lib/command/put --resources base http://example.com turtle replaces entire graph by default 1`] = `
-"<http://example.com/project> <http://schema.org/parentItem> <http://example.com> .
+"<http://example.com/project> <http://schema.org/parentItem> <http://example.com/> .
 <http://example.com/project> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://schema.org/Thing> .
 "
 `;

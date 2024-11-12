@@ -10,11 +10,11 @@ describe('@hydrofoil/talos-core/lib/streamPatchTransform.js', () => {
       ['http://example.com', 'foo', '.', 'http://example.com/foo'],
       ['http://example.com', 'foo', './', 'http://example.com/foo/'],
       // base is bare domain, root resource
-      ['http://example.com', '', '', 'http://example.com'],
+      ['http://example.com', '', '', 'http://example.com/'],
       ['http://example.com', '', 'bar', 'http://example.com/bar'],
-      ['http://example.com', '', '.', 'http://example.com'],
+      ['http://example.com', '', '.', 'http://example.com/'],
       ['http://example.com', '', './', 'http://example.com/'],
-      ['http://example.com', '', '/', 'http://example.com'],
+      ['http://example.com', '', '/', 'http://example.com/'],
       // base is URL with path
       ['http://example.com/foo', 'bar', '', 'http://example.com/foo/bar'],
       ['http://example.com/foo', 'bar', 'baz', 'http://example.com/foo/bar/baz'],
@@ -36,7 +36,7 @@ describe('@hydrofoil/talos-core/lib/streamPatchTransform.js', () => {
       ['http://example.com/foo', 'ignore', '/xyz/', 'http://example.com/foo/xyz/'],
       ['http://example.com/foo/bar', 'ignore', '/xyz/', 'http://example.com/foo/bar/xyz/'],
       // URL reference is plain slash => keep base as-is
-      ['http://example.com', 'ignore', '/', 'http://example.com'],
+      ['http://example.com', 'ignore', '/', 'http://example.com/'],
       ['http://example.com/', 'ignore', '/', 'http://example.com/'],
       ['http://example.com/foo', 'ignore', '/', 'http://example.com/foo'],
       ['http://example.com/foo/bar', 'ignore', '/', 'http://example.com/foo/bar'],

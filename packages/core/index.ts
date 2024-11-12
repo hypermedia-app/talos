@@ -25,7 +25,7 @@ interface Options {
 export async function fromDirectories(directories: string[], baseIri: string, { includeMetaGraph }: Options = { includeMetaGraph: true }): Promise<Dataset> {
   const baseIriNoSlash = baseIri.replace(/\/$/, '')
   const validDirs = directories.filter(isValidDir)
-  const dataset = await validDirs.reduce(toGraphs(baseIri), Promise.resolve($rdf.dataset()))
+  const dataset = await validDirs.reduce(toGraphs(new URL(baseIri)), Promise.resolve($rdf.dataset()))
   const updatedDataset = await applyUpdates(baseIriNoSlash, validDirs, dataset)
 
   setDefaultAction(updatedDataset)
@@ -51,8 +51,8 @@ function setDefaultAction(dataset: Dataset) {
     .addOut($rdf.ns.talos.action, $rdf.ns.talos.overwrite)
 }
 
-function toGraphs(baseIri: string) {
-  const baseIriNoSlash = baseIri.replace(/\/$/, '')
+function toGraphs(baseIri: URL) {
+  const baseIriNoSlash = baseIri.toString().replace(/\/$/, '')
   return async function (previousPromise: Promise<Dataset>, dir: string): Promise<Dataset> {
     let previous = await previousPromise
     const dataset = $rdf.dataset()
@@ -66,7 +66,7 @@ function toGraphs(baseIri: string) {
 
       const relative = path.relative(dir, file)
       const resourcePath = resourcePathFromFilePath(relative)
-      const resourceUrl = $rdf.namedNode(resourcePath === '' ? baseIri : `${baseIriNoSlash}/${resourcePath}`)
+      const resourceUrl = $rdf.namedNode(resourcePath === '' ? baseIri.toString() : `${baseIriNoSlash}/${resourcePath}`)
 
       const parserStream = getPatchedStream(file, dir, baseIriNoSlash, resourcePath)
       if (!parserStream) {
