@@ -1,6 +1,6 @@
 import path from 'path'
 import url from 'url'
-import chai, { expect } from 'chai'
+import { use, expect } from 'chai'
 import formats from '@rdfjs-elements/formats-pretty'
 import type { Dataset } from '@zazuko/env/lib/DatasetExt.js'
 import { jestSnapshotPlugin } from 'mocha-chai-jest-snapshot'
@@ -15,7 +15,7 @@ $rdf.formats.import({
 })
 
 describe('@hydrofoil/talos-core', () => {
-  chai.use(jestSnapshotPlugin())
+  use(jestSnapshotPlugin())
 
   describe('fromDirectories', function () {
     this.timeout(20000)

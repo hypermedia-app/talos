@@ -2,7 +2,7 @@ import * as path from 'path'
 import * as url from 'url'
 import { ASK, CONSTRUCT, DELETE, SELECT } from '@tpluscode/sparql-builder'
 import ParsingClient from 'sparql-http-client/ParsingClient.js'
-import chai, { expect } from 'chai'
+import { expect, use } from 'chai'
 import { dash, doap, hydra, schema, vcard, sh, foaf } from '@tpluscode/rdf-ns-builders/loose'
 import $rdf from '@hydrofoil/talos-core/env.js'
 import { jestSnapshotPlugin } from 'mocha-chai-jest-snapshot'
@@ -22,7 +22,7 @@ describe('@hydrofoil/talos', function () {
   this.timeout(20000)
 
   for (const base of apis) {
-    chai.use(jestSnapshotPlugin())
+    use(jestSnapshotPlugin())
 
     const ns = $rdf.namespace(base + '/')
 
