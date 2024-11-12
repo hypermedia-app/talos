@@ -14,7 +14,7 @@
     "*.d.ts"
   ],
   "dependencies": {
-    "@comunica/query-sparql": "^3.2.3",
+    "@comunica/query-sparql": "^4.0.2",
     "@fcostarodrigo/walk": "^6.0.1",
     "@types/n3": "^1.16.5",
     "@types/rdf-dataset-ext": "^1.0.8",
@@ -30,11 +30,11 @@
   },
   "devDependencies": {
     "@rdfjs-elements/formats-pretty": "^0.6.7",
-    "@zazuko/env": "^2.4.1",
-    "chai": "^4.4.1",
+    "@zazuko/env": "^2.4.2",
+    "chai": "^5",
     "get-stream": "^9.0.1",
     "into-stream": "^8.0.1",
-    "mocha-chai-jest-snapshot": "^1.1.4"
+    "mocha-chai-jest-snapshot": "^1.1.6"
   },
   "repository": {
     "type": "git",
