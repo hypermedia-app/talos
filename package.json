@@ -16,7 +16,7 @@
     "@changesets/cli": "^2.27.9",
     "@tpluscode/eslint-config": "^0.5.0",
     "@types/chai": "^4.3.4",
-    "@types/chai-as-promised": "^7.1.5",
+    "@types/chai-as-promised": "^8.0.1",
     "@types/deep-equal-in-any-order": "^1.0.3",
     "@types/mime-types": "^2.1.4",
     "@types/mocha": "^10.0.9",
