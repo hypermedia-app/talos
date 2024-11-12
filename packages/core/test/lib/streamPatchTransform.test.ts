@@ -15,6 +15,8 @@ describe('@hydrofoil/talos-core/lib/streamPatchTransform.js', () => {
       ['http://example.com', '', '.', 'http://example.com/'],
       ['http://example.com', '', './', 'http://example.com/'],
       ['http://example.com', '', '/', 'http://example.com/'],
+      ['http://example.com', '', '..', 'http://example.com/'],
+      ['http://example.com', '', '../', 'http://example.com/'],
       // base is URL with path
       ['http://example.com/foo', 'bar', '', 'http://example.com/foo/bar'],
       ['http://example.com/foo', 'bar', 'baz', 'http://example.com/foo/bar/baz'],
