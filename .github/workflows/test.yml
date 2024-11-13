@@ -18,7 +18,9 @@ jobs:
           timeout: 30000
       - run: npx c8 --reporter lcovonly --reporter text npm test
       - name: Codecov
-        uses: codecov/codecov-action@v3
+        uses: codecov/codecov-action@v4
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
 
   smoke-test:
     runs-on: ubuntu-latest
