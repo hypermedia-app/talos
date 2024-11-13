@@ -36,10 +36,6 @@ export function resolveResourceUri(baseUri: string, resourcePath: string) {
 
 function mergePaths(basePath: string[], resourcePath: string[]) {
   const result = basePath.slice()
-  if (!resourcePath.length) {
-    return result
-  }
-
   for (const segment of resourcePath) {
     if (segment === '.') {
       continue
