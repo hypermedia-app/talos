@@ -5,7 +5,7 @@ import toStream from 'into-stream'
 import getStream from 'get-stream'
 import { optionsFromPrefixes } from '../../lib/prefixHandler.js'
 
-describe('@hydrofoil/talos/lib/prefixHandler', () => {
+describe('@hydrofoil/talos-core/lib/prefixHandler', () => {
   function parse(str: string) {
     return rdf.formats.parsers.import('text/turtle', toStream(str)) as unknown as Stream & Readable
   }

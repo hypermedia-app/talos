@@ -1,0 +1,10 @@
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+<> rdfs:label "/slashes/test" .
+<.> rdfs:label "/slashes/test" .
+<./> rdfs:label "/slashes/test/" .
+<..> rdfs:label "/slashes" .
+<../> rdfs:label "/slashes/" .
+</> rdfs:label "/" .
+</foo> rdfs:label "/foo" .
+<#this> rdfs:label "/slashes/test#this" .

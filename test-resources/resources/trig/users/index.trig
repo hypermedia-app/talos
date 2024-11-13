@@ -8,8 +8,8 @@ PREFIX foaf: <http://xmlns.com/foaf/0.1/>
     earl:test "trig" ;
 }
 
-<users/john-doe> {
-  <users/john-doe> a foaf:Person ;
+<john-doe> {
+  <john-doe> a foaf:Person ;
     earl:test "trig" ;
 }
 

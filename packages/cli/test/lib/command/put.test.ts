@@ -13,15 +13,15 @@ import { put } from '../../../lib/command/put.js'
 const testResources = url.fileURLToPath(new URL('../../../../../test-resources', import.meta.url))
 
 const apis = [
-  'http://example.com',
-  'http://example.com/base',
+  ['http://example.com', 'http://example.com/'],
+  ['http://example.com/base', 'http://example.com/base'],
 ]
 const dir = path.resolve(testResources, './resources')
 
 describe('@hydrofoil/talos', function () {
   this.timeout(20000)
 
-  for (const base of apis) {
+  for (const [base, rootResource] of apis) {
     use(jestSnapshotPlugin())
 
     const ns = $rdf.namespace(base + '/')
@@ -176,19 +176,19 @@ template
             await expect(indexCorrectlyInserted).to.eventually.be.true
           })
 
-          it('does not generated trailing slash for root handles index.ttl', async () => {
+          it('correctly resolves root resource from index.ttl', async () => {
             const indexCorrectlyInserted = ASK`
-            ${$rdf.namedNode(base)} a ${schema.Thing}
+            ${$rdf.namedNode(rootResource)} a ${schema.Thing}
           `
-              .FROM($rdf.namedNode(base))
+              .FROM($rdf.namedNode(rootResource))
               .execute(client)
 
             await expect(indexCorrectlyInserted).to.eventually.be.true
           })
 
-          it('removes trailing slash from relative paths resulting in root URI', async () => {
+          it('keep trailing slash from relative paths resulting in root URI', async () => {
             const indexCorrectlyInserted = ASK`
-            ${ns('project')} ${schema.parentItem} <${base}>
+            ${ns('project')} ${schema.parentItem} <${rootResource}>
           `
               .FROM(ns('project'))
               .execute(client)
@@ -309,7 +309,7 @@ template
 
         it('merges statements from multiple graph documents', async () => {
           const ask = ASK`
-          <${base}>
+          <${rootResource}>
             ${schema.name} "Bar environment" ;
             ${schema.hasPart} [
               ${schema.minValue} 10 ;

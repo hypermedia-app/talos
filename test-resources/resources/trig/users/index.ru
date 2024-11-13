@@ -1,4 +1,4 @@
-PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+
 PREFIX schema: <http://schema.org/>
 
 INSERT DATA {
@@ -22,7 +22,7 @@ WHERE {
 
 INSERT {
   GRAPH <john-doe-additional> {
-    <john-doe> a ?type 
+    <john-doe> a ?type
   }
 }
 WHERE {

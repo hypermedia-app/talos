@@ -22,109 +22,126 @@ describe('@hydrofoil/talos-core', () => {
 
     let dataset: Dataset
 
-    context('with default options', () => {
-      beforeEach(async () => {
-        const dirs = [
-          path.resolve(testDir, './resources'),
-          path.resolve(testDir, './resources.foo'),
-          path.resolve(testDir, './resources.bar'),
-        ]
-        dataset = await fromDirectories(dirs, ns().value)
-      })
+    [
+      ['https://example.com', 'https://example.com/'],
+      ['https://example.com/', 'https://example.com/'],
+    ].forEach(([baseIri, rootResource]) => {
+      context('with default options', () => {
+        beforeEach(async () => {
+          const dirs = [
+            path.resolve(testDir, './resources'),
+            path.resolve(testDir, './resources.foo'),
+            path.resolve(testDir, './resources.bar'),
+          ]
+          dataset = await fromDirectories(dirs, baseIri)
+        })
 
-      it('merges resources from multiple graph documents', async function () {
-        const resource = dataset.match(null, null, null, ns())
+        it('merges resources from multiple graph documents', async function () {
+          const resource = dataset.match(null, null, null, $rdf.namedNode(rootResource))
 
-        expect(await resource.serialize({ format: 'application/trig' })).toMatchSnapshot()
-      })
+          expect(await resource.serialize({ format: 'text/turtle' })).toMatchSnapshot()
+        })
 
-      it('merges resources from dataset and graph documents', async function () {
-        const resource = dataset.match(null, null, null, ns('/trig/users/john-doe'))
+        it('merges resources from dataset and graph documents', async function () {
+          const resource = dataset.match(null, null, null, ns('/trig/users/john-doe'))
 
-        expect(await resource.serialize({ format: 'application/trig' })).toMatchSnapshot()
-      })
+          expect(await resource.serialize({ format: 'application/trig' })).toMatchSnapshot()
+        })
 
-      it('merges resources from multiple dataset documents', async function () {
-        const resource = dataset.match(null, null, null, ns('/trig/users/jane-doe'))
+        it('merges resources from multiple dataset documents', async function () {
+          const resource = dataset.match(null, null, null, ns('/trig/users/jane-doe'))
 
-        expect(await resource.serialize({ format: 'application/trig' })).toMatchSnapshot()
-      })
+          expect(await resource.serialize({ format: 'application/trig' })).toMatchSnapshot()
+        })
 
-      it('marks a resource for "overwrite" by default', () => {
-        const match = dataset.match(ns(), $rdf.ns.talos.action, null, $rdf.ns.talos.resources)
-        const [{ object: action }, ...more] = match
+        it('resolves various relative references', async function () {
+          const resource = dataset.match(null, null, null, ns('/slashes/test'))
 
-        expect(action).to.deep.equal($rdf.ns.talos.overwrite)
-        expect(more).to.be.empty
-      })
+          expect(await resource.serialize({ format: 'application/trig' })).toMatchSnapshot()
+        })
 
-      it('marks a resource for "merge" when prefix is used', () => {
-        const datasetCore = dataset.match(ns('/project/creta/user.group/admins'), $rdf.ns.talos.action, null, $rdf.ns.talos.resources)
-        const [{ object: action }, ...more] = datasetCore
+        it('resolves variables bound in query using relative URIs', async function () {
+          const resource = dataset.match(null, null, null, ns('/relative-bind/subject'))
 
-        expect(action.equals($rdf.ns.talos.merge)).to.be.true
-        expect(more).to.be.empty
-      })
+          expect(await resource.serialize({ format: 'application/trig' })).toMatchSnapshot()
+        })
 
-      it('uses the last representation when is marked to replace other envs', async function () {
-        const resource = dataset.match(null, null, null, ns('/only/one'))
+        it('marks a resource for "overwrite" by default', () => {
+          const match = dataset.match($rdf.namedNode(rootResource), $rdf.ns.talos.action, null, $rdf.ns.talos.resources)
+          const [{ object: action }, ...more] = match
 
-        expect(await resource.serialize({ format: 'application/trig' })).toMatchSnapshot()
-      })
+          expect(action).to.deep.equal($rdf.ns.talos.overwrite)
+          expect(more).to.be.empty
+        })
 
-      it('uses the last representation when is marked in another env', async function () {
-        const resource = dataset.match(null, null, null, ns('/only/two'))
+        it('marks a resource for "merge" when prefix is used', () => {
+          const datasetCore = dataset.match(ns('/project/creta/user.group/admins'), $rdf.ns.talos.action, null, $rdf.ns.talos.resources)
+          const [{ object: action }, ...more] = datasetCore
 
-        expect(await resource.serialize({ format: 'application/trig' })).toMatchSnapshot()
-      })
+          expect(action.equals($rdf.ns.talos.merge)).to.be.true
+          expect(more).to.be.empty
+        })
 
-      it('uses the last representation when is marked in a dataset document', async function () {
-        const resource = dataset.match(null, null, null, ns('/only/three'))
+        it('uses the last representation when is marked to replace other envs', async function () {
+          const resource = dataset.match(null, null, null, ns('/only/one'))
 
-        expect(await resource.serialize({ format: 'application/trig' })).toMatchSnapshot()
-      })
+          expect(await resource.serialize({ format: 'application/trig' })).toMatchSnapshot()
+        })
 
-      it('adds data with SPARQL', async function () {
-        const resource = dataset.match(null, null, null, ns('/trig/users/john-doe-additional'))
+        it('uses the last representation when is marked in another env', async function () {
+          const resource = dataset.match(null, null, null, ns('/only/two'))
 
-        expect(await resource.serialize({ format: 'application/trig' })).toMatchSnapshot()
-      })
+          expect(await resource.serialize({ format: 'application/trig' })).toMatchSnapshot()
+        })
 
-      it('successfully executed federated query', () => {
-        const cubes = $rdf.clownface({
-          dataset: dataset.match(null, null, null, ns('/lindas-cubes')),
-        }).has($rdf.ns.rdf.type, $rdf.namedNode('https://cube.link/Cube'))
+        it('uses the last representation when is marked in a dataset document', async function () {
+          const resource = dataset.match(null, null, null, ns('/only/three'))
 
-        expect(cubes.values).to.have.property('length').greaterThan(0)
-      })
+          expect(await resource.serialize({ format: 'application/trig' })).toMatchSnapshot()
+        })
 
-      it('marks generated resources to overwrite', () => {
-        const [action] = dataset.match(ns('/lindas-cubes'), $rdf.ns.talos.action, null, $rdf.ns.talos.resources)
+        it('adds data with SPARQL', async function () {
+          const resource = dataset.match(null, null, null, ns('/trig/users/john-doe-additional'))
 
-        expect(action.object).to.deep.equal($rdf.ns.talos.overwrite)
-      })
+          expect(await resource.serialize({ format: 'application/trig' })).toMatchSnapshot()
+        })
 
-      it('includes urn:talos:resources from the output', async function () {
-        expect(dataset.match($rdf.ns.talos.resources, null, null, $rdf.ns.talos.resources))
-          .to.have.property('size').gt(0)
-      })
-    })
+        it('successfully executed federated query', () => {
+          const cubes = $rdf.clownface({
+            dataset: dataset.match(null, null, null, ns('/lindas-cubes')),
+          }).has($rdf.ns.rdf.type, $rdf.namedNode('https://cube.link/Cube'))
 
-    context('with includeMetaGraph = false', () => {
-      beforeEach(async () => {
-        const dirs = [
-          path.resolve(testDir, './resources'),
-          path.resolve(testDir, './resources.foo'),
-          path.resolve(testDir, './resources.bar'),
-        ]
-        dataset = await fromDirectories(dirs, ns().value, {
-          includeMetaGraph: false,
+          expect(cubes.values).to.have.property('length').greaterThan(0)
+        })
+
+        it('marks generated resources to overwrite', () => {
+          const [action] = dataset.match(ns('/lindas-cubes'), $rdf.ns.talos.action, null, $rdf.ns.talos.resources)
+
+          expect(action.object).to.deep.equal($rdf.ns.talos.overwrite)
+        })
+
+        it('includes urn:talos:resources from the output', async function () {
+          expect(dataset.match($rdf.ns.talos.resources, null, null, $rdf.ns.talos.resources))
+            .to.have.property('size').gt(0)
         })
       })
 
-      it('excludes urn:talos:resources from the output', async function () {
-        expect(dataset.match($rdf.ns.talos.resources, null, null, $rdf.ns.talos.resources))
-          .to.have.property('size').equal(0)
+      context('with includeMetaGraph = false', () => {
+        beforeEach(async () => {
+          const dirs = [
+            path.resolve(testDir, './resources'),
+            path.resolve(testDir, './resources.foo'),
+            path.resolve(testDir, './resources.bar'),
+          ]
+          dataset = await fromDirectories(dirs, ns().value, {
+            includeMetaGraph: false,
+          })
+        })
+
+        it('excludes urn:talos:resources from the output', async function () {
+          expect(dataset.match($rdf.ns.talos.resources, null, null, $rdf.ns.talos.resources))
+            .to.have.property('size').equal(0)
+        })
       })
     })
   })
