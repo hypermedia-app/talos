@@ -1,5 +1,34 @@
 # @hydrofoil/talos-core
 
+## 0.3.0
+
+### Minor Changes
+
+- 094d088: SPARQL Queries are adjusted to use the base URI calculated from the resource path. For example, in query `/tables/generate.ru`,
+  the effective base URI would be `/tables/generate/`. This is to align this behavior with how static sources are parsed.
+  In such case, rename the file to `index.ru` to remove the file name from resolves URIs.
+- 38c59be: Ensures trailing slash in bare-domain resources
+- 094d088: Base URI behavior changed. Now relative URIs will be resolved against the calculated base including a trailing slash.
+  The exception is an empty `<>` reference which will be resolved against the base without a trailing slash.
+  Use `<./>` to create a resource with a trailing slash.
+
+  | File path         | URI reference | Resulting URI      |
+  | ----------------- | ------------- | ------------------ |
+  | `/api/people.ttl` | `<>`          | `/api/people`      |
+  | `/api/people.ttl` | `<.>`         | `/api/people`      |
+  | `/api/people.ttl` | `<./>`        | `/api/people/`     |
+  | `/api/people.ttl` | `<john>`      | `/api/people/john` |
+  | `/api/people.ttl` | `<#john>`     | `/api/people#john` |
+  | `/api/people.ttl` | `<../people>` | `/api/people`      |
+  | `/api/people.ttl` | `<./people>`  | `/api/people`      |
+  | `/api/people.ttl` | `</projects>` | `/projects`        |
+
+### Patch Changes
+
+- b4bf27e: Prettier logs
+- be8f9e4: Updated `@comunica/query-sparql` to v4.0.2
+- 094d088: Trailing slash in base URI is truncated when resolving relative URI references
+
 ## 0.2.0
 
 ### Minor Changes
