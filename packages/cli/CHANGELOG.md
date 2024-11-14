@@ -1,5 +1,11 @@
 # @hydrofoil/talos
 
+## 0.8.1
+
+### Patch Changes
+
+- 913d4ac: When installed globally, running `talos` would actually start node interpreter
+
 ## 0.8.0
 
 ### Minor Changes
