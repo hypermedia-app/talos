@@ -20,7 +20,7 @@
     "@types/deep-equal-in-any-order": "^1.0.3",
     "@types/mime-types": "^2.1.4",
     "@types/mocha": "^10.0.9",
-    "@types/node": "^20",
+    "@types/node": "^22",
     "@types/rdf-dataset-ext": "^1.0.8",
     "@types/rdfjs__term-set": "^2.0.9",
     "@types/replacestream": "^4.0.4",
