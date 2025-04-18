@@ -37,7 +37,7 @@
     "commander": "^12",
     "node-fetch": "^3.3.0",
     "pino": "^9.6.0",
-    "pino-pretty": "^11.2.2",
+    "pino-pretty": "^13.0.0",
     "sparql-http-client": "^3.0.0"
   },
   "devDependencies": {
