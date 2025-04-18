@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+SCRIPT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
+cd "$SCRIPT_DIR" || exit
+
 # find JS entrypoint
 talos=$(node -e "console.log(require.resolve('@hydrofoil/talos/bin/talos.js'))" 2> /dev/null)
 
