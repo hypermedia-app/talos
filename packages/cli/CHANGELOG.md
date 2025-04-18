@@ -1,5 +1,13 @@
 # @hydrofoil/talos
 
+## 0.8.1
+
+### Patch Changes
+
+- 3461d55: Update pino-pretty to v13
+- 083f2b0: build(deps): bump pino from 9.4.0 to 9.6.0
+- ed1e687: Fix discovering the JS entrypoint
+
 ## 0.8.0
 
 ### Minor Changes
