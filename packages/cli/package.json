@@ -41,7 +41,7 @@
     "sparql-http-client": "^3.0.0"
   },
   "devDependencies": {
-    "@tpluscode/rdf-ns-builders": "^4.1.0",
+    "@tpluscode/rdf-ns-builders": "^5.0.0",
     "chai": "^5",
     "mocha-chai-jest-snapshot": "^1.1.6",
     "rdf-dataset-ext": "^1.0.1",
