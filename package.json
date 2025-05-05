@@ -37,14 +37,14 @@
     "mocha": "^10.7.3",
     "rdf-dataset-ext": "^1.1.0",
     "sinon-chai": "^4.0.0",
-    "ts-node": "^10.9.2",
+    "tsx": "^4.19.4",
     "typescript": "^5.2.2",
     "wsrun": "^5.2.4"
   },
   "mocha": {
     "extension": "ts",
-    "loader": "ts-node/esm/transpile-only",
     "require": [
+      "tsx",
       "../../../../mocha-setup.js"
     ],
     "recursive": true
