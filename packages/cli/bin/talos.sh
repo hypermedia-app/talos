@@ -1,15 +1,16 @@
 #!/usr/bin/env bash
 
-SCRIPT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
-cd "$SCRIPT_DIR" || exit
+SCRIPT_DIR=$(cd "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")" && pwd)
 
 # find JS entrypoint
-talos=$(node -e "console.log(require.resolve('@hydrofoil/talos/bin/talos.js'))" 2> /dev/null)
+talos="$SCRIPT_DIR/talos.js"
 
-# if ts-node exists in path
-if command -v ts-node &> /dev/null
+# if tsx or ts-node exists in path, use them
+if command -v tsx > /dev/null 2>&1
 then
-  # use ts-node
+  node --import tsx --no-warnings "$talos" "$@"
+elif command -v ts-node > /dev/null 2>&1
+then
   node --loader ts-node/esm/transpile-only --no-warnings "$talos" "$@"
 else
   # use plain node
