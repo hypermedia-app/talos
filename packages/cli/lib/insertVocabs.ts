@@ -47,8 +47,8 @@ function insertVocab(client: StreamClient, allPrefixes: typeof prefixes) {
   }
 }
 
-export async function insertVocabs(options: StreamClientOptions, { extraVocabs = [] }: { extraVocabs?: ExtraVocab[] }): Promise<void> {
-  const client = new StreamClient(options)
+export async function insertVocabs(options: StreamClientOptions<Quad>, { extraVocabs = [] }: { extraVocabs?: ExtraVocab[] }): Promise<void> {
+  const client = new StreamClient<Quad>(options)
 
   const allPrefixes: typeof prefixes = { ...prefixes, ...hydrofoilPrefixes }
 
