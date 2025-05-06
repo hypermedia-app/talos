@@ -32,7 +32,7 @@ program.command('put [dirs...]')
   .action(async (dirs = ['./resources'], arg) => {
     put(dirs, arg)
       .catch((e) => {
-        log(e)
+        log.error(e)
         process.exit(1)
       })
   })

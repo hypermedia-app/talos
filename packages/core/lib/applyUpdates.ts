@@ -40,15 +40,19 @@ export async function applyUpdates(api: string, validDirs: string[], dataset: Da
       const algebra = queryProcessor.process(parser.parse(query))
 
       for (const command of getUpdates(algebra)) {
-        await engine.queryVoid(generator.stringify({
-          prefixes: algebra.prefixes,
-          type: 'update',
-          updates: [command],
-        }), {
-          sources: [destination, store],
-          destination,
-          baseIRI,
-        })
+        try {
+          await engine.queryVoid(generator.stringify({
+            prefixes: algebra.prefixes,
+            type: 'update',
+            updates: [command],
+          }), {
+            sources: [destination, store],
+            destination,
+            baseIRI,
+          })
+        } catch (error) {
+          log.error(`Error applying update from ${relative}: ${error}`)
+        }
       }
       results.addAll(destination)
       log.debug(`Applied updates from ${relative}, added ${destination.size} triples`)
