@@ -8,7 +8,7 @@
   },
   "scripts": {
     "prepack": "tsc",
-    "test": "mocha --package ../../package.json test"
+    "test": "mocha"
   },
   "files": [
     "lib/**/*.js",
@@ -46,5 +46,8 @@
     "mocha-chai-jest-snapshot": "^1.1.6",
     "rdf-dataset-ext": "^1.0.1",
     "sinon": "^19"
+  },
+  "mocha": {
+    "extends": "../../package.json"
   }
 }
