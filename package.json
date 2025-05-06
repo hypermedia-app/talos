@@ -41,14 +41,6 @@
     "typescript": "^5.2.2",
     "wsrun": "^5.2.4"
   },
-  "mocha": {
-    "extension": "ts",
-    "require": [
-      "tsx",
-      "../../../../mocha-setup.js"
-    ],
-    "recursive": true
-  },
   "lint-staged": {
     "*.{js,ts}": [
       "eslint --fix --quiet"

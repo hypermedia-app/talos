@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "prepack": "tsc",
-    "test": "mocha --package ../../package.json test"
+    "test": "mocha test"
   },
   "files": [
     "lib/**/*.js",
@@ -44,5 +44,8 @@
   },
   "bugs": {
     "url": "https://github.com/hypermedia-app/talos/issues"
+  },
+  "mocha": {
+    "extends": "../../package.json"
   }
 }
