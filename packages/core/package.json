@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "prepack": "tsc",
-    "test": "mocha --package ../../package.json test"
+    "test": "mocha"
   },
   "files": [
     "lib/**/*.js",
@@ -16,21 +16,22 @@
   "dependencies": {
     "@comunica/query-sparql": "^4.2.0",
     "@fcostarodrigo/walk": "^6.0.1",
+    "@hydrofoil/sparql-processor": "^0.1.5",
     "@types/n3": "^1.24.2",
     "@types/rdf-dataset-ext": "^1.0.8",
-    "@zazuko/env-node": "^2.1.5",
+    "@zazuko/env-node": "^3.0.0",
     "anylogger": "^1.0.11",
     "is-absolute-url": "^4.0.1",
     "is-graph-pointer": "^2.1.0",
     "mime-types": "^3.0.1",
-    "n3": "^1.21.0",
+    "n3": "^1.25.2",
     "replacestream": "^4.0.3",
-    "sparqlalgebrajs": "^4.3.8",
+    "sparqljs": "^3.7.3",
     "stream-to-string": "^1.2.1"
   },
   "devDependencies": {
     "@rdfjs-elements/formats-pretty": "^0.6.7",
-    "@zazuko/env": "^2.5.3",
+    "@zazuko/env": "^3.0.0",
     "chai": "^5",
     "get-stream": "^9.0.1",
     "into-stream": "^8.0.1",
@@ -43,5 +44,8 @@
   },
   "bugs": {
     "url": "https://github.com/hypermedia-app/talos/issues"
+  },
+  "mocha": {
+    "extends": "../../package.json"
   }
 }
