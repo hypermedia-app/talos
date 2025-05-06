@@ -1,5 +1,21 @@
 # @hydrofoil/talos
 
+## 0.8.2
+
+### Patch Changes
+
+- 65390d4: Updated `@tpluscode/sparql-builder` to 3.0.1
+- e349c5b: Updated `@zazuko/env-node` to 3.0.0
+- 65390d4: Updated `@zazuko/vocabularies` to 4.0.1
+- efadd0e: Added `--remote-endpoint <name=URL>` option
+- 9bda3d2: Support `tsx` as loader in shell entrypoint
+- Updated dependencies [52436dd]
+- Updated dependencies [efadd0e]
+- Updated dependencies [e349c5b]
+- Updated dependencies [65390d4]
+- Updated dependencies [e349c5b]
+  - @hydrofoil/talos-core@0.3.1
+
 ## 0.8.1
 
 ### Patch Changes

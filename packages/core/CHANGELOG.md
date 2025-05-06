@@ -1,5 +1,15 @@
 # @hydrofoil/talos-core
 
+## 0.3.1
+
+### Patch Changes
+
+- 52436dd: build(deps): bump mime-types from 2.1.35 to 3.0.1
+- efadd0e: In update queries, `<urn:endpoint:NAME>` can be used to reference remote endpoints passed as `endpoints` option
+- e349c5b: Updated `@zazuko/env-node` to 3.0.0
+- 65390d4: Updated `@comunica/query-sparql` to 4.2.0
+- e349c5b: Updated `n3` to 1.25.2
+
 ## 0.3.0
 
 ### Minor Changes
