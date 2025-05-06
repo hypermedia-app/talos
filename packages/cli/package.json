@@ -45,7 +45,7 @@
     "chai": "^5",
     "mocha-chai-jest-snapshot": "^1.1.6",
     "rdf-dataset-ext": "^1.0.1",
-    "sinon": "^19"
+    "sinon": "^20"
   },
   "mocha": {
     "extends": "../../package.json"
