@@ -9,8 +9,10 @@ export interface Put extends Command {
   base: string
 }
 
-export async function put(directories: string[], { base, endpoint, updateEndpoint, user, password }: Put) {
-  const dataset = await fromDirectories(directories, base)
+export async function put(directories: string[], { base, endpoint, updateEndpoint, user, password, remoteEndpoint }: Put) {
+  const dataset = await fromDirectories(directories, base, {
+    endpoints: remoteEndpoint,
+  })
 
   await bootstrap({
     dataset,

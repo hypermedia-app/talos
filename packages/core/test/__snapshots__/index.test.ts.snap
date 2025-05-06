@@ -160,6 +160,222 @@ exports[`@hydrofoil/talos-core fromDirectories uses the last representation when
 "
 `;
 
+exports[`@hydrofoil/talos-core fromDirectories with default options (baseIri = https://example.com) adds data with SPARQL 1`] = `
+"
+<https://example.com/trig/users/john-doe-additional> {
+	<https://example.com/trig/users/john-doe> a <http://xmlns.com/foaf/0.1/Person> ;
+		<http://schema.org/givenName> \\"John\\" .
+}
+
+"
+`;
+
+exports[`@hydrofoil/talos-core fromDirectories with default options (baseIri = https://example.com) merges resources from dataset and graph documents 1`] = `
+"
+<https://example.com/trig/users/john-doe> {
+	<https://example.com/trig/users/john-doe> a <http://schema.org/Person>, <http://xmlns.com/foaf/0.1/Person> ;
+		<http://www.w3.org/ns/earl#test> \\"trig\\" ;
+		<http://xmlns.com/foaf/0.1/name> \\"John Doe\\" ;
+		<http://schema.org/givenName> \\"John\\" .
+}
+
+"
+`;
+
+exports[`@hydrofoil/talos-core fromDirectories with default options (baseIri = https://example.com) merges resources from multiple dataset documents 1`] = `
+"
+<https://example.com/trig/users/jane-doe> {
+	<https://example.com/trig/users/jane-doe> a <http://schema.org/Person>, <http://xmlns.com/foaf/0.1/Person> ;
+		<http://www.w3.org/ns/earl#test> \\"trig\\" ;
+		<http://xmlns.com/foaf/0.1/name> \\"Jane Doe\\" .
+}
+
+"
+`;
+
+exports[`@hydrofoil/talos-core fromDirectories with default options (baseIri = https://example.com) merges resources from multiple graph documents 1`] = `
+"
+<https://example.com/> a <http://schema.org/Thing> ;
+	<http://schema.org/hasPart> <https://example.com/#part>, [
+		<http://schema.org/name> \\"totally anonymous\\" ;
+	], [
+		<http://schema.org/name> \\"Foo part\\", \\"Bar part\\" ;
+	], [
+		<http://schema.org/name> \\"totally anonymous\\" ;
+	] ;
+	<http://schema.org/name> \\"Bar environment\\" .
+
+<https://example.com/#part> <http://schema.org/minValue> 10 ;
+	<http://schema.org/maxValue> 100 .
+
+"
+`;
+
+exports[`@hydrofoil/talos-core fromDirectories with default options (baseIri = https://example.com) resolves variables bound in query using relative URIs 1`] = `
+"
+<https://example.com/relative-bind/subject> {
+	<https://example.com/relative-bind/subject> a <https://example.com/api/schema/Person> .
+}
+
+"
+`;
+
+exports[`@hydrofoil/talos-core fromDirectories with default options (baseIri = https://example.com) resolves various relative references 1`] = `
+"
+<https://example.com/slashes/test> {
+	<https://example.com/> <http://www.w3.org/2000/01/rdf-schema#label> \\"/\\" .
+
+	<https://example.com/slashes/test> <http://www.w3.org/2000/01/rdf-schema#label> \\"/slashes/test\\" .
+
+	<https://example.com/slashes/test/> <http://www.w3.org/2000/01/rdf-schema#label> \\"/slashes/test/\\" .
+
+	<https://example.com/slashes> <http://www.w3.org/2000/01/rdf-schema#label> \\"/slashes\\" .
+
+	<https://example.com/slashes/> <http://www.w3.org/2000/01/rdf-schema#label> \\"/slashes/\\" .
+
+	<https://example.com/foo> <http://www.w3.org/2000/01/rdf-schema#label> \\"/foo\\" .
+
+	<https://example.com/slashes/test#this> <http://www.w3.org/2000/01/rdf-schema#label> \\"/slashes/test#this\\" .
+}
+
+"
+`;
+
+exports[`@hydrofoil/talos-core fromDirectories with default options (baseIri = https://example.com) uses the last representation when is marked in a dataset document 1`] = `
+"
+<https://example.com/only/three> {
+	<https://example.com/only/three> <http://schema.org/name> \\"bar\\" .
+}
+
+"
+`;
+
+exports[`@hydrofoil/talos-core fromDirectories with default options (baseIri = https://example.com) uses the last representation when is marked in another env 1`] = `
+"
+<https://example.com/only/two> {
+	<https://example.com/only/two> <http://schema.org/name> \\"bar\\" .
+}
+
+"
+`;
+
+exports[`@hydrofoil/talos-core fromDirectories with default options (baseIri = https://example.com) uses the last representation when is marked to replace other envs 1`] = `
+"
+<https://example.com/only/one> {
+	<https://example.com/only/one> <http://schema.org/name> \\"bar\\" .
+}
+
+"
+`;
+
+exports[`@hydrofoil/talos-core fromDirectories with default options (baseIri = https://example.com/) adds data with SPARQL 1`] = `
+"
+<https://example.com/trig/users/john-doe-additional> {
+	<https://example.com/trig/users/john-doe> a <http://xmlns.com/foaf/0.1/Person> ;
+		<http://schema.org/givenName> \\"John\\" .
+}
+
+"
+`;
+
+exports[`@hydrofoil/talos-core fromDirectories with default options (baseIri = https://example.com/) merges resources from dataset and graph documents 1`] = `
+"
+<https://example.com/trig/users/john-doe> {
+	<https://example.com/trig/users/john-doe> a <http://schema.org/Person>, <http://xmlns.com/foaf/0.1/Person> ;
+		<http://www.w3.org/ns/earl#test> \\"trig\\" ;
+		<http://xmlns.com/foaf/0.1/name> \\"John Doe\\" ;
+		<http://schema.org/givenName> \\"John\\" .
+}
+
+"
+`;
+
+exports[`@hydrofoil/talos-core fromDirectories with default options (baseIri = https://example.com/) merges resources from multiple dataset documents 1`] = `
+"
+<https://example.com/trig/users/jane-doe> {
+	<https://example.com/trig/users/jane-doe> a <http://schema.org/Person>, <http://xmlns.com/foaf/0.1/Person> ;
+		<http://www.w3.org/ns/earl#test> \\"trig\\" ;
+		<http://xmlns.com/foaf/0.1/name> \\"Jane Doe\\" .
+}
+
+"
+`;
+
+exports[`@hydrofoil/talos-core fromDirectories with default options (baseIri = https://example.com/) merges resources from multiple graph documents 1`] = `
+"
+<https://example.com/> a <http://schema.org/Thing> ;
+	<http://schema.org/hasPart> <https://example.com/#part>, [
+		<http://schema.org/name> \\"totally anonymous\\" ;
+	], [
+		<http://schema.org/name> \\"Foo part\\", \\"Bar part\\" ;
+	], [
+		<http://schema.org/name> \\"totally anonymous\\" ;
+	] ;
+	<http://schema.org/name> \\"Bar environment\\" .
+
+<https://example.com/#part> <http://schema.org/minValue> 10 ;
+	<http://schema.org/maxValue> 100 .
+
+"
+`;
+
+exports[`@hydrofoil/talos-core fromDirectories with default options (baseIri = https://example.com/) resolves variables bound in query using relative URIs 1`] = `
+"
+<https://example.com/relative-bind/subject> {
+	<https://example.com/relative-bind/subject> a <https://example.com/api/schema/Person> .
+}
+
+"
+`;
+
+exports[`@hydrofoil/talos-core fromDirectories with default options (baseIri = https://example.com/) resolves various relative references 1`] = `
+"
+<https://example.com/slashes/test> {
+	<https://example.com/> <http://www.w3.org/2000/01/rdf-schema#label> \\"/\\" .
+
+	<https://example.com/slashes/test> <http://www.w3.org/2000/01/rdf-schema#label> \\"/slashes/test\\" .
+
+	<https://example.com/slashes/test/> <http://www.w3.org/2000/01/rdf-schema#label> \\"/slashes/test/\\" .
+
+	<https://example.com/slashes> <http://www.w3.org/2000/01/rdf-schema#label> \\"/slashes\\" .
+
+	<https://example.com/slashes/> <http://www.w3.org/2000/01/rdf-schema#label> \\"/slashes/\\" .
+
+	<https://example.com/foo> <http://www.w3.org/2000/01/rdf-schema#label> \\"/foo\\" .
+
+	<https://example.com/slashes/test#this> <http://www.w3.org/2000/01/rdf-schema#label> \\"/slashes/test#this\\" .
+}
+
+"
+`;
+
+exports[`@hydrofoil/talos-core fromDirectories with default options (baseIri = https://example.com/) uses the last representation when is marked in a dataset document 1`] = `
+"
+<https://example.com/only/three> {
+	<https://example.com/only/three> <http://schema.org/name> \\"bar\\" .
+}
+
+"
+`;
+
+exports[`@hydrofoil/talos-core fromDirectories with default options (baseIri = https://example.com/) uses the last representation when is marked in another env 1`] = `
+"
+<https://example.com/only/two> {
+	<https://example.com/only/two> <http://schema.org/name> \\"bar\\" .
+}
+
+"
+`;
+
+exports[`@hydrofoil/talos-core fromDirectories with default options (baseIri = https://example.com/) uses the last representation when is marked to replace other envs 1`] = `
+"
+<https://example.com/only/one> {
+	<https://example.com/only/one> <http://schema.org/name> \\"bar\\" .
+}
+
+"
+`;
+
 exports[`@hydrofoil/talos-core fromDirectories with default options adds data with SPARQL 1`] = `
 "
 <https://example.com/trig/users/john-doe-additional> {

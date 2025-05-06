@@ -20,13 +20,14 @@ interface ResourceOptions {
 
 interface Options {
   includeMetaGraph?: boolean
+  endpoints?: Record<string, string>
 }
 
-export async function fromDirectories(directories: string[], baseIri: string, { includeMetaGraph }: Options = { includeMetaGraph: true }): Promise<Dataset> {
+export async function fromDirectories(directories: string[], baseIri: string, { includeMetaGraph = true, endpoints = {} }: Options = {}): Promise<Dataset> {
   const baseIriNoSlash = baseIri.replace(/\/$/, '')
   const validDirs = directories.filter(isValidDir)
   const dataset = await validDirs.reduce(toGraphs(new URL(baseIri)), Promise.resolve($rdf.dataset()))
-  const updatedDataset = await applyUpdates(baseIriNoSlash, validDirs, dataset)
+  const updatedDataset = await applyUpdates(baseIriNoSlash, validDirs, dataset, endpoints)
 
   setDefaultAction(updatedDataset)
 
@@ -46,7 +47,7 @@ function setDefaultAction(dataset: Dataset) {
     })
 
   metaGraph
-    .node(graphsToOverwrite)
+    .node($rdf.termSet(graphsToOverwrite))
     .deleteOut($rdf.ns.talos.action)
     .addOut($rdf.ns.talos.action, $rdf.ns.talos.overwrite)
 }

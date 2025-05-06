@@ -5,4 +5,5 @@ export interface Command {
   updateEndpoint?: string
   user?: string
   password?: string
+  remoteEndpoint?: Record<string, string>
 }

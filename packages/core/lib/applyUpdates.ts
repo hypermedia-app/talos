@@ -4,16 +4,19 @@ import { walk } from '@fcostarodrigo/walk'
 import { QueryEngine } from '@comunica/query-sparql'
 import { Store } from 'n3'
 import type { DatasetCore } from '@rdfjs/types'
-import { translate } from 'sparqlalgebrajs'
-import type { Operation } from 'sparqlalgebrajs/lib/algebra.js'
-import { types } from 'sparqlalgebrajs/lib/algebra.js'
+import type { SparqlQuery } from 'sparqljs'
+import { Parser, Generator } from 'sparqljs'
 import toString from 'stream-to-string'
 import $rdf from '../env.js'
 import log from './log.js'
 import { resourcePathFromFilePath } from './iri.js'
 import { angleBracketTransform } from './fileStream.js'
+import QueryProcessor from './QueryProcessor.js'
 
-export async function applyUpdates(api: string, validDirs: string[], dataset: DatasetCore) {
+const generator = new Generator()
+
+export async function applyUpdates(api: string, validDirs: string[], dataset: DatasetCore, endpoints: Record<string, string>) {
+  const queryProcessor = new QueryProcessor(endpoints)
   const engine = new QueryEngine()
   const store = new Store([...dataset])
   const results = $rdf.dataset()
@@ -32,14 +35,24 @@ export async function applyUpdates(api: string, validDirs: string[], dataset: Da
       if (!hasBaseIRI(query)) {
         log.info(`No BASE clause in ${relative}. Effective base IRI: ${baseIRI}`)
       }
-      const algebra = translate(query, { quads: true, baseIRI })
+
+      const parser = new Parser({ baseIRI })
+      const algebra = queryProcessor.process(parser.parse(query))
 
       for (const command of getUpdates(algebra)) {
-        await engine.queryVoid(command, {
-          sources: [destination, store],
-          destination,
-          baseIRI,
-        })
+        try {
+          await engine.queryVoid(generator.stringify({
+            prefixes: algebra.prefixes,
+            type: 'update',
+            updates: [command],
+          }), {
+            sources: [destination, store],
+            destination,
+            baseIRI,
+          })
+        } catch (error) {
+          log.error(`Error applying update from ${relative}: ${error}`)
+        }
       }
       results.addAll(destination)
       log.debug(`Applied updates from ${relative}, added ${destination.size} triples`)
@@ -55,12 +68,10 @@ function hasBaseIRI(query: string) {
   return query.match(/^(?!\s*#)\s*BASE\s+<[^>]*>/m)
 }
 
-function getUpdates(query: Operation) {
+function getUpdates(query: SparqlQuery) {
   switch (query.type) {
-    case types.COMPOSITE_UPDATE:
+    case 'update':
       return query.updates
-    case types.DELETE_INSERT:
-      return [query]
     default:
       log.warn(`Only update queries are supported, got ${query.type}`)
       return []

@@ -17,6 +17,9 @@ const apis = [
   ['http://example.com/base', 'http://example.com/base'],
 ]
 const dir = path.resolve(testResources, './resources')
+const remoteEndpoint = {
+  lindas: 'https://test.lindas.admin.ch/x-query',
+}
 
 describe('@hydrofoil/talos', function () {
   this.timeout(20000)
@@ -32,6 +35,7 @@ describe('@hydrofoil/talos', function () {
         endpoint: 'http://db.talos.lndo.site/repositories/tests',
         user: 'minos',
         password: 'password',
+        remoteEndpoint,
       }
 
       const client = new ParsingClient({

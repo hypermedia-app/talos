@@ -17,6 +17,10 @@ $rdf.formats.import({
 describe('@hydrofoil/talos-core', () => {
   use(jestSnapshotPlugin())
 
+  const endpoints = {
+    lindas: 'https://test.lindas.admin.ch/x-query',
+  }
+
   describe('fromDirectories', function () {
     this.timeout(20000)
 
@@ -26,14 +30,14 @@ describe('@hydrofoil/talos-core', () => {
       ['https://example.com', 'https://example.com/'],
       ['https://example.com/', 'https://example.com/'],
     ].forEach(([baseIri, rootResource]) => {
-      context('with default options', () => {
-        beforeEach(async () => {
+      context(`with default options (baseIri = ${baseIri})`, () => {
+        before(async () => {
           const dirs = [
             path.resolve(testDir, './resources'),
             path.resolve(testDir, './resources.foo'),
             path.resolve(testDir, './resources.bar'),
           ]
-          dataset = await fromDirectories(dirs, baseIri)
+          dataset = await fromDirectories(dirs, baseIri, { endpoints })
         })
 
         it('merges resources from multiple graph documents', async function () {
@@ -114,6 +118,14 @@ describe('@hydrofoil/talos-core', () => {
           expect(cubes.values).to.have.property('length').greaterThan(0)
         })
 
+        it('successfully executed federated query using named endpoint', () => {
+          const cubes = $rdf.clownface({
+            dataset: dataset.match(null, null, null, ns('/also-cubes')),
+          }).has($rdf.ns.rdf.type, $rdf.namedNode('https://cube.link/Cube'))
+
+          expect(cubes.values).to.have.property('length').greaterThan(0)
+        })
+
         it('marks generated resources to overwrite', () => {
           const [action] = dataset.match(ns('/lindas-cubes'), $rdf.ns.talos.action, null, $rdf.ns.talos.resources)
 
@@ -126,7 +138,7 @@ describe('@hydrofoil/talos-core', () => {
         })
       })
 
-      context('with includeMetaGraph = false', () => {
+      context(`with includeMetaGraph = false (baseIri = ${baseIri})`, () => {
         beforeEach(async () => {
           const dirs = [
             path.resolve(testDir, './resources'),
@@ -135,6 +147,7 @@ describe('@hydrofoil/talos-core', () => {
           ]
           dataset = await fromDirectories(dirs, ns().value, {
             includeMetaGraph: false,
+            endpoints,
           })
         })
 
