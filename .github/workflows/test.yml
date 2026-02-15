@@ -12,8 +12,6 @@ jobs:
           node-version: 'lts/*'
       - run: npm ci
       - uses: lando/setup-lando@v3
-        with:
-          lando-version: v3.23.3
       - run: lando start
       - run: npx wait-on http://db.talos.lndo.site/ -t 300000
       - run: npx c8 --reporter lcovonly --reporter text npm test
@@ -31,8 +29,6 @@ jobs:
           node-version: 'lts/*'
       - run: npm ci
       - uses: lando/setup-lando@v3
-        with:
-          lando-version: v3.23.3
       - run: lando start
       - run: npx wait-on http://db.talos.lndo.site/ -t 300000
       - run: npx tsc
