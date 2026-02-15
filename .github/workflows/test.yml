@@ -6,33 +6,33 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
         with:
-          node-version: '18'
+          node-version: 'lts/*'
       - run: npm ci
       - uses: tpluscode/setup-lando@v0.1.2
         with:
-          version: v3.0.26
+          version: v3.23.3
           healthcheck: http://db.talos.lndo.site/
           timeout: 30000
       - run: npx c8 --reporter lcovonly --reporter text npm test
       - name: Codecov
-        uses: codecov/codecov-action@v4
+        uses: codecov/codecov-action@v6
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
 
   smoke-test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
         with:
-          node-version: '18'
+          node-version: 'lts/*'
       - run: npm ci
       - uses: tpluscode/setup-lando@v0.1.2
         with:
-          version: v3.0.26
+          version: v3.23.3
           healthcheck: http://db.talos.lndo.site/
           timeout: 30000
       - run: npx tsc
@@ -41,10 +41,10 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
         with:
-          node-version: '18'
+          node-version: 'lts/*'
       - run: npm ci
       - run: npx wsrun -mc prepack
       - name: Smoke test bin
@@ -53,9 +53,9 @@ jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@6
+      - uses: actions/setup-node@v6
         with:
-          node-version: '18'
+          node-version: 'lts/*'
       - run: npm ci
       - run: yarn lint
