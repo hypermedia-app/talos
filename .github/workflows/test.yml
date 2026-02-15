@@ -11,14 +11,12 @@ jobs:
         with:
           node-version: 'lts/*'
       - run: npm ci
-      - uses: tpluscode/setup-lando@v0.1.2
-        with:
-          version: v3.23.3
-          healthcheck: http://db.talos.lndo.site/
-          timeout: 30000
+      - uses: lando/setup-lando@v3
+      - run: lando start
+      - run: npx wait-on http://db.talos.lndo.site/ -t 300000
       - run: npx c8 --reporter lcovonly --reporter text npm test
       - name: Codecov
-        uses: codecov/codecov-action@v6
+        uses: codecov/codecov-action@v4
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
 
@@ -30,11 +28,9 @@ jobs:
         with:
           node-version: 'lts/*'
       - run: npm ci
-      - uses: tpluscode/setup-lando@v0.1.2
-        with:
-          version: v3.23.3
-          healthcheck: http://db.talos.lndo.site/
-          timeout: 30000
+      - uses: lando/setup-lando@v3
+      - run: lando start
+      - run: npx wait-on http://db.talos.lndo.site/ -t 300000
       - run: npx tsc
       - run: npx talos put test-resources --endpoint http://db.talos.lndo.site/repositories/tests --base http://talos.lndo.site -u minos -p password --remote-endpoint lindas=https://test.lindas.admin.ch/x-query
 
@@ -53,7 +49,7 @@ jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@6
+      - uses: actions/checkout@v6
       - uses: actions/setup-node@v6
         with:
           node-version: 'lts/*'
