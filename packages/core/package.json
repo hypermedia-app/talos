@@ -16,7 +16,7 @@
   "dependencies": {
     "@comunica/query-sparql": "^4.2.0",
     "@fcostarodrigo/walk": "^6.0.1",
-    "@hydrofoil/sparql-processor": "^0.1.5",
+    "@hydrofoil/sparql-processor": "^0.2.0",
     "@types/n3": "^1.24.2",
     "@types/rdf-dataset-ext": "^1.0.8",
     "@zazuko/env-node": "^3.0.0",
