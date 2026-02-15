@@ -14,7 +14,7 @@ $rdf.formats.import({
   serializers: formats.serializers,
 })
 
-describe('@hydrofoil/talos-core', () => {
+describe('@hydrofoil/talos-core', function () {
   use(jestSnapshotPlugin())
 
   const endpoints = {
@@ -30,8 +30,8 @@ describe('@hydrofoil/talos-core', () => {
       ['https://example.com', 'https://example.com/'],
       ['https://example.com/', 'https://example.com/'],
     ].forEach(([baseIri, rootResource]) => {
-      context(`with default options (baseIri = ${baseIri})`, () => {
-        before(async () => {
+      context(`with default options (baseIri = ${baseIri})`, function () {
+        before(async function () {
           const dirs = [
             path.resolve(testDir, './resources'),
             path.resolve(testDir, './resources.foo'),
@@ -70,7 +70,7 @@ describe('@hydrofoil/talos-core', () => {
           expect(await resource.serialize({ format: 'application/trig' })).toMatchSnapshot()
         })
 
-        it('marks a resource for "overwrite" by default', () => {
+        it('marks a resource for "overwrite" by default', function () {
           const match = dataset.match($rdf.namedNode(rootResource), $rdf.ns.talos.action, null, $rdf.ns.talos.resources)
           const [{ object: action }, ...more] = match
 
@@ -78,7 +78,7 @@ describe('@hydrofoil/talos-core', () => {
           expect(more).to.be.empty
         })
 
-        it('marks a resource for "merge" when prefix is used', () => {
+        it('marks a resource for "merge" when prefix is used', function () {
           const datasetCore = dataset.match(ns('/project/creta/user.group/admins'), $rdf.ns.talos.action, null, $rdf.ns.talos.resources)
           const [{ object: action }, ...more] = datasetCore
 
@@ -110,7 +110,7 @@ describe('@hydrofoil/talos-core', () => {
           expect(await resource.serialize({ format: 'application/trig' })).toMatchSnapshot()
         })
 
-        it('successfully executed federated query', () => {
+        it('successfully executed federated query', function () {
           const cubes = $rdf.clownface({
             dataset: dataset.match(null, null, null, ns('/lindas-cubes')),
           }).has($rdf.ns.rdf.type, $rdf.namedNode('https://cube.link/Cube'))
@@ -118,7 +118,7 @@ describe('@hydrofoil/talos-core', () => {
           expect(cubes.values).to.have.property('length').greaterThan(0)
         })
 
-        it('successfully executed federated query using named endpoint', () => {
+        it('successfully executed federated query using named endpoint', function () {
           const cubes = $rdf.clownface({
             dataset: dataset.match(null, null, null, ns('/also-cubes')),
           }).has($rdf.ns.rdf.type, $rdf.namedNode('https://cube.link/Cube'))
@@ -126,7 +126,7 @@ describe('@hydrofoil/talos-core', () => {
           expect(cubes.values).to.have.property('length').greaterThan(0)
         })
 
-        it('marks generated resources to overwrite', () => {
+        it('marks generated resources to overwrite', function () {
           const [action] = dataset.match(ns('/lindas-cubes'), $rdf.ns.talos.action, null, $rdf.ns.talos.resources)
 
           expect(action.object).to.deep.equal($rdf.ns.talos.overwrite)
@@ -138,8 +138,8 @@ describe('@hydrofoil/talos-core', () => {
         })
       })
 
-      context(`with includeMetaGraph = false (baseIri = ${baseIri})`, () => {
-        beforeEach(async () => {
+      context(`with includeMetaGraph = false (baseIri = ${baseIri})`, function () {
+        beforeEach(async function () {
           const dirs = [
             path.resolve(testDir, './resources'),
             path.resolve(testDir, './resources.foo'),

@@ -5,13 +5,13 @@ import toStream from 'into-stream'
 import getStream from 'get-stream'
 import { optionsFromPrefixes } from '../../lib/prefixHandler.js'
 
-describe('@hydrofoil/talos-core/lib/prefixHandler', () => {
+describe('@hydrofoil/talos-core/lib/prefixHandler', function () {
   function parse(str: string) {
     return rdf.formats.parsers.import('text/turtle', toStream(str)) as unknown as Stream & Readable
   }
 
-  describe('optionsFromPrefixes', () => {
-    it('sets options from parsed prefixes', async () => {
+  describe('optionsFromPrefixes', function () {
+    it('sets options from parsed prefixes', async function () {
       // given
       const options = {}
 
@@ -27,7 +27,7 @@ prefix talos: <another:also%20baz>`)
       expect(options).to.have.property('another', 'also baz')
     })
 
-    it('ignores other prefixes', async () => {
+    it('ignores other prefixes', async function () {
       // given
       const options = {}
 

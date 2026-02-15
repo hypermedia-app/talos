@@ -1,8 +1,8 @@
 import { expect } from 'chai'
 import { resolveResourceUri } from '../../lib/streamPatchTransform.js'
 
-describe('@hydrofoil/talos-core/lib/streamPatchTransform.js', () => {
-  describe('resolveResourceUri', () => {
+describe('@hydrofoil/talos-core/lib/streamPatchTransform.js', function () {
+  describe('resolveResourceUri', function () {
     [
       // base is bare domain
       ['http://example.com', 'foo', '', 'http://example.com/foo'],
@@ -58,7 +58,7 @@ describe('@hydrofoil/talos-core/lib/streamPatchTransform.js', () => {
       ['http://example.com/baz', 'bar', 'foo#this', 'http://example.com/baz/bar/foo#this'],
       ['http://example.com/baz/', 'bar', 'foo#this', 'http://example.com/baz/bar/foo#this'],
     ].forEach(([baseUri, resourcePath, input, expected]) => {
-      it(`${baseUri} + <${resourcePath}> + <${input}> -> ${expected}`, () => {
+      it(`${baseUri} + <${resourcePath}> + <${input}> -> ${expected}`, function () {
         expect(resolveResourceUri(baseUri, resourcePath)(input)).to.equal(expected)
       })
     })
