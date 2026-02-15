@@ -1,5 +1,13 @@
 # @hydrofoil/talos
 
+## 0.8.3
+
+### Patch Changes
+
+- 0ae37df: build(deps): bump commander from 12.1.0 to 14.0.2
+- Updated dependencies [4d36f21]
+  - @hydrofoil/talos-core@0.3.2
+
 ## 0.8.2
 
 ### Patch Changes

@@ -1,5 +1,11 @@
 # @hydrofoil/talos-core
 
+## 0.3.2
+
+### Patch Changes
+
+- 4d36f21: Update `@hydrofoil/sparql-processor` to v0.2
+
 ## 0.3.1
 
 ### Patch Changes
