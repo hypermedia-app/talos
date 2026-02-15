@@ -29,7 +29,7 @@ describe('@hydrofoil/talos', function () {
 
     const ns = $rdf.namespace(base + '/')
 
-    describe('@hydrofoil/talos/lib/command/put', () => {
+    describe('@hydrofoil/talos/lib/command/put', function () {
       const params: Put = {
         base,
         endpoint: 'http://db.talos.lndo.site/repositories/tests',
@@ -45,7 +45,7 @@ describe('@hydrofoil/talos', function () {
         password: 'password',
       })
 
-      before(async () => {
+      before(async function () {
         await DELETE`?s ?p ?o`.WHERE`?s ?p ?o`.execute(client)
 
         await testData`          
@@ -59,20 +59,20 @@ describe('@hydrofoil/talos', function () {
       `
       })
 
-      it('ignores paths which do not exist', async () => {
+      it('ignores paths which do not exist', async function () {
         await expect(put([path.resolve(testResources, '../../foobar')], params)).not.to.have.been.rejected
       })
 
-      it('ignores paths which are not directories', async () => {
+      it('ignores paths which are not directories', async function () {
         await expect(put([path.resolve(testResources, './put.test.ts')], params)).not.to.have.been.rejected
       })
 
-      describe(`--resources base ${base}`, () => {
-        before(async () => {
+      describe(`--resources base ${base}`, function () {
+        before(async function () {
           await put([dir], params)
         })
 
-        context('turtle', () => {
+        context('turtle', function () {
           it('replaces entire graph by default', async function () {
             const dataset = $rdf.dataset().addAll(await CONSTRUCT`?s ?p ?o`
               .FROM(ns('project'))
@@ -91,7 +91,7 @@ describe('@hydrofoil/talos', function () {
             expect(dataset.toCanonical()).toMatchSnapshot()
           })
 
-          it('inserts into graph constructed from path', async () => {
+          it('inserts into graph constructed from path', async function () {
             const userCreated = ASK`${ns('project/creta/user/tpluscode')} a ${schema.Person}`
               .FROM(ns('project/creta/user/tpluscode'))
               .execute(client)
@@ -99,7 +99,7 @@ describe('@hydrofoil/talos', function () {
             await expect(userCreated).to.eventually.be.true
           })
 
-          it('escapes paths to produce valid URIs', async () => {
+          it('escapes paths to produce valid URIs', async function () {
             const userCreated = ASK`${ns('project/creta/user/Kov%C3%A1cs%20J%C3%A1nos')} a ${schema.Person}`
               .FROM(ns('project/creta/user/Kov%C3%A1cs%20J%C3%A1nos'))
               .execute(client)
@@ -107,7 +107,7 @@ describe('@hydrofoil/talos', function () {
             await expect(userCreated).to.eventually.be.true
           })
 
-          it('allows dots in paths', async () => {
+          it('allows dots in paths', async function () {
             const userCreated = ASK`${ns('project/creta/user.group/john.doe')} a ${vcard.Group}`
               .FROM(ns('project/creta/user.group/john.doe'))
               .execute(client)
@@ -115,7 +115,7 @@ describe('@hydrofoil/talos', function () {
             await expect(userCreated).to.eventually.be.true
           })
 
-          it('correctly applies relative URIs to base paths', async () => {
+          it('correctly applies relative URIs to base paths', async function () {
             const hasExpectedLinks = ASK`
             ${ns('project/creta/user/tpluscode')} 
               ${schema.knows} ${ns('project/creta/user/Kov%C3%A1cs%20J%C3%A1nos')} ;
@@ -127,7 +127,7 @@ describe('@hydrofoil/talos', function () {
             await expect(hasExpectedLinks).to.eventually.be.true
           })
 
-          it('correctly applies absolute URIs to base paths', async () => {
+          it('correctly applies absolute URIs to base paths', async function () {
             const hasExpectedType = ASK`
             ${ns('project/creta/user/tpluscode')} a ${ns('api/Person')}
           `
@@ -137,7 +137,7 @@ describe('@hydrofoil/talos', function () {
             await expect(hasExpectedType).to.eventually.be.true
           })
 
-          it('leaves angle brackets inside single line string literals intact', async () => {
+          it('leaves angle brackets inside single line string literals intact', async function () {
             const [{ value }] = await SELECT`?value`.WHERE`
             ${ns('project/creta/shape')} ${sh.property} ?property .
             
@@ -151,7 +151,7 @@ describe('@hydrofoil/talos', function () {
             expect(value.value).to.eq('<span>single line template</span>')
           })
 
-          it('leaves angle brackets inside multi line string literals intact', async () => {
+          it('leaves angle brackets inside multi line string literals intact', async function () {
             const [{ value }] = await SELECT`?value`.WHERE`
             ${ns('project/creta/shape')} ${sh.property} ?property .
             
@@ -170,7 +170,7 @@ template
 `)
           })
 
-          it('handles index.ttl file as parent path', async () => {
+          it('handles index.ttl file as parent path', async function () {
             const indexCorrectlyInserted = ASK`
             ${ns('project')} a ${schema.Thing}
           `
@@ -180,7 +180,7 @@ template
             await expect(indexCorrectlyInserted).to.eventually.be.true
           })
 
-          it('correctly resolves root resource from index.ttl', async () => {
+          it('correctly resolves root resource from index.ttl', async function () {
             const indexCorrectlyInserted = ASK`
             ${$rdf.namedNode(rootResource)} a ${schema.Thing}
           `
@@ -190,7 +190,7 @@ template
             await expect(indexCorrectlyInserted).to.eventually.be.true
           })
 
-          it('keep trailing slash from relative paths resulting in root URI', async () => {
+          it('keep trailing slash from relative paths resulting in root URI', async function () {
             const indexCorrectlyInserted = ASK`
             ${ns('project')} ${schema.parentItem} <${rootResource}>
           `
@@ -200,7 +200,7 @@ template
             await expect(indexCorrectlyInserted).to.eventually.be.true
           })
 
-          it('preserves trailing slash if present in path', async () => {
+          it('preserves trailing slash if present in path', async function () {
             const indexCorrectlyInserted = ASK`
             ${ns('project/creta/user/tpluscode')} ${schema.parentItem} ${ns('project/creta/')}
           `
@@ -210,7 +210,7 @@ template
             await expect(indexCorrectlyInserted).to.eventually.be.true
           })
 
-          it('merges with existing resource representation when option is set', async () => {
+          it('merges with existing resource representation when option is set', async function () {
             const group = ns('project/creta/user.group/admins')
 
             const indexCorrectlyInserted = ASK`
@@ -224,8 +224,8 @@ template
           })
         })
 
-        context('n-quads', () => {
-          it('inserts into graph constructed from path', async () => {
+        context('n-quads', function () {
+          it('inserts into graph constructed from path', async function () {
             const userCreated = ASK`${ns('project/creta/project/creta')} a ${doap.Project}`
               .FROM(ns('project/creta/project/creta'))
               .execute(client)
@@ -233,7 +233,7 @@ template
             await expect(userCreated).to.eventually.be.true
           })
 
-          it('correctly applies absolute URIs to base paths', async () => {
+          it('correctly applies absolute URIs to base paths', async function () {
             const hasExpectedType = ASK`
             ${ns('project/creta/project/creta')} ${schema.related} ${ns('project/roadshow')}
           `
@@ -244,8 +244,8 @@ template
           })
         })
 
-        context('JSON-LD', () => {
-          it('correctly applies absolute URIs to base paths', async () => {
+        context('JSON-LD', function () {
+          it('correctly applies absolute URIs to base paths', async function () {
             const hasExpectedType = ASK`
             ${ns('project/roadshow')} ${schema.related} ${ns('project/creta')}
           `
@@ -256,8 +256,8 @@ template
           })
         })
 
-        context('n-triples', () => {
-          it('correctly applies absolute URIs to base paths', async () => {
+        context('n-triples', function () {
+          it('correctly applies absolute URIs to base paths', async function () {
             const hasExpectedType = ASK`
             ${ns('project/shaperone')} ${schema.related} ${ns('project/roadshow')}, ${ns('project/creta')}
           `
@@ -268,8 +268,8 @@ template
           })
         })
 
-        context('trig', () => {
-          it('inserts into graphs constructed from path', async () => {
+        context('trig', function () {
+          it('inserts into graphs constructed from path', async function () {
             const results = await SELECT`?resource ?graph ?type`
               .WHERE`
               graph ?graph {
@@ -303,15 +303,15 @@ template
         })
       })
 
-      context('with multiple directories', () => {
-        before(async () => {
+      context('with multiple directories', function () {
+        before(async function () {
           const fooDir = path.resolve(testResources, './resources.foo')
           const barDir = path.resolve(testResources, './resources.bar')
 
           await put([dir, fooDir, barDir], params)
         })
 
-        it('merges statements from multiple graph documents', async () => {
+        it('merges statements from multiple graph documents', async function () {
           const ask = ASK`
           <${rootResource}>
             ${schema.name} "Bar environment" ;
@@ -325,7 +325,7 @@ template
           await expect(ask.execute(client)).to.eventually.be.true
         })
 
-        it('merges statements from multiple dataset documents', async () => {
+        it('merges statements from multiple dataset documents', async function () {
           const ask = ASK`
           ${ns('trig/users/jane-doe')}
             a ${foaf.Person} ;
@@ -336,7 +336,7 @@ template
           await expect(ask).to.eventually.be.true
         })
 
-        it('merges statements from a mix of dataset and graph documents', async () => {
+        it('merges statements from a mix of dataset and graph documents', async function () {
           const ask = ASK`
           ${ns('trig/users/john-doe')}
             a ${foaf.Person} ;
