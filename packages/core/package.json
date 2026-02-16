@@ -34,7 +34,7 @@
     "@zazuko/env": "^3.0.0",
     "chai": "^5",
     "get-stream": "^9.0.1",
-    "into-stream": "^8.0.1",
+    "into-stream": "^9.1.0",
     "mocha-chai-jest-snapshot": "^1.1.6"
   },
   "repository": {
