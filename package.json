@@ -36,7 +36,7 @@
     "husky": "^9.1.7",
     "mocha": "^10.7.3",
     "rdf-dataset-ext": "^1.1.0",
-    "sinon-chai": "^4.0.0",
+    "sinon-chai": "^4.0.1",
     "tsx": "^4.19.4",
     "typescript": "^5.2.2",
     "wsrun": "^5.2.4"
